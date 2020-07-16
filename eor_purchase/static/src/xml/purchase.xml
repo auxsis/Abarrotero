@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="TaxesWidget">
+        <div>
+            <table style="width:100%">
+                <t t-foreach="line" t-as="l">
+                    <tr>
+                        <td>
+                            
+                            <span>
+                                <t t-esc="l.name" />
+                            </span>
+                        </td>
+                        <td style="display: flex;text-align:right;-webkit-box-pack:end;justify-content:flex-end;">
+                            <span>
+                                <t t-esc="l.currency" />
+                            </span>
+                            <span>
+                                <t t-esc="l.amount_tax" />
+                            </span>
+                        </td>
+                    </tr>
+                </t>    
+            </table>
+        </div>
+    </t>
+</templates>

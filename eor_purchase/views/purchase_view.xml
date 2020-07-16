@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_widgets_view_form" model="ir.ui.view">
+        <field name="name">purchase.order.widgets.view.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="discount_purchase_order.inherit_purchase_order_form_view"/>
+        <field name="arch" type="xml">
+                <field name="amount_tax" position="before">
+                    <field name="taxes_widget" widget="taxes" options="{'digits': 'Product Price'}"/>
+                </field>
+                <field name="total_discount" position="before">
+                    <label for="monto_desc_maniobra" string="Desc. Maniobra" />
+                    <div>
+                        <button name="reset_descuento_maniobra" type="object" class="oe_link oe_inline p-0" icon="fa-trash-o" attrs="{'invisible': [('monto_desc_maniobra', '=', 0.0)]}"/>
+                        <field name="monto_desc_maniobra" class="oe_right"/>
+                    </div>
+                    <label for="monto_desc_flete" string="Desc. Flete"/>
+                    <div>
+                        <button name="reset_descuento_flete" type="object" class="oe_link oe_inline p-0" icon="fa-trash-o" attrs="{'invisible': [('monto_desc_flete', '=', 0.0)]}"/>
+                        <field name="monto_desc_flete" class="oe_right"/>
+                    </div>
+                    <label for="monto_desc_planes" string="Desc. Planes"/>
+                    <div>
+                        <button name="reset_descuento_planes" type="object" class="oe_link oe_inline p-0" icon="fa-trash-o" attrs="{'invisible': [('monto_desc_planes', '=', 0.0)]}"/>
+                        <field name="monto_desc_planes" class="oe_right"/>
+                    </div>
+                </field>
+                <field name="discount_type" position="before">
+                    <field name="desc1"/>
+                    <field name="desc2"/>
+                    <field name="subtotal_desc" invisible="1"/>
+                </field>
+                <field name="discount_type" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="discount" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="order_line" position="after">
+                    <group colspan="4" col="6">
+                        <group string="Descuentos Extra" col="2" colspan="2">
+                            <field name="tipo_desc_extra" string="Tipo"/>
+                            <field name="tipo_calculo_desc_extra" string="Calculo por"/>
+                            <field name="cant_desc_extra" string="Cantidad"/>
+                            <button name="force_amount_all" type="object" class="oe_link" icon="fa-arrow-circle-right" string="Aplicar"/>
+                        </group>
+                        <group class="oe_right" colspan="2">
+                            <field name="total_desc"/>
+                        </group>
+                    </group>
+                </field>
+                <field name="product_qty" position="before">
+                    <field name="stock_disponible"/>
+                </field>
+                <field name="line_sub_total" position="after">
+                    <field name="taxes_id" position="move"/>
+                </field>
+                <field name="taxes_id" position="after">
+                    <field name="coste_neto"/>
+                </field>
+                <field name="product_id" position="before">
+                    <field name="number_line" sum="Linea" string="#"/>
+                </field>
+        </field>
+    </record>
+</odoo>

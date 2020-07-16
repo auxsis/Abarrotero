@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="TaxesWidget">
+        <div>
+            <table style="width:100%">
+                <t t-foreach="line" t-as="l">
+                    <tr>
+                        <td>
+                            <span>
+                                <t t-esc="l.amount_tax" />
+                            </span>
+                        </td>
+                    </tr>
+                </t>    
+            </table>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,104 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* app_inter_company_rules
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e-20190512\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-15 15:54+0000\n"
+"PO-Revision-Date: 2019-05-15 15:54+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: app_inter_company_rules
+#: model_terms:ir.ui.view,arch_db:app_inter_company_rules.app_res_config_settings_view_form
+msgid ", generate a"
+msgstr ", 生成一个"
+
+#. module: app_inter_company_rules
+#: model_terms:ir.ui.view,arch_db:app_inter_company_rules.app_view_company_inter_change_inherit_form
+msgid "<strong>\n"
+"                                    <span attrs=\"{'invisible': [('applicable_on','!=', 'purchase')]}\" class=\"ml4\">Sale Order</span>\n"
+"                                    <span attrs=\"{'invisible': [('applicable_on','!=', 'sale')]}\" class=\"ml4\">Purchase Order</span>\n"
+"                                    <span attrs=\"{'invisible':[('applicable_on','!=', 'sale_purchase')]}\" class=\"ml4\">Purchase and Sale Order</span>\n"
+"                                </strong> using this warehouse:"
+msgstr "<strong>\n"
+"                                    <span attrs=\"{'invisible': [('applicable_on','!=', 'purchase')]}\" class=\"ml4\">销售订单</span>\n"
+"                                    <span attrs=\"{'invisible': [('applicable_on','!=', 'sale')]}\" class=\"ml4\">采购订单</span>\n"
+"                                    <span attrs=\"{'invisible':[('applicable_on','!=', 'sale_purchase')]}\" class=\"ml4\">采购与销售订单</span>\n"
+"                                </strong> 使用这个仓库:"
+
+#. module: app_inter_company_rules
+#: model_terms:ir.ui.view,arch_db:app_inter_company_rules.app_res_config_settings_view_form
+msgid "<strong>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'purchase')]}\" class=\"ml8\">Sale Order</span>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'sale')]}\" class=\"ml8\">Purchase Order</span>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'sale_purchase')]}\" class=\"ml8\">Purchase and Sale Order</span>\n"
+"                            </strong>\n"
+"                            using this warehouse:"
+msgstr "<strong>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'purchase')]}\" class=\"ml8\">销售订单</span>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'sale')]}\" class=\"ml8\">采购订单</span>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'sale_purchase')]}\" class=\"ml8\">采购与销售订单</span>\n"
+"                            </strong>\n"
+"                            using this warehouse:"
+
+#. module: app_inter_company_rules
+#: model:ir.model.fields,field_description:app_inter_company_rules.field_res_company__auto_validation
+#: model:ir.model.fields,field_description:app_inter_company_rules.field_res_config_settings__auto_validation
+msgid "Auto Validation"
+msgstr "自动确认"
+
+#. module: app_inter_company_rules
+#: model:ir.model,name:app_inter_company_rules.model_res_company
+msgid "Companies"
+msgstr "公司"
+
+#. module: app_inter_company_rules
+#: model:ir.model,name:app_inter_company_rules.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设定"
+
+#. module: app_inter_company_rules
+#: model_terms:ir.ui.view,arch_db:app_inter_company_rules.app_view_company_inter_change_inherit_form
+msgid "Inter Company Flows"
+msgstr "公司间交易流程"
+
+#. module: app_inter_company_rules
+#: model_terms:ir.ui.view,arch_db:app_inter_company_rules.app_res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:app_inter_company_rules.app_view_company_inter_change_inherit_form
+msgid "When a company confirm a"
+msgstr "当一个公司确认一个"
+
+#. module: app_inter_company_rules
+#: selection:res.company,auto_validation:0
+#: selection:res.config.settings,auto_validation:0
+msgid "confirmed"
+msgstr "确认的"
+
+#. module: app_inter_company_rules
+#: selection:res.company,auto_validation:0
+#: selection:res.config.settings,auto_validation:0
+msgid "draft"
+msgstr "草稿"
+
+#. module: app_inter_company_rules
+#: model_terms:ir.ui.view,arch_db:app_inter_company_rules.app_view_company_inter_change_inherit_form
+msgid "generate a"
+msgstr "生成一个"
+
+#. module: app_inter_company_rules
+#: model_terms:ir.ui.view,arch_db:app_inter_company_rules.app_res_config_settings_view_form
+msgid "to current company:"
+msgstr "到当前的公司:"
+
+#. module: app_inter_company_rules
+#: model_terms:ir.ui.view,arch_db:app_inter_company_rules.app_view_company_inter_change_inherit_form
+msgid "to this company,"
+msgstr "到这个公司，"
+
