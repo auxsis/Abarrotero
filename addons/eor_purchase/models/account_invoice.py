@@ -19,10 +19,20 @@ class EorAccountInvoice(models.Model):
 
     @api.one
     @api.depends('invoice_line_ids.price_subtotal', 'tax_line_ids.amount', 'currency_id', 'company_id', 'date_invoice',
-                 'global_discount_type', 'global_order_discount', 'total_extra_discount')
+                 'global_discount_type', 'global_order_discount', 'amount_tax', 'amount_untaxed', 'total_extra_discount')
     def _compute_amount(self):
         super(EorAccountInvoice, self)._compute_amount()
-        self.amount_total -= self.total_extra_discount
+
+        sum = 0
+        for line in self.invoice_line_ids:
+            price_subtotal = line.price_subtotal
+            currency = self and self.currency_id or None
+            quantity = 1.0
+            taxes = line.invoice_line_tax_ids.compute_all(
+                    price_subtotal, currency, quantity, product=line.product_id, partner=self.partner_id)
+            sum += taxes['total_included'] - taxes['total_excluded']
+        self.amount_tax = sum
+        self.amount_total = self.amount_untaxed + self.amount_tax - self.total_extra_discount
 
     def _prepare_invoice_line_from_po_line(self, line):
         invoice_line = super(EorAccountInvoice, self)._prepare_invoice_line_from_po_line(line)
