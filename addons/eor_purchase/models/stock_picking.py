@@ -26,7 +26,8 @@ class StockPicking(models.Model):
                     if not order_line.qty_received > 0:
                         price_subtotal = line.product_uom_qty * order_line.price_unit
                         order_line.sudo().write({
-                            'line_sub_total': price_subtotal,
-                            'price_subtotal': price_subtotal,
+                            'qty_received': line.quantity_done,
+                            # 'line_sub_total': price_subtotal,
+                            # 'price_subtotal': price_subtotal,
                         })
         return res

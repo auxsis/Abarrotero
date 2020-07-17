@@ -5,6 +5,7 @@ import logging
 from odoo import _, api, fields, models
 import json
 from odoo.tools import date_utils
+from odoo.exceptions import Warning
 
 _logger = logging.getLogger("__________________________________________" + __name__)
 
@@ -26,13 +27,13 @@ class PurchaseOrder(models.Model):
 
     def _get_taxes_JSON_values(self):
         taxes_vals = []
-        order_line = self.order_line.filtered(lambda line: line.taxes_id != False)
+        # order_line = self.order_line.filtered(lambda line: line.taxes_id != False)
         for tax_id in self.mapped('order_line.taxes_id'):
             taxes_vals.append({
                 'name': tax_id.name,
                 'currency': self.currency_id.symbol,
                 'digits': [69, self.currency_id.decimal_places],
-                'amount_tax': sum([self.currency_id.round(l.price_tax) for l in self.order_line.filtered(lambda t: t.taxes_id.id == tax_id.id)])
+                'amount_tax': sum([self.currency_id.round(l.price_tax) for l in self.order_line.filtered(lambda t: tax_id.id in t.taxes_id.mapped('id'))])
             })
 
         return taxes_vals
@@ -179,6 +180,20 @@ class PurchaseOrder(models.Model):
             else:
                 super(PurchaseOrder, self)._add_supplier_to_product()
 
+    @api.multi
+    def action_view_invoice(self):
+        res = super(PurchaseOrder, self).action_view_invoice()
+        if res:
+            if res.get('context') == None:
+                res['context'] = {}
+            res['context'].update({
+                'default_maniobra_discount': self.monto_desc_maniobra,
+                'default_flete_discount': self.monto_desc_flete,
+                'default_plans_discount': self.monto_desc_planes,
+                'ref_only': True,
+            })
+        return res
+
 
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
@@ -189,7 +204,7 @@ class PurchaseOrderLine(models.Model):
         for line in self:
             linea += 1
             line.number_line = 1
-            
+
     number_line = fields.Integer(string="Linea", compute="_compute_line", store=True)
     desc1 = fields.Float(string="Desc1(%)")
     desc2 = fields.Float(string="Desc2(%)")
@@ -229,12 +244,14 @@ class PurchaseOrderLine(models.Model):
                 quantity = line.product_qty
             taxes = line.taxes_id.compute_all(
                 price, line.order_id.currency_id, quantity, product=line.product_id, partner=line.order_id.partner_id)
+            taxes2 = line.taxes_id.compute_all(
+                line.price_unit, line.order_id.currency_id, quantity, product=line.product_id, partner=line.order_id.partner_id)
             line.update({
                 'price_tax': taxes['total_included'] - taxes['total_excluded'],
                 'price_total': taxes['total_included'],
                 'price_subtotal': taxes['total_excluded'],
                 'subtotal_desc': (line.price_unit * quantity) - taxes['total_excluded'],
-                'coste_neto': (taxes['total_included'] / quantity) if quantity else 0,
+                'coste_neto': (taxes2['total_included'] / quantity) if quantity else 0,
             })
 
     @api.multi
@@ -247,3 +264,16 @@ class PurchaseOrderLine(models.Model):
             taxes = taxes_ids.filtered(lambda r: r.company_id in [self.env.user.company_id])
             line.taxes_id = fpos.map_tax(taxes, line.product_id, line.order_id.partner_id) if fpos else taxes
 
+    @api.onchange('product_id')
+    def onchange_product_id(self):
+        super(PurchaseOrderLine, self).onchange_product_id()
+        partner = self.order_id.partner_id
+        if partner:
+            sellers = self.product_id.seller_ids.mapped('id')
+            vendor = self.env['product.supplierinfo'].search([('id', 'in', sellers), ('name', '=', partner.id)])
+            if vendor:
+                self.price_unit = vendor[0].price
+            else:
+                self.price_unit = self.product_id.base_imponible_costo
+        else:
+            raise Warning("Seleccione un proveedor")
