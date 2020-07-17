@@ -8,6 +8,7 @@
     'license': 'LGPL-3',
     'category': 'Odoo Experts',
     'depends': [
+        'account',
         'purchase',
         'discount_purchase_order',
     ],

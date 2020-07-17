@@ -5,7 +5,7 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="purchase.view_invoice_supplier_purchase_form"/>
         <field name="arch" type="xml">
-            <field name="amount_tax" position="after" widget='monetary' options="{'currency_field': 'currency_id'}">
+            <field name="amount_tax" position="after">
                 <field name="maniobra_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                 <field name="flete_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                 <field name="plans_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
