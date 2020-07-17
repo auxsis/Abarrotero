@@ -5,6 +5,7 @@ import logging
 from odoo import _, api, fields, models
 import json
 from odoo.tools import date_utils
+from odoo.exceptions import Warning
 
 _logger = logging.getLogger("__________________________________________" + __name__)
 
@@ -189,6 +190,7 @@ class PurchaseOrder(models.Model):
                 'default_maniobra_discount': self.monto_desc_maniobra,
                 'default_flete_discount': self.monto_desc_flete,
                 'default_plans_discount': self.monto_desc_planes,
+                'ref_only': True,
             })
         return res
 
@@ -202,7 +204,7 @@ class PurchaseOrderLine(models.Model):
         for line in self:
             linea += 1
             line.number_line = 1
-            
+
     number_line = fields.Integer(string="Linea", compute="_compute_line", store=True)
     desc1 = fields.Float(string="Desc1(%)")
     desc2 = fields.Float(string="Desc2(%)")
@@ -265,4 +267,13 @@ class PurchaseOrderLine(models.Model):
     @api.onchange('product_id')
     def onchange_product_id(self):
         super(PurchaseOrderLine, self).onchange_product_id()
-        self.price_unit = self.product_id.base_imponible_costo
+        partner = self.order_id.partner_id
+        if partner:
+            sellers = self.product_id.seller_ids.mapped('id')
+            vendor = self.env['product.supplierinfo'].search([('id', 'in', sellers), ('name', '=', partner.id)])
+            if vendor:
+                self.price_unit = vendor[0].price
+            else:
+                self.price_unit = self.product_id.base_imponible_costo
+        else:
+            raise Warning("Seleccione un proveedor")

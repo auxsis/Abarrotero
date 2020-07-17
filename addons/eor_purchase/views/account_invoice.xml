@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="account.action_vendor_bill_template" model="ir.actions.act_window">
+        <field name="name">Vendor Bills</field>
+        <field name="res_model">account.invoice</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field eval="False" name="view_id"/>
+        <field name="domain">[('type','=','in_invoice')]</field>
+        <field name="context">{'ref_only': True, 'default_type': 'in_invoice', 'type': 'in_invoice',
+            'journal_type': 'purchase'}</field>
+        <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Record a new vendor bill
+          </p>
+        </field>
+    </record>
+
     <record id="eor_invoice_supplier_form" model="ir.ui.view">
         <field name="name">eor_invoice_supplier_form</field>
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="purchase.view_invoice_supplier_purchase_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="attributes">
+                <attribute name="string">Desc1(%)</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="after">
+                <field name="discount_2"/>
+            </xpath>
             <field name="amount_tax" position="after">
                 <field name="maniobra_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                 <field name="flete_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
