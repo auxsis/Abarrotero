@@ -14,6 +14,7 @@
     'data': [
         'views/purchase_view.xml',
         'views/purchase_templates.xml',
+        'views/account_invoice.xml',
     ],
     'qweb': [
         'static/src/xml/*.xml',

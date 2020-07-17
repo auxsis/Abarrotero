@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="eor_invoice_supplier_form" model="ir.ui.view">
+        <field name="name">eor_invoice_supplier_form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="purchase.view_invoice_supplier_purchase_form"/>
+        <field name="arch" type="xml">
+            <field name="amount_tax" position="after" widget='monetary' options="{'currency_field': 'currency_id'}">
+                <field name="maniobra_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="flete_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="plans_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="total_extra_discount" class="oe_subtotal_footer_separator"
+                widget='monetary' options="{'currency_field': 'currency_id'}"/>
+            </field>
+        </field>
+    </record>
+</odoo>
