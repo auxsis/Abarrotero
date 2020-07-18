@@ -105,20 +105,40 @@ class PurchaseOrderLine(models.Model):
 		('percent', 'Porcentaje')
 		], string="Tipo de Descuento",)
 
-	# @api.depends('product_qty', 'price_unit', 'taxes_id', 'discount', 'discount_type')
-	# def _compute_amount(self):
-	# 	super(PurchaseOrderLine, self)._compute_amount()
-	# 	for line in self:
-	# 		quantity = 1.0
-	# 		if line.discount_type == 'fixed':
-	# 			price = line.price_unit * line.product_qty - (line.discount or 0.0)
-	# 		else:
-	# 			price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-	# 			quantity = line.product_qty
-	# 		taxes = line.taxes_id.compute_all(
-	# 			price, line.order_id.currency_id, quantity, product=line.product_id, partner=line.order_id.partner_id)
-	# 		line.update({
-	# 			'price_tax': taxes['total_included'] - taxes['total_excluded'],
-	# 			'price_total': taxes['total_included'],
-	# 			'price_subtotal': taxes['total_excluded'],
-	# 		})
+	@api.depends('product_qty', 'price_unit', 'taxes_id', 'discount', 'discount_type')
+	def _compute_amount(self):
+		# super(PurchaseOrderLine, self)._compute_amount()
+		for line in self:
+
+			desc1 = 1 - (line.desc1 or 0.0) / 100.0
+			desc2 = 1 - (line.desc2 or 0.0) / 100.0
+			price = line.price_unit * desc1 * desc2
+
+			if line.qty_received > 0:
+				quantity = line.qty_received
+			else:
+				quantity = line.product_qty
+			taxes = line.taxes_id.compute_all(
+				price, line.order_id.currency_id, quantity, product=line.product_id, partner=line.order_id.partner_id)
+			line.update({
+				'price_tax': taxes['total_included'] - taxes['total_excluded'],
+				'price_total': taxes['total_included'],
+				'price_subtotal': taxes['total_excluded'],
+				'subtotal_desc': (line.price_unit * quantity) - taxes['total_excluded'],
+			})
+		# super(PurchaseOrderLine, self)._compute_amount()
+		# for line in self:
+		# 	quantity = 1.0
+		# 	if line.discount_type == 'fixed':
+		# 		price = line.price_unit * line.product_qty - (line.discount or 0.0)
+		# 	else:
+		# 		price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+		# 		quantity = line.product_qty
+		# 	taxes = line.taxes_id.compute_all(
+		# 		price, line.order_id.currency_id, quantity, product=line.product_id, partner=line.order_id.partner_id)
+		# 	line.update({
+		# 		'price_tax': taxes['total_included'] - taxes['total_excluded'],
+		# 		'price_total': taxes['total_included'],
+		# 		'price_subtotal': taxes['total_excluded'],
+		# 	})
+
