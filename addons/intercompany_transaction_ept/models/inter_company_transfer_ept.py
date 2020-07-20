@@ -171,8 +171,8 @@ class InterCompanyTransfer(models.Model):
     @api.depends('intercompany_transferline_ids.subtotal')
     def _compute_total(self):
         for record in self:
-            record.total = sum(self.intercompany_transferline_ids.mapped('subtotal'))
-            record.total_with_taxes = sum(self.intercompany_transferline_ids.mapped('subtotal_with_taxes'))
+            record.total = sum(record.intercompany_transferline_ids.mapped('subtotal'))
+            record.total_with_taxes = sum(record.intercompany_transferline_ids.mapped('subtotal_with_taxes'))
             record.amount_transfer_fee = record.total_with_taxes * record.transfer_fee / 100
             record.total_with_transfer_fee = record.total_with_taxes + record.amount_transfer_fee
 
