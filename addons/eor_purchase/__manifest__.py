@@ -8,12 +8,15 @@
     'license': 'LGPL-3',
     'category': 'Odoo Experts',
     'depends': [
+        'account',
         'purchase',
         'discount_purchase_order',
     ],
     'data': [
         'views/purchase_view.xml',
         'views/purchase_templates.xml',
+        'views/account_invoice.xml',
+        'views/stock_backorder_confirmation.xml'
     ],
     'qweb': [
         'static/src/xml/*.xml',
