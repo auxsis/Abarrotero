@@ -33,6 +33,9 @@
     'website': "http://www.auriumtechnologies.com",
     'category': 'product',
     'depends': ['base', 'account', 'purchase'],
+    'data': [
+        'views/purchase_order.xml',
+    ],
     'images': ['static/description/banner.png'],
     'installable': True,
     'auto_install': False,
