@@ -23,7 +23,7 @@ class PurchaseOrder(models.Model):
         return res
 
     def fix_standard_price(self):
-        order_ids = self.env['purchase.order'].search([('state', '=', 'purchase')], order='id desc')
+        order_ids = self.env['purchase.order'].search([('state', '=', 'purchase')], order='id asc')
         for order in order_ids:
             for line in order.order_line:
                 line.product_id.write({"standard_price": line.coste_neto})
