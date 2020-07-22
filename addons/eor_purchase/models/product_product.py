@@ -31,11 +31,11 @@ class ProductTemplate(models.Model):
         # products_iva.write({'taxes_id': [(6, 0, [2, 14, 27])]})
         products_iva.write({'taxes_id': [(4, 27, 0)]})
         products_iva_supplier = products.search([('supplier_taxes_id.name', 'ilike', 'IVA(16%)')])
-        products_iva_supplier.write({'taxes_id': [(4, 35, 0)]})
+        products_iva_supplier.write({'supplier_taxes_id': [(4, 35, 0)]})
 
         products_ieps = products.search([('taxes_id.name', 'ilike', 'IEPS')])
         # products_ieps.write({'taxes_id': [(6, 0, [24, 25, 40])]})
         products_ieps.write({'taxes_id': [(4, 40, 0)]})
         products_ieps_supplier = products.search([('supplier_taxes_id.name', 'ilike', 'IEPS')])
-        products_ieps_supplier.write({'taxes_id': [(4, 39, 0)]})
+        products_ieps_supplier.write({'supplier_taxes_id': [(4, 39, 0)]})
 
