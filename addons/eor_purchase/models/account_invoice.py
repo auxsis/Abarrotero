@@ -22,17 +22,7 @@ class EorAccountInvoice(models.Model):
                  'global_discount_type', 'global_order_discount', 'amount_tax', 'amount_untaxed', 'total_extra_discount')
     def _compute_amount(self):
         super(EorAccountInvoice, self)._compute_amount()
-
-        sum = 0
-        for line in self.invoice_line_ids:
-            price_subtotal = line.price_subtotal
-            currency = self and self.currency_id or None
-            quantity = 1.0
-            taxes = line.invoice_line_tax_ids.compute_all(
-                    price_subtotal, currency, quantity, product=line.product_id, partner=self.partner_id)
-            sum += taxes['total_included'] - taxes['total_excluded']
-        self.amount_tax = sum
-        self.amount_total = self.amount_untaxed + self.amount_tax - self.total_extra_discount
+        self.amount_total -= self.total_extra_discount
 
     def _prepare_invoice_line_from_po_line(self, line):
         invoice_line = super(EorAccountInvoice, self)._prepare_invoice_line_from_po_line(line)
@@ -40,6 +30,28 @@ class EorAccountInvoice(models.Model):
         invoice_line["discount_2"] = line.desc2
         invoice_line['discount_type'] = 'percent'
         return invoice_line
+
+    @api.multi
+    def get_taxes_values(self):
+        tax_grouped = {}
+        for line in self.invoice_line_ids:
+            quantity = 1.0
+            if line.discount_type == 'fixed':
+                price_unit = line.price_unit * line.quantity - (line.discount or 0.0) - (line.discount_2 or 0.0)
+            else:
+                quantity = line.quantity
+                price_unit = line.price_unit * (1 - (line.discount or 0.0) / 100.0) * (1 - (line.discount_2 or 0.0) / 100.0)
+            taxes = line.invoice_line_tax_ids.compute_all(price_unit, self.currency_id, quantity, line.product_id,
+                                                          self.partner_id)['taxes']
+            for tax in taxes:
+                val = self._prepare_tax_line_vals(line, tax)
+                key = self.env['account.tax'].browse(tax['id']).get_grouping_key(val)
+                if key not in tax_grouped:
+                    tax_grouped[key] = val
+                else:
+                    tax_grouped[key]['amount'] += val['amount']
+                    tax_grouped[key]['base'] += val['base']
+        return tax_grouped
 
 
 class EorAccountInvoiceLine(models.Model):
