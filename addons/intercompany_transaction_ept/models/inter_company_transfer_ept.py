@@ -78,6 +78,7 @@ class InterCompanyTransfer(models.Model):
 
     transfer_fee = fields.Float("Costo de Transferencia (%)", default=_get_default_transfer_fee,
                                 help="Costo de transferencia definido en la Configuracion de ICT", copy=False)
+    transfer_fee_char = fields.Char(compute='compute_format_transfer')
     amount_transfer_fee = fields.Float("Monto Costo de Transf.", compute='_compute_total')
     total = fields.Float(string="Total (base)", compute='_compute_total')
     total_with_taxes = fields.Float(string="Total (w/taxes)", compute='_compute_total')
@@ -86,7 +87,11 @@ class InterCompanyTransfer(models.Model):
     _sql_constraints = [('src_dest_company_uniq', 'CHECK(source_warehouse_id!=destination_warehouse_id)', 'Source Warehouse and Destination warehouse must be different!')]
     
     
-    
+    @api.depends('transfer_fee')
+    def compute_format_transfer(self):
+        for record in self:
+            record.transfer_fee_char = "Monto Costo de Transf. ({}%)".format(str(round(record.transfer_fee, 1)))
+
     @api.model
     def create(self, vals):
         res = super(InterCompanyTransfer, self).create(vals)

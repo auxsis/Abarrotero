@@ -151,7 +151,12 @@
 							<group class="oe_subtotal_footer oe_right" colspan="2" name="ict_total">
 								<field name="total"/>
 								<field name="total_with_taxes"/>
-								<field name="amount_transfer_fee"/>
+								<label for="" class="o_form_label">
+									<span><field name="transfer_fee_char" class="oe_inline" readonly="True"/></span>
+								</label>
+								<div>
+									<field name="amount_transfer_fee" nolabel="1"/>
+								</div>
 								<div class="oe_subtotal_footer_separator oe_inline o_td_label">
 									<label for="total_with_transfer_fee"/>
 								</div>
