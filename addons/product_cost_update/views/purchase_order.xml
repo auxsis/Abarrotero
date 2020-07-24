@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='button_done']" position="after">
                     <button name="fix_standard_price" type="object" string="Fix product cost" groups="base.group_no_one" states="purchase"/>
+                    <button name="fix_seller_price" type="object" string="Fix seller price" groups="base.group_no_one" states="purchase"/>
                 </xpath>
             </field>
         </record>

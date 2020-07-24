@@ -24,6 +24,7 @@
             'views/inter_company_transfer_config_views.xml',
             'views/rescompany_views.xml',
             'views/sale_views.xml',
+            'views/invoice_views.xml',
             'views/purchase_views.xml',
             'views/stock_picking_views.xml',
             'views/all_search_views.xml',
