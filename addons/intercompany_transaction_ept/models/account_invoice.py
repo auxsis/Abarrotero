@@ -1,4 +1,4 @@
-from odoo import api, models, fields , _
+from odoo import api, models, fields, _
 
 class AccountInvoice(models.Model):
     
@@ -8,7 +8,7 @@ class AccountInvoice(models.Model):
         
     intercompany_transfer_id = fields.Many2one('inter.company.transfer.ept', string="ICT", copy=False)
     transfer_fee_id = fields.Float("Costo de Transf. (%)", related="intercompany_transfer_id.transfer_fee")
-    amount_transfer_fee = fields.Float("Monto Costo de Transf.", compute='_compute_amount')
+    amount_transfer_fee = fields.Float("Monto Costo de Transf.", related='intercompany_transfer_id.amount_transfer_fee')
     
     @api.model
     def create(self, vals):
@@ -26,6 +26,9 @@ class AccountInvoice(models.Model):
                  'total_extra_discount', 'transfer_fee_id')
     def _compute_amount(self):
         super(AccountInvoice, self)._compute_amount()
-        self.amount_transfer_fee = self.amount_total*(self.transfer_fee_id/100)
-        self.amount_total += self.amount_transfer_fee
+        self.update({
+            'amount_total': self.amount_total + self.amount_transfer_fee
+        })
+
+
 
