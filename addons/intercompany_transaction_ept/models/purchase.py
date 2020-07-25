@@ -13,7 +13,6 @@ class PurchaseOrder(models.Model):
     def _amount_all(self):
         super(PurchaseOrder, self)._amount_all()
         for order in self:
-
             if order.transfer_fee_id:
                 amount_transfer_fee = (order.amount_untaxed + order.amount_tax) * order.transfer_fee_id / 100
 

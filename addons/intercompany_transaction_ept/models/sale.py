@@ -7,8 +7,6 @@ class SaleOrder(models.Model):
     intercompany_transfer_id = fields.Many2one('inter.company.transfer.ept', string="ICT", copy=False)
     transfer_fee_id = fields.Float("Costo de Transf. (%)", related="intercompany_transfer_id.transfer_fee")
     amount_transfer_fee = fields.Float("Monto Costo de Transf.", compute='_amount_all')
-    x_estatusmostrador = fields.Selection([("ingresado", "Ingresado"), ("entregado", "Entregado")],
-                                          index=True, readonly=True, string='Estado')
 
 
     """

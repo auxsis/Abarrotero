@@ -9,7 +9,9 @@ from  . import amount_to_text_es_MX
 #----------------------------------------------------------
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-      
+
+    x_estatusmostrador = fields.Selection([("ingresado", "Ingresado"), ("entregado", "Entregado")],
+                                          index=True, readonly=True, string='Estado')
     forma_pago = fields.Selection(
         selection=[('01', '01 - Efectivo'), 
                    ('02', '02 - Cheque nominativo'), 
