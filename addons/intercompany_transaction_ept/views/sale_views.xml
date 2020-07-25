@@ -8,8 +8,13 @@
             <field name="arch" type="xml">
                 <data>
                     <field name="amount_tax" position="after">
-                        <field name="transfer_fee_id" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>
-                        <field name="amount_transfer_fee" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>
+                        <label for="" class="o_form_label">
+                            <span>Monto Costo de Transf.(<field name="transfer_fee_id"
+                                       attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" nolabel="1"
+                                                              readonly="1" class="oe_inline"/>%)</span>
+                        </label>
+                        <field name="amount_transfer_fee" nolabel="1"
+                               attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>
                     </field>
                     <field name="pricelist_id" position="after">
                     	<field name="intercompany_transfer_id" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>

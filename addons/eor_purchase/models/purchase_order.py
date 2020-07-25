@@ -39,164 +39,6 @@ class PurchaseOrder(models.Model):
         return taxes_vals
 
     taxes_widget = fields.Text(compute="_compute_taxes_widget", string="Impuestos")
-    total_desc = fields.Float(string="Total Descuento por líneas de productos", compute="_compute_total_desc")
-
-    monto_desc_maniobra = fields.Float(string="Monto Descuento por Maniobra", compute="_amount_all", store=True)
-    monto_desc_flete = fields.Float(string="Monto Descuento por Flete", compute="_amount_all", store=True)
-    monto_desc_planes = fields.Float(string="Monto Descuento por Planes", compute="_amount_all", store=True)
-
-    tipo_desc_extra = fields.Selection([('maniobra', 'Maniobra'), ('flete', 'Flete'), ('planes', 'Planes')],
-                                       string="Descuento (Maniobra, Flete, Planes)")
-
-    has_desc_extra_maniobra = fields.Boolean(string="Tiene impuesto extra maniobra", default=False)
-    has_desc_extra_flete = fields.Boolean(string="Tiene impuesto extra flete", default=False)
-    has_desc_extra_planes = fields.Boolean(string="Tiene impuesto extra planes", default=False)
-
-    tipo_calculo_desc_extra = fields.Selection([('percent', 'Porcentaje'), ('fixed', 'Ajuste')],
-                                               string="Tipo de Calculo de Descuento (Maniobra, Flete, Planes)")
-    tipo_calculo_desc_maniobra = fields.Selection([('percent', 'Porcentaje'), ('fixed', 'Ajuste')],
-                                               string="Tipo de Calculo de Descuento (Maniobra, Flete, Planes)")
-    tipo_calculo_desc_flete = fields.Selection([('percent', 'Porcentaje'), ('fixed', 'Ajuste')],
-                                               string="Tipo de Calculo de Descuento (Maniobra, Flete, Planes)")
-    tipo_calculo_desc_planes = fields.Selection([('percent', 'Porcentaje'), ('fixed', 'Ajuste')],
-                                               string="Tipo de Calculo de Descuento (Maniobra, Flete, Planes)")
-
-    cant_desc_extra = fields.Float(string="Cantidad Descuento (Maniobra, Flete, Planes)")
-    cant_desc_extra_flete = fields.Float(string="Cantidad Descuento (Flete)")
-    cant_desc_extra_planes = fields.Float(string="Cantidad Descuento (Planes)")
-    cant_desc_extra_maniobra = fields.Float(string="Cantidad Descuento (Maniobra)")
-
-    @api.depends('order_line.subtotal_desc')
-    def _compute_total_desc(self):
-        for order in self:
-            order.total_desc = sum(order.order_line.mapped('subtotal_desc'))
-
-    @api.depends('order_line.price_total', 'global_order_discount', 'global_discount_type')
-    def _amount_all(self):
-        super(PurchaseOrder, self)._amount_all()
-        for order in self:
-            amount_untaxed = amount_tax = 0.0
-            total_discount = 0.0
-            for line in order.order_line:
-                amount_untaxed += line.price_subtotal
-                if line.discount_type == 'fixed':
-                    total_discount += line.discount
-                if line.discount_type == 'percent':
-                    total_discount += line.product_qty * (line.price_unit - line.price_reduce)
-
-                if order.company_id.tax_calculation_rounding_method == 'round_globally':
-                    quantity = 1.0
-                    if line.discount_type == 'fixed':
-                        price = line.price_unit * line.product_qty - (line.discount or 0.0)
-                    else:
-                        price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-                        quantity = line.product_qty
-                    taxes = line.taxes_id.compute_all(
-                        price, line.order_id.currency_id, quantity, product=line.product_id,
-                        partner=line.order_id.partner_id)
-                    amount_tax += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
-                else:
-                    amount_tax += line.price_tax
-
-            IrConfigPrmtrSudo = self.env['ir.config_parameter'].sudo()
-            discTax = IrConfigPrmtrSudo.get_param('purchase.global_discount_tax_po')
-
-            if discTax == 'untax':
-                total_amount = amount_untaxed
-            else:
-                total_amount = amount_untaxed + amount_tax
-
-            # Aplica descuentos por Maniobra, Flete y Planes
-            monto_desc_maniobra, monto_desc_flete, monto_desc_planes = order.add_descuento_amount(total_amount)
-            total_amount -= (monto_desc_maniobra + monto_desc_flete + monto_desc_planes)
-
-            if order.global_discount_type == 'percent':
-                beforeGlobal = total_amount
-                total_amount = total_amount * (1 - (order.global_order_discount or 0.0) / 100)
-                total_discount += beforeGlobal - total_amount
-            else:
-                total_amount = total_amount - (order.global_order_discount or 0.0)
-                total_discount = order.global_order_discount
-
-            if discTax == 'untax':
-                total_amount = total_amount + amount_tax
-            order.update({
-                'amount_untaxed': order.currency_id.round(amount_untaxed),
-                'amount_tax': order.currency_id.round(amount_tax),
-                'amount_total': total_amount,
-                'monto_desc_maniobra': monto_desc_maniobra,
-                'monto_desc_flete': monto_desc_flete,
-                'monto_desc_planes': monto_desc_planes,
-                'total_discount': total_discount + monto_desc_maniobra + monto_desc_flete + monto_desc_planes,
-            })
-
-    @api.multi
-    def add_descuento_amount(self, total_amount):
-        # Calcula descuentos por Maniobra
-        monto_desc_maniobra = self.monto_desc_maniobra or 0.0
-        if self.has_desc_extra_maniobra:
-            if self.tipo_calculo_desc_maniobra == 'percent':
-                monto_desc_maniobra = total_amount * (self.cant_desc_extra_maniobra or 0.0) / 100
-            elif self.tipo_calculo_desc_maniobra == 'fixed':
-                monto_desc_maniobra = self.cant_desc_extra_maniobra
-
-        # Calcula descuentos por Flete
-        monto_desc_flete = self.monto_desc_flete or 0.0
-        if self.has_desc_extra_flete:
-            if self.tipo_calculo_desc_flete == 'percent':
-                monto_desc_flete = total_amount * (self.cant_desc_extra_flete or 0.0) / 100
-            elif self.tipo_calculo_desc_flete == 'fixed':
-                monto_desc_flete = self.cant_desc_extra_flete
-
-        # Calcula descuentos por Planes
-        monto_desc_planes = self.monto_desc_planes or 0.0
-        if self.has_desc_extra_planes:
-            if self.tipo_calculo_desc_planes == 'percent':
-                monto_desc_planes = total_amount * (self.cant_desc_extra_planes or 0.0) / 100
-            elif self.tipo_calculo_desc_planes == 'fixed':
-                monto_desc_planes = self.cant_desc_extra_planes
-        return monto_desc_maniobra, monto_desc_flete, monto_desc_planes
-
-    @api.multi
-    def force_amount_all(self):
-        """Used by discount extra"""
-        if self.tipo_desc_extra == 'maniobra':
-            self.has_desc_extra_maniobra = True
-            self.tipo_calculo_desc_maniobra = self.tipo_calculo_desc_extra
-            self.cant_desc_extra_maniobra = self.cant_desc_extra
-        elif self.tipo_desc_extra == 'planes':
-            self.has_desc_extra_planes = True
-            self.tipo_calculo_desc_planes = self.tipo_calculo_desc_extra
-            self.cant_desc_extra_planes = self.cant_desc_extra
-        elif self.tipo_desc_extra == 'flete':
-            self.has_desc_extra_flete = True
-            self.tipo_calculo_desc_flete = self.tipo_calculo_desc_extra
-            self.cant_desc_extra_flete = self.cant_desc_extra
-        self._amount_all()
-
-    @api.multi
-    def reset_descuento_maniobra(self):
-        self.tipo_calculo_desc_extra = 'fixed'
-        self.cant_desc_extra = 0.0
-        self.cant_desc_extra_maniobra = 0.0
-        self._amount_all()
-        self.has_desc_extra_maniobra = False
-
-    @api.multi
-    def reset_descuento_flete(self):
-        self.tipo_calculo_desc_extra = 'fixed'
-        self.cant_desc_extra = 0.0
-        self.cant_desc_extra_flete = 0.0
-        self._amount_all()
-        self.has_desc_extra_flete = False
-
-    @api.multi
-    def reset_descuento_planes(self):
-        self.tipo_calculo_desc_extra = 'fixed'
-        self.cant_desc_extra = 0.0
-        self.cant_desc_extra_planes = 0.0
-        self._amount_all()
-        self.has_desc_extra_planes = False
 
     @api.multi
     def _add_supplier_to_product(self):
@@ -222,7 +64,6 @@ class PurchaseOrder(models.Model):
             })
         return res
 
-
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
@@ -234,30 +75,10 @@ class PurchaseOrderLine(models.Model):
             line.number_line = 1
 
     number_line = fields.Integer(string="Linea", compute="_compute_line", store=True)
-    desc1 = fields.Float(string="Desc1(%)")
-    desc2 = fields.Float(string="Desc2(%)")
-    subtotal_desc = fields.Float(string="Sub-Total Descuentos", compute="_compute_amount")
     stock_disponible = fields.Float(string="Stock disponible", related="product_id.qty_available", store=True)
     coste_neto = fields.Float(string="Coste Neto", compute="_compute_amount")
 
-    @api.depends('price_unit', 'discount_type', 'discount', 'taxes_id', 'qty_received')
-    def _get_price_reduce(self):
-        super(PurchaseOrderLine, self)._get_price_reduce()
-        for line in self:
-            if line.qty_received > 0:
-                if line.discount_type == 'fixed' and line.qty_received:
-                    price_reduce = line.price_unit * line.qty_received - line.discount
-                    line.price_reduce = price_reduce/line.qty_received
-                else:
-                    line.price_reduce = line.price_unit * (1.0 - line.discount / 100.0)
-                price = line.price_unit
-                quantity = line.qty_received
-                taxes = line.taxes_id.compute_all(
-                    price, line.order_id.currency_id, quantity, product=line.product_id, partner=line.order_id.partner_id)
-                line.line_sub_total = quantity * line.price_unit
-                line.price_subtotal = taxes['total_excluded']
-
-    @api.depends('qty_received', 'price_unit', 'taxes_id', 'discount', 'discount_type', 'desc1', 'desc2')
+    @api.depends('product_qty', 'qty_received', 'price_unit', 'taxes_id', 'desc1', 'desc2')
     def _compute_amount(self):
         super(PurchaseOrderLine, self)._compute_amount()
         for line in self:
