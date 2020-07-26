@@ -1,4 +1,5 @@
 from odoo import api, models, fields, _
+from odoo.exceptions import UserError
 
 class AccountInvoice(models.Model):
     
@@ -29,6 +30,49 @@ class AccountInvoice(models.Model):
         self.update({
             'amount_total': self.amount_total + self.amount_transfer_fee
         })
+
+    @api.multi
+    def finalize_invoice_move_lines(self, move_lines):
+        """ finalize_invoice_move_lines(move_lines) -> move_lines
+
+            Hook method to be overridden in additional modules to verify and
+            possibly alter the move lines to be created by an invoice, for
+            special cases.
+            :param move_lines: list of dictionaries with the account.move.lines (as for create())
+            :return: the (possibly updated) final move_lines to create for this invoice
+        """
+        if self.type in ('out_invoice', 'in_refund'):
+            if self.amount_transfer_fee > 0:
+                account_id = self.env['account.journal'].search([('company_id', '=', self.company_id.id),
+                                                                 ('type', '=', 'sale')], limit=1)
+                if not account_id:
+                    raise UserError("Registre un diario de ventas ICT para esta compañía")
+                move_lines.append((0, 0, {
+                    'date_maturity': False,
+                    'partner_id': self.partner_id.id,
+                    'name': 'Monto de Transferencia Intercompañía',
+                    'debit': False,
+                    'credit': self.amount_transfer_fee,
+                    'account_id': account_id.id,
+                    'analytic_line_ids': [],
+                    'amount_currency': 0,
+                    'currency_id': False,
+                    'quantity': 1,
+                    'product_id': False,
+                    'product_uom_id': False,
+                    'analytic_account_id': False,
+                    'invoice_id': self.id,
+                    'tax_ids': False,
+                    'tax_line_id': False,
+                    'analytic_tag_ids': False,
+                }))
+                for line in move_lines:
+                    if line[2]['account_id'] == self.account_id.id and not line[2]['credit']:
+                        line[2]['debit'] += self.amount_transfer_fee
+
+        return move_lines
+
+
 
 
 
