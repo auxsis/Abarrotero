@@ -10,8 +10,9 @@
 					<page string="ICT Configuration">
 						<group>
                 			<field name="intercompany_user_id"></field>
-                			<field name="sale_journal" domain="[('type','=','sale')]"/>
-                			<field name="purchase_journal" domain="[('type','=','purchase')]"/>
+                            <field name="id" invisible="1"/>
+                			<field name="sale_journal" domain="[('type','=','sale'), ('company_id', '=', id)]"/>
+                			<field name="purchase_journal" domain="[('type','=','purchase'), ('company_id', '=', id)]"/>
                 		</group>
                 	</page>
                 </xpath>

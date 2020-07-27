@@ -41,11 +41,11 @@ class AccountInvoice(models.Model):
             :param move_lines: list of dictionaries with the account.move.lines (as for create())
             :return: the (possibly updated) final move_lines to create for this invoice
         """
-        if self.type in ('out_invoice', 'in_refund'):
+        move_lines = super(AccountInvoice, self).finalize_invoice_move_lines(move_lines)
+        if self.type in (['out_invoice']):
             if self.amount_transfer_fee > 0:
-                account_id = self.env['account.journal'].search([('company_id', '=', self.company_id.id),
-                                                                 ('type', '=', 'sale')], limit=1)
-                if not account_id:
+                journal_id = self.company_id.sale_journal
+                if not journal_id:
                     raise UserError("Registre un diario de ventas ICT para esta compañía")
                 move_lines.append((0, 0, {
                     'date_maturity': False,
@@ -53,7 +53,7 @@ class AccountInvoice(models.Model):
                     'name': 'Monto de Transferencia Intercompañía',
                     'debit': False,
                     'credit': self.amount_transfer_fee,
-                    'account_id': account_id.id,
+                    'account_id': journal_id.default_credit_account_id.id,
                     'analytic_line_ids': [],
                     'amount_currency': 0,
                     'currency_id': False,
@@ -69,7 +69,36 @@ class AccountInvoice(models.Model):
                 for line in move_lines:
                     if line[2]['account_id'] == self.account_id.id and not line[2]['credit']:
                         line[2]['debit'] += self.amount_transfer_fee
+                        break
 
+        if self.type in (['in_invoice']):
+            if self.amount_transfer_fee > 0:
+                journal_id = self.company_id.purchase_journal
+                if not journal_id:
+                    raise UserError("Registre un diario de compras ICT para esta compañía")
+                move_lines.append((0, 0, {
+                    'date_maturity': False,
+                    'partner_id': self.partner_id.id,
+                    'name': 'Monto de Transferencia Intercompañía',
+                    'debit': self.amount_transfer_fee,
+                    'credit': False,
+                    'account_id': journal_id.default_debit_account_id.id,
+                    'analytic_line_ids': [],
+                    'amount_currency': 0,
+                    'currency_id': False,
+                    'quantity': 1,
+                    'product_id': False,
+                    'product_uom_id': False,
+                    'analytic_account_id': False,
+                    'invoice_id': self.id,
+                    'tax_ids': False,
+                    'tax_line_id': False,
+                    'analytic_tag_ids': False,
+                }))
+                for line in move_lines:
+                    if line[2]['account_id'] == self.account_id.id and not line[2]['debit']:
+                        line[2]['credit'] += self.amount_transfer_fee
+                        break
         return move_lines
 
 
