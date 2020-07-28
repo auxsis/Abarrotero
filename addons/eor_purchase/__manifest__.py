@@ -19,6 +19,8 @@
         'views/product_template.xml',
         'views/stock_backorder_confirmation.xml',
         'views/res_company.xml',
+        'report/purchase_quotation.xml',
+        'report/purchase_order.xml',
     ],
     'qweb': [
         'static/src/xml/*.xml',
