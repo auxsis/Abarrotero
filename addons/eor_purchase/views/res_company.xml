@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="eor_purchase_rescompany_form_view" model="ir.ui.view" >
+            <field name="name">eor_purchase_rescompany_form_view</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[1]" position="after">
+					<page string="Descuentos Extra">
+						<group>
+                            <field name="id" invisible="1"/>
+                            <field name="discount_extra_account_id" domain="[('company_id', '=', id)]"/>
+                		</group>
+                	</page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

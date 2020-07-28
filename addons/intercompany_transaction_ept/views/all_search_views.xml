@@ -41,25 +41,6 @@
             </xpath>
         </field>
     </record>
-
-    <record id="intercompany_account_invoice_form" model="ir.ui.view">
-        <field name="name">intercompany_account_invoice_form</field>
-        <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.invoice_form"/>
-        <field name="arch" type="xml">
-            <field name="amount_tax" position="after">
-                <field name ="intercompany_transfer_id" invisible="1"/>
-                <label for="" class="o_form_label" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}">
-                            <span>Monto Costo de Transf.(<field name="transfer_fee_id"
-                                       nolabel="1"
-                                                              readonly="1" class="oe_inline"/>%)</span>
-                </label>
-                <field name="amount_transfer_fee" nolabel="1" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}"
-                               readonly="1"/>
-            </field>
-        </field>
-    </record>
-    
     
     <record id="inter_company_transfer_ept_search_view" model="ir.ui.view" >
 		<field name="name">Inter Company Transfer Search View</field>

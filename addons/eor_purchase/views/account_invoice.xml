@@ -29,11 +29,15 @@
                 <field name="discount_2"/>
             </xpath>
             <field name="amount_tax" position="after">
-                <field name="maniobra_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                <field name="flete_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                <field name="plans_discount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="maniobra_discount" widget='monetary' options="{'currency_field': 'currency_id'}"
+                       attrs="{'invisible': [('maniobra_discount', '=', 0)]}"/>
+                <field name="flete_discount" widget='monetary' options="{'currency_field': 'currency_id'}"
+                       attrs="{'invisible': [('flete_discount', '=', 0)]}"/>
+                <field name="plans_discount" widget='monetary' options="{'currency_field': 'currency_id'}"
+                       attrs="{'invisible': [('plans_discount', '=', 0)]}"/>
                 <field name="total_extra_discount" class="oe_subtotal_footer_separator"
-                widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                       widget='monetary' options="{'currency_field': 'currency_id'}"
+                       attrs="{'invisible': [('total_extra_discount', '=', 0)]}"/>
             </field>
         </field>
     </record>

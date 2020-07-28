@@ -18,6 +18,7 @@
         'views/account_invoice.xml',
         'views/product_template.xml',
         'views/stock_backorder_confirmation.xml',
+        'views/res_company.xml',
     ],
     'qweb': [
         'static/src/xml/*.xml',

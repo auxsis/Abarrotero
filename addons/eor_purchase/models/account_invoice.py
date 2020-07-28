@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EorAccountInvoice(models.Model):
@@ -22,7 +23,9 @@ class EorAccountInvoice(models.Model):
                  'global_discount_type', 'global_order_discount', 'amount_tax', 'amount_untaxed', 'total_extra_discount')
     def _compute_amount(self):
         super(EorAccountInvoice, self)._compute_amount()
+        sign = self.type in ['in_refund', 'out_refund'] and -1 or 1
         self.amount_total -= self.total_extra_discount
+        self.amount_total_signed -= self.total_extra_discount * sign
 
     def _prepare_invoice_line_from_po_line(self, line):
         invoice_line = super(EorAccountInvoice, self)._prepare_invoice_line_from_po_line(line)
@@ -52,6 +55,39 @@ class EorAccountInvoice(models.Model):
                     tax_grouped[key]['amount'] += val['amount']
                     tax_grouped[key]['base'] += val['base']
         return tax_grouped
+
+    @api.multi
+    def finalize_invoice_move_lines(self, move_lines):
+        move_lines = super(EorAccountInvoice, self).finalize_invoice_move_lines(move_lines)
+        if self.total_extra_discount > 0:
+            account_id = self.company_id.discount_extra_account_id
+            if not account_id:
+                raise UserError("Configure una cuenta de descuento para la compañía actual")
+            move_lines.append((0, 0, {
+                'date_maturity': False,
+                'partner_id': self.partner_id.id,
+                'name': 'Descuentos Extra',
+                'debit': False,
+                'credit': self.total_extra_discount,
+                'account_id': account_id.id,
+                'analytic_line_ids': [],
+                'amount_currency': 0,
+                'currency_id': False,
+                'quantity': 1,
+                'product_id': False,
+                'product_uom_id': False,
+                'analytic_account_id': False,
+                'invoice_id': self.id,
+                'tax_ids': False,
+                'tax_line_id': False,
+                'analytic_tag_ids': False,
+            }))
+            for line in move_lines:
+                if line[2]['account_id'] == self.account_id.id and not line[2]['debit']:
+                    line[2]['credit'] -= self.total_extra_discount
+                    break
+        return move_lines
+
 
 
 class EorAccountInvoiceLine(models.Model):
