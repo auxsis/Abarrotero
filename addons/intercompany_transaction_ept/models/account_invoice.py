@@ -27,8 +27,10 @@ class AccountInvoice(models.Model):
                  'total_extra_discount', 'transfer_fee_id')
     def _compute_amount(self):
         super(AccountInvoice, self)._compute_amount()
+        sign = self.type in ['in_refund', 'out_refund'] and -1 or 1
         self.update({
-            'amount_total': self.amount_total + self.amount_transfer_fee
+            'amount_total': self.amount_total + self.amount_transfer_fee,
+            'amount_total_signed': self.amount_total_signed + self.amount_transfer_fee * sign,
         })
 
     @api.multi

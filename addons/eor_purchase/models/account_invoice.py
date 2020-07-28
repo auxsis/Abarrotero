@@ -23,7 +23,9 @@ class EorAccountInvoice(models.Model):
                  'global_discount_type', 'global_order_discount', 'amount_tax', 'amount_untaxed', 'total_extra_discount')
     def _compute_amount(self):
         super(EorAccountInvoice, self)._compute_amount()
+        sign = self.type in ['in_refund', 'out_refund'] and -1 or 1
         self.amount_total -= self.total_extra_discount
+        self.amount_total_signed -= self.total_extra_discount * sign
 
     def _prepare_invoice_line_from_po_line(self, line):
         invoice_line = super(EorAccountInvoice, self)._prepare_invoice_line_from_po_line(line)
