@@ -11,6 +11,7 @@
         'account',
         'purchase',
         'discount_purchase_order',
+        'cdfi_invoice'
     ],
     'data': [
         'views/purchase_view.xml',
@@ -21,6 +22,7 @@
         'views/res_company.xml',
         'report/purchase_quotation.xml',
         'report/purchase_order.xml',
+        'report/sale_order.xml',
     ],
     'qweb': [
         'static/src/xml/*.xml',
