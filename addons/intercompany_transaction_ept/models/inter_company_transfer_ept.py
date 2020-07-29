@@ -361,7 +361,7 @@ class InterCompanyTransfer(models.Model):
                 line_vals = saleline_obj.sudo(intercompany_user).new({'order_id':sale_order.id, 'product_id':line.product_id,'company_id':sale_order.company_id.id})
                 line_vals.sudo(intercompany_user).product_id_change()
                 line_vals.sudo(intercompany_user).product_uom_qty = line.quantity
-                line_vals.price_unit = line.price
+                line_vals.sudo(intercompany_user).price_unit = line.price
                 line_vals = line_vals.sudo(intercompany_user)._convert_to_write(line_vals._cache)
                 so_lines_list.append((0, 0, line_vals))
             sale_order.sudo(intercompany_user).write({'order_line':so_lines_list, 'intercompany_transfer_id':record.id})
@@ -387,9 +387,10 @@ class InterCompanyTransfer(models.Model):
             for line in record.intercompany_transferline_ids:
                 line_vals = purchase_line_obj.sudo(intercompany_user).new({'order_id':purchase_order_id.id, 'product_id':line.product_id, 'currency_id':self.currency_id,'company_id':purchase_order_id.company_id.id})
                 line_vals.sudo(intercompany_user).onchange_product_id()
-                line_vals.product_qty = line.quantity
-                line_vals.price_unit = line.price 
-                line_vals.product_uom = line.product_id.uom_id
+                line_vals.sudo(intercompany_user).product_qty = line.quantity
+                line_vals.sudo(intercompany_user).price_unit = line.price
+                line_vals.sudo(intercompany_user).taxes_id = line.product_id.taxes_id.filtered(lambda tax: tax.company_id.id == destination_company.id)
+                line_vals.sudo(intercompany_user).product_uom = line.product_id.uom_id
                 line_vals = line_vals.sudo(intercompany_user)._convert_to_write(line_vals._cache)
                 po_lines_list.append((0, 0, line_vals))
             purchase_order_id.sudo(intercompany_user).write({'order_line':po_lines_list, 'intercompany_transfer_id':record.id})
