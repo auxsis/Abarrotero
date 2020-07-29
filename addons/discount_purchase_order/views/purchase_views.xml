@@ -43,28 +43,30 @@
 				</xpath>
 
 				<xpath expr="//group[hasclass('oe_subtotal_footer')]" position="replace">
-					<group>
-						<group>
-							<field  name="global_discount_type"
-									groups="discount_purchase_order.group_order_global_discount_po"
-									class="oe_inline"
-									attrs="{'required' :[('global_order_discount', '>', 0.0)],
-									'readonly' :[('state', '=', 'done')]}"/>
-							<field  name="global_order_discount"
-									groups="discount_purchase_order.group_order_global_discount_po"
-									class="oe_inline"
-									attrs="{'readonly' :[('state', '=', 'done')]}"/>
-						</group>
-						<group class="oe_subtotal_footer oe_right">
-							<field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-							<field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-							<field  name="total_discount"
+					<group class="oe_subtotal_footer">
+<!--						-->
+<!--						<group>-->
+<!--							<field  name="global_discount_type"-->
+<!--									groups="discount_purchase_order.group_order_global_discount_po"-->
+<!--									class="oe_inline"-->
+<!--									attrs="{'required' :[('global_order_discount', '>', 0.0)],-->
+<!--									'readonly' :[('state', '=', 'done')]}"/>-->
+<!--							<field  name="global_order_discount"-->
+<!--									groups="discount_purchase_order.group_order_global_discount_po"-->
+<!--									class="oe_inline"-->
+<!--									attrs="{'readonly' :[('state', '=', 'done')]}"/>-->
+<!--							</group>-->
+						<group class="oe_right">
+							<field name="amount_untaxed" widget="monetary" class="oe_right" options="{'currency_field': 'currency_id'}"/>
+							<field name="amount_tax" widget="monetary" class="oe_right" options="{'currency_field': 'currency_id'}"/>
+							<field name="total_discount" class="oe_right"
 									widget='monetary' options="{'currency_field': 'currency_id'}"
 									groups="discount_purchase_order.group_order_global_discount_po,discount_purchase_order.group_discount_purchase_line" />
-							<div class="oe_subtotal_footer_separator oe_inline">
-								<label for="amount_total"/>
-							</div>
-							<field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+<!--							<div class="oe_subtotal_footer_separator oe_inline">-->
+<!--								<label for="amount_total"/>-->
+<!--							</div>-->
+							<field name="amount_total" class="oe_subtotal_footer_separator oe_right" widget="monetary"
+								   options="{'currency_field': 'currency_id'}"/>
 						</group>
 					</group>
 				</xpath>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_purchaseorder_document" inherit_id="discount_purchase_order.report_po_inherit">
+        <xpath expr="//t[@t-call='web.external_layout']" position="replace">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                <div class="page" style="font-family: Arial;">
+                    <h2>Orden de Compra #<span t-field="o.name"/></h2>
+
+                    <table style="width: 100%;">
+                        <tbody>
+                            <tr style="font-size: 14px;">
+                                <td><b>Ref.de Presupuesto:</b><br/><span t-field="o.name"/></td>
+                                <td><b>Fecha de Pedido:</b><br/><span t-field="o.date_order"/></td>
+                                <td><b>Fecha de Recepción:</b><br/><span t-field="o.date_planned"/></td>
+                                <td><b>Elaborado Por:</b><br/><span t-esc="user.name"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm o_main_table" style="font-size: 14px; line-height: 10px;">
+                        <thead>
+                            <tr style="line-height: 14px;">
+                                <th><strong>Description</strong></th>
+                                <th class="text-right"><strong>Cant</strong></th>
+                                <th class="text-center"><strong>Unidad</strong></th>
+                                <th class="text-right"><strong>Precio Unidad</strong></th>
+                                <th class="text-right"><strong>Impuesto</strong></th>
+                                <th class="text-right"><strong>Coste Neto</strong></th>
+                                <th class="text-right"><strong>Desc1(%)</strong></th>
+                                <th class="text-right"><strong>Desc2(%)</strong></th>
+                                <th class="text-right"><strong>Monto</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total_qty" t-value="0"/>
+                            <tr t-foreach="o.order_line" t-as="line">
+                                <td>
+                                    <span t-field="line.name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.product_qty"/>
+                                    <t t-set="total_qty" t-value="float(total_qty)+float(line.product_qty)"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.taxes_id"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="line.coste_neto"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="line.desc1"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="line.desc2"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.price_subtotal"
+                                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr style="line-height: 14px;">
+                                <td>Artículos: <b><t t-esc="len(o.order_line)"/></b></td>
+                                <td class="text-right">Total Unidades: <b><t t-esc="total_qty"/></b></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="total" class="row justify-content-end">
+                        <div class="col-4">
+                            <table class="table table-sm" style="font-size: 14px; line-height: 10px;">
+                                <tr class="border-black">
+                                    <td><strong>Subtotal</strong></td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_untaxed"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Impuestos</td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_tax"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.monto_desc_maniobra > 0">
+                                    <td>Desc. Maniobra</td>
+                                    <td class="text-right"><span t-field="o.monto_desc_maniobra"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                </tr>
+                                <tr t-if="o.monto_desc_flete > 0">
+                                    <td>Desc. Flete</td>
+                                    <td class="text-right"><span t-field="o.monto_desc_flete"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                </tr>
+                                <tr t-if="o.monto_desc_planes > 0">
+                                    <td>Desc. Planes</td>
+                                    <td class="text-right"><span t-field="o.monto_desc_planes"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                </tr>
+                                <tr t-if="o.total_discount > 0.0" class="border-black">
+                                    <td><strong>Descuento Total</strong></td>
+                                    <td  class="text-right">
+                                            <span t-field="o.total_discount"
+                                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr class="border-black o_total">
+                                    <td><strong>Total</strong></td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_total"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <span><b>Observaciones:</b></span><br/>
+                        <p t-field="o.notes"/>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
