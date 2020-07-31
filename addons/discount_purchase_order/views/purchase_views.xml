@@ -43,7 +43,7 @@
 				</xpath>
 
 				<xpath expr="//group[hasclass('oe_subtotal_footer')]" position="replace">
-					<group class="oe_subtotal_footer">
+					<group col="3" class="oe_subtotal_footer">
 <!--						-->
 <!--						<group>-->
 <!--							<field  name="global_discount_type"-->
@@ -56,7 +56,7 @@
 <!--									class="oe_inline"-->
 <!--									attrs="{'readonly' :[('state', '=', 'done')]}"/>-->
 <!--							</group>-->
-						<group class="oe_right">
+						<group class="oe_right" colspan="2">
 							<field name="amount_untaxed" widget="monetary" class="oe_right" options="{'currency_field': 'currency_id'}"/>
 							<field name="amount_tax" widget="monetary" class="oe_right" options="{'currency_field': 'currency_id'}"/>
 							<field name="total_discount" class="oe_right"

@@ -38,11 +38,11 @@
                 </field>
                 <xpath expr="//group[hasclass('oe_subtotal_footer')]/group[hasclass('oe_right')]" position="before">
 <!--                    <group colspan="4" col="6" class="oe_subtotal_footer">-->
-                        <group string="Descuentos Extra" col="2" colspan="2" class="oe_left">
-                            <field name="tipo_desc_extra" string="Tipo"/>
-                            <field name="tipo_calculo_desc_extra" string="Calculo por"/>
-                            <field name="cant_desc_extra" string="Cantidad"/>
-                            <button name="force_amount_all" type="object" class="oe_link" icon="fa-arrow-circle-right" string="Aplicar"/>
+                        <group string="Descuentos Extra" col="6">
+                            <field name="tipo_desc_extra" colspan="4" string="Tipo"/>
+                            <field name="tipo_calculo_desc_extra" colspan="4" string="Calculo por"/>
+                            <field name="cant_desc_extra" colspan="4" string="Cantidad"/>
+                            <button name="force_amount_all" colspan="4" type="object" class="oe_link" icon="fa-arrow-circle-right" string="Aplicar"/>
                         </group>
 <!--                        <group class="oe_right" colspan="2">-->
 <!--                            <field name="total_desc"/>-->
