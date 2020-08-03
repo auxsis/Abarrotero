@@ -9,9 +9,11 @@
     'category': 'Odoo Experts',
     'depends': [
         'sale',
+        'cdfi_invoice',
     ],
     'data': [
-        'views/sale_view.xml'
+        'views/sale_view.xml',
+        'report/sale_order.xml',
     ],
     'auto_install': False,
     'installable': True,
