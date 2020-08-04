@@ -9,8 +9,8 @@ class AccountInvoice(models.Model):
         
     intercompany_transfer_id = fields.Many2one('inter.company.transfer.ept', string="ICT", copy=False)
     transfer_fee_id = fields.Float("Costo de Transf. (%)", related="intercompany_transfer_id.transfer_fee")
-    amount_transfer_fee = fields.Float("Monto Costo de Transf.", related='intercompany_transfer_id.amount_transfer_fee')
-    
+    amount_transfer_fee = fields.Float("Monto Costo de Transf.", compute='_compute_amount')
+
     @api.model
     def create(self, vals):
         res = super(AccountInvoice, self).create(vals)
@@ -28,9 +28,11 @@ class AccountInvoice(models.Model):
     def _compute_amount(self):
         super(AccountInvoice, self)._compute_amount()
         sign = self.type in ['in_refund', 'out_refund'] and -1 or 1
+        amount_tranfer = self.amount_total * (self.transfer_fee_id/100)
         self.update({
-            'amount_total': self.amount_total + self.amount_transfer_fee,
-            'amount_total_signed': self.amount_total_signed + self.amount_transfer_fee * sign,
+            'amount_transfer_fee': amount_tranfer,
+            'amount_total': self.amount_total + amount_tranfer,
+            'amount_total_signed': self.amount_total_signed + amount_tranfer * sign,
         })
 
     @api.multi

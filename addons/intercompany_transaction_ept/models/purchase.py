@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 from odoo import fields, api, models , _
+from odoo.exceptions import ValidationError
 
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
@@ -23,11 +26,19 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def action_view_invoice(self):
+        if self.company_id != self.env.user.company_id:
+            raise ValidationError("Lo sentimos, la compañía desde la que intenta generar la factura no se corresponde con la compañía de la orden.")
         res = super(PurchaseOrder, self).action_view_invoice()
         if res and self.intercompany_transfer_id:
             if res.get('context') == None:
                 res['context'] = {}
             res['context'].update({
-                'default_intercompany_transfer_id': self.intercompany_transfer_id.id
+                'default_intercompany_transfer_id': self.intercompany_transfer_id.id,
             })
         return res
+
+    @api.multi
+    def button_confirm(self):
+        if self.company_id != self.env.user.company_id:
+            raise ValidationError("Lo sentimos, no puede confirmar la orden, la compañía actual no se corresponde con la compañía de la orden.")
+        return super(PurchaseOrder, self).button_confirm()

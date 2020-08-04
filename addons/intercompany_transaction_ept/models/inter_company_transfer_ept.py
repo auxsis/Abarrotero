@@ -79,7 +79,7 @@ class InterCompanyTransfer(models.Model):
     transfer_fee = fields.Float("Costo de Transferencia (%)", default=_get_default_transfer_fee,
                                 help="Costo de transferencia definido en la Configuracion de ICT", copy=False)
     transfer_fee_char = fields.Char(compute='compute_format_transfer')
-    amount_transfer_fee = fields.Float("Monto Costo de Transf.", compute='_compute_total')
+    amount_transfer_fee = fields.Float("Monto Costo de Transf.", compute='_compute_total', store=True)
     total = fields.Float(string="Total (base)", compute='_compute_total')
     total_with_taxes = fields.Float(string="Total (w/taxes)", compute='_compute_total')
     total_with_transfer_fee = fields.Float(string="Total", compute='_compute_total')
