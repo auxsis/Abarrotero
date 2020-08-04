@@ -29,8 +29,8 @@ class InterCompanyTransferLine(models.Model):
     
     quantity = fields.Float(string="Quantity", default=1.0)
     qty_delivered = fields.Float(compute='_get_delivered_qty', string='Delivered Quantity', store=True, readonly=True, digits=dp.get_precision('Product Unit of Measure'))
-    price = fields.Float(string='Price', compute="default_price_get")
-    net_price = fields.Float(string='Net Price', compute="default_price_get")
+    price = fields.Float(string='Price', compute="default_price_get", store=True)
+    net_price = fields.Float(string='Net Price', compute="default_price_get", store=True)
     subtotal = fields.Float(string='Sub-Total', compute="_compute_subtotal")
     subtotal_with_taxes = fields.Float(string='Sub-Total (w/taxes)', compute="_compute_subtotal")
     product_id = fields.Many2one('product.product', string='Product')
@@ -46,10 +46,11 @@ class InterCompanyTransferLine(models.Model):
         for record in self:
             if record.product_id:
                 # Always get the product data (price) from root company (Grupo Abarrotero Guerrerense)
-                product_id = record.with_context(force_company=1).product_id
+                if record.inter_transfer_id.state in 'draft':
+                    product_id = record.with_context(force_company=1).product_id
 
-                record.price = product_id.base_imponible_costo
-                record.net_price = product_id.standard_price
+                    record.price = product_id.base_imponible_costo
+                    record.net_price = product_id.standard_price
             else:
                 record.price = record.net_price = 0.0
 

@@ -26,7 +26,7 @@
 																attrs="{'invisible':[('intercompany_transfer_id','=',False)]}"
 																readonly="1" nolabel="1" class="oe_inline"/>%)</span>
 						</label>
-						<field name="amount_transfer_fee" nolabel="1" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>
+						<field name="amount_transfer_fee" class="oe_right" nolabel="1" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>
                     </field>
 				</data>
 			</field>
