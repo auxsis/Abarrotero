@@ -219,7 +219,7 @@ class PurchaseOrderLine(models.Model):
             desc2 = 1 - (line.desc2 or 0.0) / 100.0
             price = line.price_unit * desc1 * desc2
 
-            if line.qty_received > 0:
+            if line.qty_received > 0 and line.order_id.state in ('done', 'purchase'):
                 quantity = line.qty_received
             else:
                 quantity = line.product_qty
