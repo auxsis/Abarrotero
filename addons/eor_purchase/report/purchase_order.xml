@@ -3,45 +3,150 @@
     <template id="purchase.report_purchaseorder">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-if="o.amount_transfer_fee>0" t-call="eor_purchase.report_purchaseorder_itc_document" t-lang="o.partner_id.lang"/>
+                <t t-if="o.amount_transfer_fee>0" t-call="eor_purchase.report_purchaseorder_itc_document"
+                   t-lang="o.partner_id.lang"/>
                 <t t-else="" t-call="purchase.report_purchaseorder_document" t-lang="o.partner_id.lang"/>
             </t>
         </t>
     </template>
     <template id="report_purchaseorder_document" inherit_id="discount_purchase_order.report_po_inherit">
         <xpath expr="//t[@t-call='web.external_layout']" position="replace">
-            <t t-call="web.external_layout">
-                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <div class="header">
+                <div class="o_clean_header">
+                    <div class="row">
+                        <div class="col-3">
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+                        </div>
+                        <div style="font-size: 12px" class="col-4" name="company_address">
+                            <ul class="list-unstyled">
+                                <strong>
+                                    <li t-if="company.name">
+                                        <span t-field="company.name"/>
+                                    </li>
+                                </strong>
+                                <li t-if="company.vat"><t t-esc="company.country_id.vat_label or 'Tax ID'"/>:
+                                    <span t-field="company.vat"/>
+                                </li>
+                                <li t-if="company.phone">Tel:
+                                    <span t-field="company.phone"/>
+                                </li>
+                                <li t-if="company.email">
+                                    <span t-field="company.email"/>
+                                </li>
+                                <li t-if="company.website">
+                                    <span t-field="company.website"/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="font-size: 12px" class="col-4 offset-1" name="proveedor_address">
+                            <strong>Proveedor</strong>
+                            <br/>
+                            <span t-esc="o.partner_id.name"/>
+                            <br/>
+                            <span class="proveedor_address" t-field="o.partner_id"
+                                  t-options='{"widget": "contact", "fields": ["address"], "no_marker": true}'/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="article o_report_layout_clean" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+                 t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-call="web.address_layout"/>
                 <div class="page" style="font-family: Arial;">
-                    <h2>Orden de Compra #<span t-field="o.name"/></h2>
+                    <h2>Orden de Compra #
+                        <span t-field="o.name"/>
+                    </h2>
 
                     <table style="width: 100%;">
                         <tbody>
                             <tr style="font-size: 14px;">
-                                <td><b>Ref.de Presupuesto:</b><br/><span t-field="o.name"/></td>
-                                <td><b>Fecha de Pedido:</b><br/><span t-field="o.date_order"/></td>
-                                <td><b>Fecha de Recepción:</b><br/><span t-field="o.date_planned"/></td>
-                                <td><b>Elaborado Por:</b><br/><span t-esc="user.name"/></td>
+                                <td>
+                                    <b>Ref.de Presupuesto:</b>
+                                    <br/>
+                                    <span t-field="o.name"/>
+                                </td>
+                                <td>
+                                    <b>Fecha de Pedido:</b>
+                                    <br/>
+                                    <span t-field="o.date_order"/>
+                                </td>
+                                <td>
+                                    <b>Fecha de Recepción:</b>
+                                    <br/>
+                                    <span t-field="o.date_planned"/>
+                                </td>
+                                <td>
+                                    <b>Elaborado Por:</b>
+                                    <br/>
+                                    <span t-esc="user.name"/>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table table-sm o_main_table" style="font-size: 14px; line-height: 10px;">
+                    <table class="table table-condensed o_main_table" style="font-size: 14px; line-height: 14px;">
                         <thead>
                             <tr style="line-height: 14px;">
-                                <th><strong>Description</strong></th>
-                                <th class="text-right"><strong>Cant</strong></th>
-                                <th class="text-center"><strong>Unidad</strong></th>
-                                <th class="text-right"><strong>Precio Unidad</strong></th>
-                                <th class="text-right"><strong>Impuesto</strong></th>
-                                <th class="text-right"><strong>Coste Neto</strong></th>
-                                <th class="text-right"><strong>Desc1(%)</strong></th>
-                                <th class="text-right"><strong>Desc2(%)</strong></th>
-                                <th class="text-right"><strong>Monto</strong></th>
+                                <th>
+                                    <strong>Descripción</strong>
+                                </th>
+                                <th class="text-right">
+                                    <strong>Cant</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>Unidad</strong>
+                                </th>
+                                <th class="text-right">
+                                    <strong>Precio Unidad</strong>
+                                </th>
+                                <th class="text-right">
+                                    <strong>Impuesto</strong>
+                                </th>
+                                <th class="text-right">
+                                    <strong>Coste Neto</strong>
+                                </th>
+                                <th class="text-right">
+                                    <strong>Desc1(%)</strong>
+                                </th>
+                                <th class="text-right">
+                                    <strong>Desc2(%)</strong>
+                                </th>
+                                <th class="text-right">
+                                    <strong>Monto</strong>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             <t t-set="total_qty" t-value="0"/>
+                            <t t-set="total_discount" t-value="0.0"/>
                             <tr t-foreach="o.order_line" t-as="line">
+                                <t t-if="line.desc1 > 0.0 and line.desc2 > 0.0">
+                                    <t t-set="total_discount"
+                                       t-value="total_discount + (line.line_sub_total - (line.line_sub_total * (1.0 - line.desc1 / 100.0) * (1.0 - line.desc2 / 100.0)))"/>
+                                </t>
+                                <t t-if="line.desc1 > 0.0 and not line.desc2 > 0.0">
+                                    <t t-set="total_discount"
+                                       t-value="total_discount + (line.line_sub_total * (line.desc1/100.00))"/>
+                                </t>
+                                <t t-if="line.desc2 > 0.0 and not line.desc1 > 0.0">
+                                    <t t-set="total_discount"
+                                       t-value="total_discount + (line.line_sub_total * (line.desc2/100.00))"/>
+                                </t>
                                 <td>
                                     <span t-field="line.name"/>
                                 </td>
@@ -69,12 +174,20 @@
                                 </td>
                                 <td class="text-right">
                                     <span t-field="line.price_subtotal"
-                                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                 </td>
                             </tr>
                             <tr style="line-height: 14px;">
-                                <td>Artículos: <b><t t-esc="len(o.order_line)"/></b></td>
-                                <td class="text-right">Total Unidades: <b><t t-esc="total_qty"/></b></td>
+                                <td>Artículos:
+                                    <b>
+                                        <t t-esc="len(o.order_line)"/>
+                                    </b>
+                                </td>
+                                <td class="text-right">Total Unidades:
+                                    <b>
+                                        <t t-esc="total_qty"/>
+                                    </b>
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -87,54 +200,105 @@
                     </table>
                     <div class="row" style="width: 100%">
                         <div style="width: 70%;">
-                            <span><b>Observaciones:</b></span><br/>
+                            <span>
+                                <b>Observaciones:</b>
+                            </span>
+                            <br/>
                             <p t-field="o.notes"/>
                         </div>
                         <div style="width: 30%;">
                             <div id="total" class="row justify-content-end">
                                 <div>
-                                    <table class="table table-sm" style="font-size: 14px; line-height: 10px;">
-                                        <tr class="border-black">
-                                            <td><strong>Subtotal</strong></td>
-                                            <td class="text-right">
+                                    <table class="table" style="font-size: 12px; border-bottom: None;">
+                                        <tr>
+                                            <td class="text-right"
+                                                style="padding: 5px; border-bottom: 1px solid black !important; width: 50%">
+                                                <strong>Total Descuento por líneas de productos</strong>
+                                            </td>
+                                            <td class="text-right"
+                                                style="padding: 5px; border-bottom: 1px solid black !important; width: 50%">
+                                                <span t-esc="o.currency_id.symbol"/>&#160;<span
+                                                    t-esc="round(total_discount,o.currency_id.decimal_places)"/>
+                                            </td>
+                                        </tr>
+                                        <tr class="">
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <strong>Base imponible:</strong>
+                                            </td>
+                                            <td style="padding: 5px; border: none;" class="text-right">
                                                 <span t-field="o.amount_untaxed"
-                                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Impuestos</td>
-                                            <td class="text-right">
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <strong>Impuestos:</strong>
+                                            </td>
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <t t-set="taxes" t-value="o._get_taxes_JSON_values()"/>
+                                                <t t-foreach="taxes" t-as="t">
+                                                    <p style="margin-bottom: 1px">
+                                                        <span t-esc="t['name']"/>&#160;
+                                                        <span t-esc="t['currency']"/>&#160;
+                                                        <span t-esc="round(t['amount_tax'], t['digits'][1])"/>
+                                                    </p>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <strong>Impuestos:</strong>
+                                            </td>
+                                            <td style="padding: 5px; border: none;" class="text-right">
                                                 <span t-field="o.amount_tax"
-                                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                             </td>
                                         </tr>
                                         <tr t-if="o.monto_desc_maniobra > 0">
-                                            <td>Desc. Maniobra</td>
-                                            <td class="text-right"><span t-field="o.monto_desc_maniobra"
-                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
-                                        </tr>
-                                        <tr t-if="o.monto_desc_flete > 0">
-                                            <td>Desc. Flete</td>
-                                            <td class="text-right"><span t-field="o.monto_desc_flete"
-                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
-                                        </tr>
-                                        <tr t-if="o.monto_desc_planes > 0">
-                                            <td>Desc. Planes</td>
-                                            <td class="text-right"><span t-field="o.monto_desc_planes"
-                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
-                                        </tr>
-                                        <tr t-if="o.total_discount > 0.0" class="border-black">
-                                            <td><strong>Descuento Total</strong></td>
-                                            <td  class="text-right">
-                                                    <span t-field="o.total_discount"
-                                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <strong>Desc. Maniobra:</strong>
+                                            </td>
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <span t-field="o.monto_desc_maniobra"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                             </td>
                                         </tr>
-                                        <tr class="border-black o_total">
-                                            <td><strong>Total</strong></td>
-                                            <td class="text-right">
-                                                <span t-field="o.amount_total"
-                                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <tr t-if="o.monto_desc_flete > 0">
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <strong>Desc. Flete:</strong>
+                                            </td>
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <span t-field="o.monto_desc_flete"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="o.monto_desc_planes > 0">
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <strong>Desc. Planes:</strong>
+                                            </td>
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <span t-field="o.monto_desc_planes"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="o.total_discount > 0.0" class="border-black">
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <strong>Descuento Total:</strong>
+                                            </td>
+                                            <td style="padding: 5px; border: none;" class="text-right">
+                                                <span t-field="o.total_discount"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right"
+                                                style="padding: 5px; border-top: 1px solid black !important; border-bottom: none !important; width: 50%">
+                                                <strong>Total:</strong>
+                                            </td>
+                                            <td class="text-right"
+                                                style="padding: 5px; border-top: 1px solid black !important; border-bottom: none !important; width: 50%">
+                                                <strong t-field="o.amount_total"
+                                                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                             </td>
                                         </tr>
                                     </table>
@@ -143,45 +307,69 @@
                         </div>
                     </div>
                 </div>
-            </t>
+            </div>
+
+            <div class="footer o_clean_footer">
+                <div class="row mt8">
+                    <div class="col-3">
+                        <span t-field="company.report_footer"/>
+                    </div>
+                    <div class="col-4 text-right">
+                        <span class="company_address" t-field="company.partner_id"
+                              t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;], &quot;no_marker&quot;: true}"/>
+                    </div>
+                    <div class="col-4">
+                        <h4 class="mt0 mb0 text-uppercase" t-field="company.report_header"/>
+                    </div>
+                    <div class="col-1">
+                        <ul t-if="report_type == 'pdf'" class="list-inline pagenumber float-right text-center">
+                            <li class="list-inline-item">
+                                <strong>
+                                    <span class="page"/>
+                                </strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </xpath>
     </template>
     <template id="report_purchaseorder_itc_document">
         <t t-call="eor_purchase.itc_purchase_external_layout">
             <style>
                 #devolution-table{
-                    width:100%;
+                width:100%;
                 }
                 #devolution-table tr{
-                    height:20px;
+                height:20px;
                 }
                 #devolution-table .body_row td{
-                    border:1px solid black;
+                border:1px solid black;
                 }
                 #devolution-table thead tr th{
-                    border:1px solid black;
-                    text-align:center;
-                    text-transform:uppercase;
+                border:1px solid black;
+                text-align:center;
+                text-transform:uppercase;
                 }
                 .tag_total{
-                    text-align:right;
+                text-align:right;
                 }
                 .square_total{
-                    border:1px solid black;
+                border:1px solid black;
                 }
                 .group_row{
-                    width:100%;
-                    margin-top:10px;
+                width:100%;
+                margin-top:10px;
                 }
                 .group_col{
-                    width:50%;
-                    text-align:center;
+                width:50%;
+                text-align:center;
                 }
                 .separator-space{
-                    margin-top:50px;
+                margin-top:50px;
                 }
                 .separator-space-20{
-                    margin-top:20px;
+                margin-top:20px;
                 }
 
             </style>
@@ -275,7 +463,7 @@
                                     <span t-field="line.coste_neto"/>
                                 </td>
                                 <td class="text-right">
-<!--                                    <span t-field="line.precio_x_pieza"/>-->
+                                    <!--                                    <span t-field="line.precio_x_pieza"/>-->
                                 </td>
                                 <td class="text-right">
                                     <span t-field="line.price_subtotal"/>
@@ -283,8 +471,16 @@
                             </tr>
                         </t>
                         <tr>
-                            <td>Artículos: <b><t t-esc="len(doc.order_line)"/></b></td>
-                            <td>Unidades: <b><t t-esc="sum(doc.mapped('order_line.product_uom_qty'))"/></b></td>
+                            <td>Artículos:
+                                <b>
+                                    <t t-esc="len(doc.order_line)"/>
+                                </b>
+                            </td>
+                            <td>Unidades:
+                                <b>
+                                    <t t-esc="sum(doc.mapped('order_line.product_uom_qty'))"/>
+                                </b>
+                            </td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -339,7 +535,7 @@
                         </div>
                     </div>
                 </div>
-<!--                <span t-field="o.note"/>-->
+                <!--                <span t-field="o.note"/>-->
                 <div class="separator-space-20">
                     <table id="devolution-table">
                         <thead>
@@ -354,15 +550,30 @@
                         </thead>
                         <tbody>
                             <tr t-foreach="doc.order_line" t-as="line"
-                                class="body_row"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                                class="body_row">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                         <ftoot>
                             <tr class="footer_row">
-                                <td colspan="4" class="tag_total"><span>TOTAL A DESCONTAR+CARGO POR TRASPASO(%):</span></td>
-                                <td class="square_total"></td><td></td></tr>
+                                <td colspan="4" class="tag_total">
+                                    <span>TOTAL A DESCONTAR+CARGO POR TRASPASO(%):</span>
+                                </td>
+                                <td class="square_total"></td>
+                                <td></td>
+                            </tr>
                             <tr class="footer_row">
-                                <td colspan="4" class="tag_total"><span>NETO A PAGAR:</span></td>
-                                <td class="square_total"></td><td></td></tr>
+                                <td colspan="4" class="tag_total">
+                                    <span>NETO A PAGAR:</span>
+                                </td>
+                                <td class="square_total"></td>
+                                <td></td>
+                            </tr>
                         </ftoot>
                     </table>
                     <table class="group_row">
@@ -374,20 +585,30 @@
                     <table class="separator-space group_row">
                         <tr>
                             <td class="group_col">
-                                ______________________________________________<br/>
-                                NOMBRE Y FIRMA</td>
+                                ______________________________________________
+                                <br/>
+                                NOMBRE Y FIRMA
+                            </td>
                             <td class="group_col">
-                                ______________________________________________<br/>
-                                NOMBRE Y FIRMA</td>
+                                ______________________________________________
+                                <br/>
+                                NOMBRE Y FIRMA
+                            </td>
                         </tr>
                     </table>
                     <article class="separator-space-20">
                         <h6 class="text-center">RECIBÍ DE CONFORMIDAD</h6>
-                        <p>Debo(emos) y por este pagaré me(nos) obligo(amos) a pagar a la vista incondicionalmente a la orden de Grupo Abarrotero Guererrense, S.A. de
-                            C.V. la cantidad de: <b>$_________________ (_________________________________________/100 M.N.</b>) valor de la mercancía que he(mos)
-                        recibido de conformidad el <b>______/_________/___________</b>.</p>
+                        <p>Debo(emos) y por este pagaré me(nos) obligo(amos) a pagar a la vista incondicionalmente a la
+                            orden de Grupo Abarrotero Guererrense, S.A. de
+                            C.V. la cantidad de: <b>$_________________ (_________________________________________/100
+                                M.N.</b>) valor de la mercancía que he(mos)
+                            recibido de conformidad el <b>______/_________/___________</b>.
+                        </p>
                     </article>
-                    <div class="text-center separator-space"><p>_______________________________________ <br/>NOMBRE Y FIRMA ENCARGADO(A)</p></div>
+                    <div class="text-center separator-space">
+                        <p>_______________________________________<br/>NOMBRE Y FIRMA ENCARGADO(A)
+                        </p>
+                    </div>
                 </div>
             </div>
         </t>
@@ -413,18 +634,27 @@
         </div>
 
         <div class="article o_report_layout_standard">
-            <t t-raw="0" />
+            <t t-raw="0"/>
         </div>
 
         <div class="footer">
             <div class="text-center" style="border-top: 1px solid black;">
                 <div style="font-size: 10px; color: #1e81c0;">
-                    <p><b>MOTIVO DE LA DEVOLUCIÓN:</b> 1. NO REALIZÓ EL PEDIDO / 2. PRODUCTO EN MAL ESTADO / 3. PRODUCTO EQUIVOCADO / 4. PRODUCTO FALTANTE / <br/>
-                        5. PRODUCTO SOBRANTE / 6. ERROR DE SISTEMA / 7. OTRO (ESPECIFICAR)___________________________________________________________________</p>
+                    <p>
+                        <b>MOTIVO DE LA DEVOLUCIÓN:</b>
+                        1. NO REALIZÓ EL PEDIDO / 2. PRODUCTO EN MAL ESTADO / 3. PRODUCTO EQUIVOCADO / 4. PRODUCTO
+                        FALTANTE /
+                        <br/>
+                        5. PRODUCTO SOBRANTE / 6. ERROR DE SISTEMA / 7. OTRO
+                        (ESPECIFICAR)___________________________________________________________________
+                    </p>
                 </div>
 
                 <div class="text-muted">
-                    Page: <span class="page"/> / <span class="topage"/>
+                    Page:
+                    <span class="page"/>
+                    /
+                    <span class="topage"/>
                 </div>
             </div>
         </div>
