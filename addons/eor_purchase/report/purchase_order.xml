@@ -374,7 +374,7 @@
 
             </style>
             <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
-            <div class="page" style="padding-top: 10px; border-top: 1px solid black; font-size:14px;">
+            <div class="page" style="padding-top: 10px; border-top: 1px solid black; font-size:14px; font-family: arial, sans-serif !important;">
                 <div class="oe_structure"/>
                 <div class="row">
                     <!--INFORMACIÓN DE EMPRESA-->
@@ -406,10 +406,6 @@
                         <div t-if="doc.user_id.name">
                             <strong>Vendedor:</strong>
                             <p t-field="doc.user_id"/>
-                        </div>
-                        <div t-if="doc.intercompany_transfer_id">
-                            <strong>Ref ICT:</strong>
-                            <p t-field="doc.intercompany_transfer_id"/>
                         </div>
                     </div>
                     <!--ATENCIÓN Y DIRECCIÓN DE ENVIO-->
@@ -484,18 +480,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="row" style="width: 100%; margin-left: 2px">
-                    <div style="width: 70%;">
-                        <p>Observaciones:</p>
-                    </div>
-                    <div style="width: 30%;">
-                        <div name="total">
+                            <td  colspan="3" rowspan="2">
+                                <div name="total">
                             <div>
                                 <table class="table table-sm">
                                     <tr class="border-black" style="border-bottom:1px solid #dddddd;">
@@ -516,10 +502,10 @@
                                     </tr>
                                     <tr style="border-bottom:1px solid #dddddd;">
                                         <td>
-                                            <span>Cargo por Traspaso</span>
+                                            <span>Cargo por Traspaso</span>(<span t-field="doc.transfer_fee_id" />%)
                                         </td>
                                         <td class="text-right">
-                                            <span t-field="doc.amount_transfer_fee"/>
+                                            <span t-esc="doc.currency_id.symbol"/>&#160;<span t-field="doc.amount_transfer_fee"/>
                                         </td>
                                     </tr>
                                     <tr class="border-black">
@@ -533,8 +519,15 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-top: none !important;" colspan="5">
+                                <p><strong>Observaciones:</strong></p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <!--                <span t-field="o.note"/>-->
                 <div class="separator-space-20">
                     <table id="devolution-table">
@@ -629,7 +622,10 @@
                 </div>
             </h2>
             <h5 style="display: inline-block; width: 50%; text-align: right;">
-                <span>Formato Oficial (ICT)</span>
+                <div t-if="doc.intercompany_transfer_id">
+                    <strong>Ref ICT:</strong>
+                    <span t-field="doc.intercompany_transfer_id"/>
+                </div>
             </h5>
         </div>
 
