@@ -263,10 +263,6 @@
                             <strong>Vendedor:</strong>
                             <p t-field="doc.user_id"/>
                         </div>
-                        <div t-if="doc.intercompany_transfer_id">
-                            <strong>Ref ICT:</strong>
-                            <p t-field="doc.intercompany_transfer_id"/>
-                        </div>
                     </div>
                     <!--ATENCIÓN Y DIRECCIÓN DE ENVIO-->
                     <div class="col-4">
@@ -305,19 +301,19 @@
                                         <span t-field="line.name"/>
                                     </td>
                                     <td class="text-right">
-                                        <span t-field="line.product_uom_qty"/>
+                                        <span t-field="line.product_uom_qty" t-options="{'widget': 'float', 'precision': 2}"/>
                                     </td>
                                     <td class="text-right">
                                         <span t-field="line.product_uom" groups="uom.group_uom"/>
                                     </td>
                                     <td class="text-right">
-                                        <span t-field="line.price_unit"/>
+                                        <span t-field="line.price_unit" t-options="{'widget': 'float', 'precision': 2}"/>
                                     </td>
                                     <td class="text-right">
                                         <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
                                     </td>
                                     <td class="text-right">
-                                        <span t-field="line.price_unit_tax"/>
+                                        <span t-field="line.price_unit_tax" t-options="{'widget': 'float', 'precision': 2}"/>
                                     </td>
                                     <td class="text-right">
                                         <span t-field="line.precio_x_pieza"/>
@@ -464,7 +460,10 @@
                 </div>
             </h2>
             <h5 style="display: inline-block; width: 50%; text-align: right;">
-                <span>Formato Oficial (ICT)</span>
+                <div t-if="doc.intercompany_transfer_id">
+                            <strong>Ref ICT:</strong>
+                            <p t-field="doc.intercompany_transfer_id"/>
+                        </div>
             </h5>
         </div>
 
