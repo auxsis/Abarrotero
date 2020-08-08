@@ -11,8 +11,17 @@
     </template>
     <template id="report_saleorder_document">
         <t t-call="eor_sale.sale_external_layout">
+            <style>
+                .page {
+                    font-family: Arial, Verdana, sans-serif !important;
+                }
+                .page *{
+                    font-family: inherit !important;
+                }
+
+            </style>
             <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
-            <div class="page" style="padding-top: 10px; border-top: 1px solid black; font-size:16px;">
+            <div class="page" style="padding-top: 10px; border-top: 1px solid black; font-size:14px;">
                 <div class="oe_structure"/>
                 <div class="row">
                     <!--INFORMACIÓN DE EMPRESA-->
@@ -243,6 +252,12 @@
                 }
                 .separator-space-20{
                 margin-top:20px;
+                }
+                .page {
+                    font-family: Arial, Verdana, sans-serif !important;
+                }
+                .page *{
+                    font-family: inherit !important;
                 }
 
             </style>
