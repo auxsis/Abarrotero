@@ -49,6 +49,9 @@
 <!--                        </group>-->
 <!--                    </group>-->
                 </xpath>
+                <field name="notes" position="before">
+                    <div><field name="observations" class="oe_inline" placeholder="Observaciones"/></div>
+                </field>
                 <field name="product_qty" position="before">
                     <field name="stock_disponible"/>
                 </field>

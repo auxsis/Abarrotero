@@ -54,9 +54,9 @@
                         </tbody>
                     </table>
 
-                    <div>
+                    <div t-if="o.observations">
                         <span><b>Observaciones:</b></span><br/>
-                        <p t-field="o.notes"/>
+                        <p t-field="o.observations"/>
                     </div>
 
 <!--                    <div class="oe_structure"/>-->

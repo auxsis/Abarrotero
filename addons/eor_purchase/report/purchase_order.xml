@@ -247,8 +247,9 @@
                         </tr>
                         <tr>
                             <td style="border-top: none !important;" colspan="5">
-                                <p>
+                                <p t-if="o.observations">
                                     <strong>Observaciones:</strong>
+                                    <span t-field="doc.observations"/>
                                 </p>
                             </td>
                         </tr>
@@ -511,8 +512,9 @@
                         </tr>
                         <tr>
                             <td style="border-top: none !important;" colspan="5">
-                                <p>
+                                <p t-if="o.observations">
                                     <strong>Observaciones:</strong>
+                                    <span t-field="doc.observations"></span>
                                 </p>
                             </td>
                         </tr>
