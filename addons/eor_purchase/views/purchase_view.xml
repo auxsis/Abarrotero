@@ -36,6 +36,9 @@
                 <field name="discount" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
+                <xpath expr="//field[@name='amount_untaxed']" position="before">
+                    <field name="total_desc" widget="monetary" class="oe_right"/>
+                </xpath>
                 <xpath expr="//group[hasclass('oe_subtotal_footer')]/group[hasclass('oe_right')]" position="before">
 <!--                    <group colspan="4" col="6" class="oe_subtotal_footer">-->
                         <group string="Descuentos Extra" col="6">
