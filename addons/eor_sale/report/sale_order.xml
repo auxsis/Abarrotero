@@ -24,6 +24,10 @@
                 </style>
                 <div class="oe_structure"/>
                 <div class="content">
+                    <h2 class="text-right" style="display:inline-block; width:85.33333%;">
+                            <span>Pedido #:</span>
+                            <span t-field="doc.name"/>
+                    </h2>
                     <div class="row">
                         <!--INFORMACIÓN DE EMPRESA-->
                         <div class="col-4">
@@ -59,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <br/>
                     <table class="table table-sm">
                         <thead>
                             <tr>
@@ -193,24 +197,33 @@
             <t t-set="company" t-value="res_company"></t>
         </t>
         <div class="header">
-            <!--EMPIEZA LOGO-->
-            <div style="display:inline-block;">
-                <img t-if="doc.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)"
-                     style="max-height: 130px;max-width:130px;"/>
+            <div class="row">
+                <div class="col-3">
+                    <img t-if="doc.company_id.logo"
+                         t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)"
+                         style="max-height: 130px;max-width:130px;"/>
+                </div>
+                <div class="col-9 text-right mt8" style="font-size:14px;">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <span class="page"/>
+                        </li>
+                        <li class="list-inline-item">/</li>
+                        <li class="list-inline-item">
+                            <span class="topage"/>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <!--TERMINA LOGO-->
-            <h2 class="text-right" style="display:inline-block; width:85.33333%;">
-                    <span>Pedido#:</span>
-                    <span t-field="doc.name"/>
-            </h2>
         </div>
 
         <div class="article o_report_layout_standard">
             <t t-raw="0"/>
         </div>
 
-        <div class="footer">
-            <h5 class="text-center">Gracias por su preferencia, vuelva pronto</h5>
+        <div class="footer text-center">
+            <br/>
+            <span style="font-size:14px; font-style: italic;">¡ Gracias por su preferencia, vuelva pronto !</span>
         </div>
     </template>
     <template id="report_saleorder_itc_document">
