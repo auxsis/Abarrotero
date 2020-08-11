@@ -40,6 +40,7 @@ class AccountInvoice(models.Model):
         invoices = self.env['account.invoice'].search([])
         for invoice in invoices:
             invoice._compute_amount()
+            print("Invoice id: %s updated" % [invoice.id])
 
     @api.multi
     def finalize_invoice_move_lines(self, move_lines):
