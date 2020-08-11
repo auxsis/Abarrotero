@@ -41,4 +41,14 @@
             </field>
         </field>
     </record>
+    <record id="invoice_supplier_tree" model="ir.ui.view">
+        <field name="name">add field to the tree</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_tax_signed']" position="after">
+                <field name="total_extra_discount"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

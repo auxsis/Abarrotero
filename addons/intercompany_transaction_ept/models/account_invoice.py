@@ -36,6 +36,12 @@ class AccountInvoice(models.Model):
         })
 
     @api.multi
+    def recompute_totals(self):
+        invoices = self.env['account.invoice'].search([])
+        for invoice in invoices:
+            invoice._compute_amount()
+
+    @api.multi
     def finalize_invoice_move_lines(self, move_lines):
         """ finalize_invoice_move_lines(move_lines) -> move_lines
 

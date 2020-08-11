@@ -1,37 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-    <record id="inter_company_transfer_ept_account_form_view" model="ir.ui.view">
-        <field name="name">intercompany_account_invoice_form</field>
-        <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.invoice_form"/>
-        <field name="arch" type="xml">
-            <field name="amount_tax" position="after">
-                <field name ="intercompany_transfer_id" invisible="1"/>
-                <label for="" class="o_form_label" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}">
-                            <span>Monto Costo de Transf.(<field name="transfer_fee_id"
-                                       nolabel="1" readonly="1" class="oe_inline"/>%)</span>
-                </label>
-                <field name="amount_transfer_fee" nolabel="1"
-                               attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>
+        <record id="inter_company_transfer_ept_account_form_view" model="ir.ui.view">
+            <field name="name">intercompany_account_invoice_form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="amount_tax" position="after">
+                    <field name="intercompany_transfer_id" invisible="1"/>
+                    <label for="" class="o_form_label" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}">
+                        <span>Monto Costo de Transf.(<field name="transfer_fee_id"
+                                                            nolabel="1" readonly="1" class="oe_inline"/>%)
+                        </span>
+                    </label>
+                    <field name="amount_transfer_fee" nolabel="1"
+                           attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>
+                </field>
             </field>
-        </field>
-    </record>
-    <record id="inter_company_transfer_ept_account_supplier_form_view" model="ir.ui.view">
-        <field name="name">intercompany_account_supplier_invoice_form</field>
-        <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.invoice_supplier_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//group/field[@name='amount_tax']" position="after">
-                <field name ="intercompany_transfer_id" invisible="1"/>
-                <label for="" class="o_form_label" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}">
-                            <span>Monto Costo de Transf.(<field name="transfer_fee_id"
-                                       nolabel="1" readonly="1" class="oe_inline"/>%)</span>
-                </label>
-                <field name="amount_transfer_fee" nolabel="1"
-                               attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>
-            </xpath>
-        </field>
-    </record>
-	</data>
+        </record>
+        <record id="inter_company_transfer_ept_account_supplier_form_view" model="ir.ui.view">
+            <field name="name">intercompany_account_supplier_invoice_form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_invoice_cancel']" position="after">
+                    <button name="recompute_totals" type="object" string="Recompute Amounts" groups="base.group_no_one"/>
+                </xpath>
+                <xpath expr="//group/field[@name='amount_tax']" position="after">
+                    <field name="intercompany_transfer_id" invisible="1"/>
+                    <label for="" class="o_form_label" attrs="{'invisible':[('intercompany_transfer_id','=',False)]}">
+                        <span>Monto Costo de Transf.(<field name="transfer_fee_id"
+                                                            nolabel="1" readonly="1" class="oe_inline"/>%)
+                        </span>
+                    </label>
+                    <field name="amount_transfer_fee" nolabel="1"
+                           attrs="{'invisible':[('intercompany_transfer_id','=',False)]}" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="invoice_supplier_tree" model="ir.ui.view">
+            <field name="name">add field to the tree</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_tax_signed']" position="after">
+                    <field name="amount_transfer_fee"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </odoo>
