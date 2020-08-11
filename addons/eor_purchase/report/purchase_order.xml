@@ -179,6 +179,15 @@
                                 <div name="total">
                                     <div>
                                         <table class="table table-sm">
+                                            <tr>
+                                                <td>
+                                                    <span>Total de Descuentos por Líneas</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="doc.total_desc"
+                                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+                                            </tr>
                                             <tr class="border-black" style="border-bottom:1px solid #dddddd;">
                                                 <td>
                                                     <strong>Subtotal</strong>
