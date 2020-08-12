@@ -12,6 +12,8 @@ _logger = logging.getLogger("__________________________________________" + __nam
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
+    observations = fields.Text(string="Observaciones")
+
     @api.depends('order_line.taxes_id', 'amount_tax')
     def _compute_taxes_widget(self):
         for order in self:
