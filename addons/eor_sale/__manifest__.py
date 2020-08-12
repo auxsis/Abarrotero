@@ -10,6 +10,7 @@
     'depends': [
         'sale',
         'cdfi_invoice',
+        'intercompany_transaction_ept',
     ],
     'data': [
         'views/sale_view.xml',

@@ -423,10 +423,13 @@
                                     </tr>
                                     <tr style="border-bottom:1px solid #dddddd;">
                                         <td>
-                                            <span>Cargo por Traspaso</span>
+                                            <span>Cargo por Traspaso(</span>
+                                            <span t-field="doc.transfer_fee_id"/>
+                                            <span>%)</span>
                                         </td>
                                         <td class="text-right">
-                                            <span t-field="doc.amount_transfer_fee"/>
+                                            <span t-field="doc.amount_transfer_fee"
+                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
                                         </td>
                                     </tr>
                                     <tr class="border-black">
