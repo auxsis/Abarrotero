@@ -69,6 +69,14 @@
 <template id="report_saleorder_document">
     <t t-call="cdfi_invoice.itadmin_sale_external_layout">
         <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
+        <style>
+            .page {
+            font-family: Arial, Verdana, sans-serif !important;
+            }
+            .page *{
+            font-family: inherit !important;
+            }
+        </style>
         <div class="page" style="padding-top: 10px; border-top: 1px solid black; font-size:16px;">
         <div class="oe_structure" />
             <div class="row">

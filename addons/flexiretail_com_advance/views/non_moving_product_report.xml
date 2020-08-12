@@ -4,6 +4,15 @@
 
         <template id="flexiretail_com_advance.product_template">
             <t t-call="web.external_layout">
+                <style>
+                    .page {
+                    font-family: Arial, Verdana, sans-serif !important;
+                    }
+                    .page *{
+                    font-family: inherit !important;
+                    }
+
+                </style>
                 <div class="page">
                     <br/>
                     <h3 style="font-size:18px;">

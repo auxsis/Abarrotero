@@ -46,11 +46,17 @@
                 .separator-space-20{
                 margin-top:20px;
                 }
+                .page {
+                font-family: Arial, Verdana, sans-serif !important;
+                }
+                .page *{
+                font-family: inherit !important;
+                }
 
             </style>
             <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
             <div class="page"
-                 style="padding-top: 10px; border-top: 1px solid black; font-size:14px; font-family: arial, sans-serif !important;">
+                 style="padding-top: 10px; border-top: 1px solid black; font-size:14px;">
                 <div class="oe_structure"/>
                 <div class="row">
                     <h2>
@@ -366,11 +372,17 @@
                 .separator-space-20{
                 margin-top:20px;
                 }
+                .page {
+                font-family: Arial, Verdana, sans-serif !important;
+                }
+                .page *{
+                font-family: inherit !important;
+                }
 
             </style>
             <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
             <div class="page"
-                 style="padding-top: 10px; border-top: 1px solid black; font-size:14px; font-family: arial, sans-serif !important;">
+                 style="padding-top: 10px; border-top: 1px solid black; font-size:14px;">
                 <div class="oe_structure"/>
                 <div class="row">
                     <!--INFORMACIÓN DE EMPRESA-->

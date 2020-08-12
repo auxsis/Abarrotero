@@ -3,6 +3,15 @@
     <data>
         <template id="front_sales_report_pdf_document">
             <t t-call="web.basic_layout">
+                <style>
+                    .page {
+                    font-family: Arial, Verdana, sans-serif !important;
+                    }
+                    .page *{
+                    font-family: inherit !important;
+                    }
+
+                </style>
                 <div class="page">
                     <div align="center" style="border:1px solid black;margin:0 auto;padding:0 auto;font-size:25px">
                         <strong>X Report</strong>

@@ -83,7 +83,15 @@
 		<template id="report_invoice_document" >
 			<t t-call="cdfi_invoice.cfdi_external_layout">
 				<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+				<style>
+					.page {
+					font-family: Arial, Verdana, sans-serif !important;
+					}
+					.page *{
+					font-family: inherit !important;
+					}
 
+				</style>
 				<div class="page" style="padding-top: 10px; border-top: 1px solid black; font-size:18px;">
 					<div class="row">
 
