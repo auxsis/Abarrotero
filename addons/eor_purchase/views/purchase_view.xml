@@ -5,6 +5,9 @@
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="discount_purchase_order.inherit_purchase_order_form_view"/>
         <field name="arch" type="xml">
+                <field name="partner_ref" position="after">
+                    <field name="x_document_type"/>
+                </field>
                 <field name="amount_tax" position="before">
                     <field name="taxes_widget" widget="taxes" options="{'digits': 'Product Price'}"/>
                 </field>

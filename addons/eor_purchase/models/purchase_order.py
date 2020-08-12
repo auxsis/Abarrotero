@@ -13,6 +13,7 @@ class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
     observations = fields.Text(string="Observaciones")
+    x_document_type = fields.Selection([('cfdi','CFDI'),('remision','Remision')], 'Tipo de Documento')
 
     @api.depends('order_line.taxes_id', 'amount_tax')
     def _compute_taxes_widget(self):
