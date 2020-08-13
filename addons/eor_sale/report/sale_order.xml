@@ -465,15 +465,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="doc.order_line" t-as="line"
-                                class="body_row">
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <t t-set="dev_index" t-value="0"/>
+                            <t t-foreach="doc.order_line" t-as="line">
+                                <t t-if="5 > dev_index">
+                                    <tr class="body_row">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <t t-set="dev_index" t-value="dev_index + 1"/>
+                                </t>
+                            </t>
                         </tbody>
                         <ftoot>
                             <tr class="footer_row">
