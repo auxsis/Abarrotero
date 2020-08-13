@@ -575,7 +575,7 @@
 
         <div class="footer">
             <div class="text-center" style="border-top: 1px solid black;">
-                <div style="font-size: 10px; color: #1e81c0;">
+                <div style="font-size: 10px; color: #000;">
                     <p>
                         <b>MOTIVO DE LA DEVOLUCIÓN:</b>
                         1. NO REALIZÓ EL PEDIDO / 2. PRODUCTO EN MAL ESTADO / 3. PRODUCTO EQUIVOCADO / 4. PRODUCTO
@@ -586,7 +586,7 @@
                     </p>
                 </div>
 
-                <div class="text-muted">
+                <div class="text-muted" style="color: #000 !important;">
                     Page:
                     <span class="page"/>
                     /
