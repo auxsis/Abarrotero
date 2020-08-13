@@ -301,7 +301,10 @@
                             <span t-field="doc.company_id.partner_id.zip"/>
                         </div>
                         <div>
-                            <span t-field="doc.company_id.rfc"/>
+                            RFC: <span t-field="doc.company_id.rfc"/>
+                        </div>
+                        <div>
+                            <span>Teléfono:</span>&#160;<span t-field="doc.company_id.phone"/>
                         </div>
                     </div>
                     <div class="col-4">
