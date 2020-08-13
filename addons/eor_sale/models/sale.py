@@ -49,7 +49,9 @@ class SaleOrderLine(models.Model):
     def _compute_price(self):
         for line in self:
             price_unit = line.price_unit
-            price_tax = line.price_tax / line.product_uom_qty
+            price_tax = 0.00
+            if line.product_uom_qty > 0:
+                price_tax = line.price_tax / line.product_uom_qty
 
             if line.price_unit_tax <= 0:
                 line.price_unit_tax = price_unit + price_tax
