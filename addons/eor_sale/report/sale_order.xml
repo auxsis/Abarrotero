@@ -587,7 +587,6 @@
                 </div>
 
                 <div class="text-muted" style="color: #000 !important;">
-                    Page:
                     <span class="page"/>
                     /
                     <span class="topage"/>
