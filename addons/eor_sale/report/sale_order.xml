@@ -448,7 +448,10 @@
                         </div>
                     </div>
                 </div>
-                <span t-field="doc.note"/>
+<!--                <span t-field="doc.note"/>-->
+                <div class="row" style="text-align:center; font-style: italic">
+                    <t t-esc="doc.note"/>
+                </div>
                 <div class="separator-space-20">
                     <table id="devolution-table">
                         <thead>
