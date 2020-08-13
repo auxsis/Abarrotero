@@ -301,7 +301,10 @@
                             <span t-field="doc.company_id.partner_id.zip"/>
                         </div>
                         <div>
-                            <span t-field="doc.company_id.rfc"/>
+                            RFC: <span t-field="doc.company_id.rfc"/>
+                        </div>
+                        <div>
+                            <span>Teléfono:</span>&#160;<span t-field="doc.company_id.phone"/>
                         </div>
                     </div>
                     <div class="col-4">
@@ -399,7 +402,7 @@
                 </table>
                 <div class="row" style="width: 100%; margin-left: 2px">
                     <div style="width: 70%;">
-                        <p>Observaciones:</p>
+                        <p><b>Observaciones:</b></p>
                     </div>
                     <div style="width: 30%;">
                         <div name="total">
@@ -437,7 +440,7 @@
                                             <strong>Total</strong>
                                         </td>
                                         <td class="text-right">
-                                            <span t-field="doc.amount_total"/>
+                                            <strong><span t-field="doc.amount_total"/></strong>
                                         </td>
                                     </tr>
                                 </table>
@@ -445,7 +448,10 @@
                         </div>
                     </div>
                 </div>
-                <span t-field="doc.note"/>
+<!--                <span t-field="doc.note"/>-->
+                <div class="row" style="text-align:center; font-style: italic">
+                    <t t-esc="doc.note"/>
+                </div>
                 <div class="separator-space-20">
                     <table id="devolution-table">
                         <thead>
@@ -459,15 +465,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="doc.order_line" t-as="line"
-                                class="body_row">
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <t t-set="dev_index" t-value="0"/>
+                            <t t-foreach="doc.order_line" t-as="line">
+                                <t t-if="5 > dev_index">
+                                    <tr class="body_row">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <t t-set="dev_index" t-value="dev_index + 1"/>
+                                </t>
+                            </t>
                         </tbody>
                         <ftoot>
                             <tr class="footer_row">
@@ -548,12 +559,14 @@
                     <span t-field="doc.name"/>
                 </div>
             </h2>
-            <h5 style="display: inline-block; width: 50%; text-align: right;">
+            <h2 style="display: inline-block; width: 50%;text-align: right;">
+<!--            <h5 style="display: inline-block; width: 50%; text-align: right;">-->
                 <div t-if="doc.intercompany_transfer_id">
-                    <strong>Ref ICT:</strong>
+<!--                    <strong>Ref ICT:</strong>-->
                     <p t-field="doc.intercompany_transfer_id"/>
                 </div>
-            </h5>
+<!--            </h5>-->
+            </h2>
         </div>
 
         <div class="article o_report_layout_standard">
@@ -562,7 +575,7 @@
 
         <div class="footer">
             <div class="text-center" style="border-top: 1px solid black;">
-                <div style="font-size: 10px; color: #1e81c0;">
+                <div style="font-size: 10px; color: #000;">
                     <p>
                         <b>MOTIVO DE LA DEVOLUCIÓN:</b>
                         1. NO REALIZÓ EL PEDIDO / 2. PRODUCTO EN MAL ESTADO / 3. PRODUCTO EQUIVOCADO / 4. PRODUCTO
@@ -573,8 +586,7 @@
                     </p>
                 </div>
 
-                <div class="text-muted">
-                    Page:
+                <div class="text-muted" style="color: #000 !important;">
                     <span class="page"/>
                     /
                     <span class="topage"/>

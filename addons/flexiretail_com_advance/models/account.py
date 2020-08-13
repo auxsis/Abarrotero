@@ -90,4 +90,20 @@ class CashBoxOut(CashBox):
             })
         return res
 
+
+class AccountTax(models.Model):
+    _inherit = 'account.tax'
+
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        if 'filter_by_selected_company_id' in self._context:
+            return super(AccountTax, self).search(args=args+[('company_id', '=', self.env.user.company_id.id)], offset=offset, limit=limit, order=order, count=count)
+        return super(AccountTax, self).search(args=args, offset=offset, limit=limit, order=order, count=count)
+
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        if 'filter_by_selected_company_id' in self._context:
+            return super(AccountTax, self).name_search(name=name, args=args+[('company_id', '=', self.env.user.company_id.id)], operator=operator, limit=limit)
+        return super(AccountTax, self).name_search(name=name, args=args, operator=operator, limit=limit)
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

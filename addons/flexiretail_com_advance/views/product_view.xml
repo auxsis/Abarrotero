@@ -65,6 +65,9 @@
                     <label for="is_packaging"/>
                 </div>
             </field>
+            <field name="taxes_id" position="attributes">
+                <attribute name="context">{'filter_by_selected_company_id': 1}</attribute>
+            </field>
         </field>
     </record>
 
@@ -94,6 +97,9 @@
                     <field string="Expired" name="expired" widget="statinfo"/>
                 </button>
             </button>
+            <field name="taxes_id" position="attributes">
+                <attribute name="context">{'filter_by_selected_company_id': 1}</attribute>
+            </field>
         </field>
     </record>
 

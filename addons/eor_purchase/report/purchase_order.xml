@@ -403,7 +403,10 @@
                             <span t-field="doc.company_id.partner_id.zip"/>
                         </div>
                         <div>
-                            <span t-field="doc.company_id.rfc"/>
+                            RFC: <span t-field="doc.company_id.rfc"/>
+                        </div>
+                        <div>
+                            <span>Teléfono:</span>&#160;<span t-field="doc.company_id.phone"/>
                         </div>
                     </div>
                     <div class="col-4">
@@ -541,7 +544,11 @@
                         </tr>
                     </tbody>
                 </table>
-                <!--                <span t-field="o.note"/>-->
+
+<!--                <div class="row" style="text-align:center; font-style: italic">-->
+<!--                    <t t-esc="o.note"/>-->
+<!--                </div>-->
+
                 <div class="separator-space-20">
                     <table id="devolution-table">
                         <thead>
@@ -634,12 +641,12 @@
                     <span t-field="doc.name"/>
                 </div>
             </h2>
-            <h5 style="display: inline-block; width: 50%; text-align: right;">
+            <h2 style="display: inline-block; width: 50%; text-align: right;">
                 <div t-if="doc.intercompany_transfer_id">
-                    <strong>Ref ICT:</strong>
+<!--                    <strong>Ref ICT:</strong>-->
                     <span t-field="doc.intercompany_transfer_id"/>
                 </div>
-            </h5>
+            </h2>
         </div>
 
         <div class="article o_report_layout_standard">
