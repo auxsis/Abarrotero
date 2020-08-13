@@ -402,7 +402,7 @@
                 </table>
                 <div class="row" style="width: 100%; margin-left: 2px">
                     <div style="width: 70%;">
-                        <p>Observaciones:</p>
+                        <p><b>Observaciones:</b></p>
                     </div>
                     <div style="width: 30%;">
                         <div name="total">
