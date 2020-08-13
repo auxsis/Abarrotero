@@ -440,7 +440,7 @@
                                             <strong>Total</strong>
                                         </td>
                                         <td class="text-right">
-                                            <span t-field="doc.amount_total"/>
+                                            <strong><span t-field="doc.amount_total"/></strong>
                                         </td>
                                     </tr>
                                 </table>
