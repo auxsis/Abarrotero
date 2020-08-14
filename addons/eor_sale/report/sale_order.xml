@@ -11,7 +11,6 @@
     </template>
     <template id="report_saleorder_document">
         <t t-call="eor_sale.sale_external_layout">
-
             <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
             <div class="page" style="padding-top: 10px; border-top: 1px solid black; font-size:14px;">
                 <style>
@@ -27,7 +26,6 @@
                     <div class="row">
                         <!--INFORMACIÓN DE EMPRESA-->
                         <div class="col-4">
-
                             <div>
                                 <strong t-field="doc.company_id.partner_id.name"/>
                             </div>
@@ -273,6 +271,7 @@
                 }
                 .page {
                     font-family: Arial, Verdana, sans-serif !important;
+                    font-size: 12px !important;
                 }
                 .page *{
                     font-family: inherit !important;
@@ -280,7 +279,7 @@
 
             </style>
             <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
-            <div class="page" style="padding-top: 10px; border-top: 1px solid black; font-size:14px;">
+            <div class="page" style="padding-top: 22px;font-size:14px;">
                 <div class="oe_structure"/>
                 <div class="row">
                     <!--INFORMACIÓN DE EMPRESA-->
@@ -304,10 +303,10 @@
                             RFC: <span t-field="doc.company_id.rfc"/>
                         </div>
                         <div>
-                            <span>Teléfono:</span>&#160;<span t-field="doc.company_id.phone"/>
+                            <span>Tels:</span>&#160;<span t-field="doc.company_id.phone"/>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <div t-if="doc.date_order">
                             <strong>Fecha de venta:</strong>
                             <p t-field="doc.date_order"/>
@@ -318,7 +317,7 @@
                         </div>
                     </div>
                     <!--ATENCIÓN Y DIRECCIÓN DE ENVIO-->
-                    <div class="col-4">
+                    <div class="col-5">
                         <strong>Cliente:</strong>
                         <div t-field="doc.partner_id"
                              t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True, "phone_icons": False}'/>
@@ -327,6 +326,7 @@
                         </p>
                     </div>
                 </div>
+                <br/>
                 <table class="table table-sm">
                     <thead>
                         <tr>
@@ -381,73 +381,78 @@
                             </tr>
                         </t>
                         <tr>
-                            <td>Artículos:
+                            <td colspan="2">Artículos:
                                 <b>
                                     <t t-esc="len(doc.order_line)"/>
                                 </b>
+                                <br/>
+                                <br/>
+                                <p>
+                                    <b>Observaciones:</b>
+                                </p>
                             </td>
-                            <td>Unidades:
+                            <td colspan="2">Unidades:
                                 <b>
-                                    <t t-esc="sum(doc.mapped('order_line.product_uom_qty'))"/>
+                                    <t t-esc="'{:10.2f}'.format(sum(doc.mapped('order_line.product_uom_qty')))"/>
                                 </b>
                             </td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>
+                                <div name="total">
+                                    <div>
+                                        <table class="table table-sm">
+                                            <tr class="border-black" style="border-bottom:1px solid #dddddd;">
+                                                <td>
+                                                    <strong>Subtotal</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="doc.amount_untaxed"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom:1px solid #dddddd;">
+                                                <td>
+                                                    <span>Impuestos</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="doc.amount_tax"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom:1px solid #dddddd;">
+                                                <td>
+                                                    <span>Cargo por Traspaso(</span>
+                                                    <span t-field="doc.transfer_fee_id"/>
+                                                    <span>%)</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="doc.amount_transfer_fee"
+                                                          t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
+                                                </td>
+                                            </tr>
+                                            <tr class="border-black">
+                                                <td>
+                                                    <strong>Total</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <strong><span t-field="doc.amount_total"/></strong>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="row" style="width: 100%; margin-left: 2px">
-                    <div style="width: 70%;">
-                        <p><b>Observaciones:</b></p>
-                    </div>
-                    <div style="width: 30%;">
-                        <div name="total">
-                            <div>
-                                <table class="table table-sm">
-                                    <tr class="border-black" style="border-bottom:1px solid #dddddd;">
-                                        <td>
-                                            <strong>Subtotal</strong>
-                                        </td>
-                                        <td class="text-right">
-                                            <span t-field="doc.amount_untaxed"/>
-                                        </td>
-                                    </tr>
-                                    <tr style="border-bottom:1px solid #dddddd;">
-                                        <td>
-                                            <span>Impuestos</span>
-                                        </td>
-                                        <td class="text-right">
-                                            <span t-field="doc.amount_tax"/>
-                                        </td>
-                                    </tr>
-                                    <tr style="border-bottom:1px solid #dddddd;">
-                                        <td>
-                                            <span>Cargo por Traspaso(</span>
-                                            <span t-field="doc.transfer_fee_id"/>
-                                            <span>%)</span>
-                                        </td>
-                                        <td class="text-right">
-                                            <span t-field="doc.amount_transfer_fee"
-                                                  t-options="{'widget': 'monetary', 'display_currency': doc.company_id.currency_id}"/>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-black">
-                                        <td>
-                                            <strong>Total</strong>
-                                        </td>
-                                        <td class="text-right">
-                                            <strong><span t-field="doc.amount_total"/></strong>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="row" style="width: 100%; margin-left: 2px; padding-top: 0 !important;">-->
+<!--                    <div style="width: 70%;">-->
+<!--                        <p><b>Observaciones:</b></p>-->
+<!--                    </div>-->
+<!--                    <div style="width: 30%;">-->
+<!--                       0 Aquí estaban los totales-->
+<!--                    </div>-->
+<!--                </div>-->
 <!--                <span t-field="doc.note"/>-->
                 <div class="row" style="text-align:center; font-style: italic">
                     <t t-esc="doc.note"/>
@@ -545,28 +550,33 @@
         <t t-if="not o or not 'company_id' in o">
             <t t-set="company" t-value="res_company"></t>
         </t>
-        <div class="header">
+        <div class="header" style="float: left;width: 100%; margin-bottom: 10px;border-bottom: 1px solid black;">
             <!--EMPIEZA LOGO-->
-            <div style="display: inline-block">
+            <div style="float: left;width: 18%">
                 <img t-if="doc.company_id.logo"
                      t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)"
-                     style="max-height: 130px;max-width:130px;"/>
+                     style="max-height: 135px;max-width:135px;"/>
             </div>
             <!--TERMINA LOGO-->
-            <h2 style="display: inline-block; width: 33.33333%;">
-                <div t-if="doc.date_order">
-                    <span>Pedido #:</span>
-                    <span t-field="doc.name"/>
+            <div style="float: left;width: 81.99%;">
+                <div style="display: inline-block;width: 100%;">
+                    <div style="width: 100%;height: 13px; padding: 13px;background-color: transparent"> </div>
+                    <h2 style="display: inline-block;width: 50%;">
+                        <div t-if="doc.date_order" style="padding-left:10px;">
+                            <span> Pedido #:</span>
+                            <span t-field="doc.name"/>
+                        </div>
+                    </h2>
+                    <h2 style="display: inline-block;width: 49%;text-align: right;">
+        <!--            <h5 style="display: inline-block; width: 50%; text-align: right;">-->
+                        <div t-if="doc.intercompany_transfer_id" style="">
+        <!--                    <strong>Ref ICT:</strong>-->
+                            <p t-field="doc.intercompany_transfer_id"/>
+                        </div>
+        <!--            </h5>-->
+                    </h2>
                 </div>
-            </h2>
-            <h2 style="display: inline-block; width: 50%;text-align: right;">
-<!--            <h5 style="display: inline-block; width: 50%; text-align: right;">-->
-                <div t-if="doc.intercompany_transfer_id">
-<!--                    <strong>Ref ICT:</strong>-->
-                    <p t-field="doc.intercompany_transfer_id"/>
-                </div>
-<!--            </h5>-->
-            </h2>
+            </div>
         </div>
 
         <div class="article o_report_layout_standard">
@@ -586,7 +596,7 @@
                     </p>
                 </div>
 
-                <div class="text-muted" style="color: #000 !important;">
+                <div class="text-muted" style="color: #000 !important;font-size:11px;">
                     <span class="page"/>
                     /
                     <span class="topage"/>
