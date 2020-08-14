@@ -443,11 +443,15 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td colspan="10" style="border: none;text-align:center;">
+                                <span class="" style="font-style: italic">
+                                    <t t-esc="doc.note"/>
+                                </span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                <span class="row" style="text-align:center; font-style: italic">
-                    <t t-esc="doc.note"/>
-                </span>
                 <div class="separator-space-20">
                     <table id="devolution-table">
                         <thead>
