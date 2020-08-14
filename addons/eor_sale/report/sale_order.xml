@@ -444,7 +444,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="10" style="border: none;text-align:center;">
+                            <td colspan="10" style="border: none;text-align:center;padding: 5px">
                                 <span class="" style="font-style: italic">
                                     <t t-esc="doc.note"/>
                                 </span>
@@ -517,19 +517,38 @@
                             </td>
                         </tr>
                     </table>
-                    <article class="separator-space-20">
-                        <h6 class="text-center">RECIBÍ DE CONFORMIDAD</h6>
-                        <p>Debo(emos) y por este pagaré me(nos) obligo(amos) a pagar a la vista incondicionalmente a la
-                            orden de Grupo Abarrotero Guererrense, S.A. de
-                            C.V. la cantidad de: <b>$_________________ (_________________________________________/100
-                                M.N.</b>) valor de la mercancía que he(mos)
-                            recibido de conformidad el <b>______/_________/___________</b>.
-                        </p>
-                    </article>
-                    <div class="text-center separator-space-20">
-                        <p>_______________________________________<br/>NOMBRE Y FIRMA ENCARGADO(A)
-                        </p>
-                    </div>
+                    <t t-if="len(doc.order_line) > 6">
+                        <div style="page-break-after: always"></div>
+                        <div style="padding: 30px;"> </div>
+                        <article class="separator-space">
+                            <h6 class="text-center">RECIBÍ DE CONFORMIDAD</h6>
+                            <p>Debo(emos) y por este pagaré me(nos) obligo(amos) a pagar a la vista incondicionalmente a la
+                                orden de Grupo Abarrotero Guererrense, S.A. de
+                                C.V. la cantidad de: <b>$_________________ (_________________________________________/100
+                                    M.N.</b>) valor de la mercancía que he(mos)
+                                recibido de conformidad el <b>______/_________/___________</b>.
+                            </p>
+                        </article>
+                        <div class="text-center separator-space-20">
+                            <p>_______________________________________<br/>NOMBRE Y FIRMA ENCARGADO(A)
+                            </p>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <article class="separator-space-20">
+                            <h6 class="text-center">RECIBÍ DE CONFORMIDAD</h6>
+                            <p>Debo(emos) y por este pagaré me(nos) obligo(amos) a pagar a la vista incondicionalmente a la
+                                orden de Grupo Abarrotero Guererrense, S.A. de
+                                C.V. la cantidad de: <b>$_________________ (_________________________________________/100
+                                    M.N.</b>) valor de la mercancía que he(mos)
+                                recibido de conformidad el <b>______/_________/___________</b>.
+                            </p>
+                        </article>
+                        <div class="text-center separator-space-20">
+                            <p>_______________________________________<br/>NOMBRE Y FIRMA ENCARGADO(A)
+                            </p>
+                        </div>
+                    </t>
                 </div>
             </div>
         </t>
