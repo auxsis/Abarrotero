@@ -5,6 +5,18 @@
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="discount_purchase_order.inherit_purchase_order_form_view"/>
         <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree//field[@name='date_planned']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree//field[@name='name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree//field[@name='company_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom']" position="attributes">
+                    <attribute name="string">UdM</attribute>
+                </xpath>
                 <field name="partner_ref" position="after">
                     <field name="x_document_type"/>
                 </field>

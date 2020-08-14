@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="report_purchasequotation_document" inherit_id="purchase_stock.report_purchasequotation_document">
+    <data>
+        <template id="report_purchasequotation_document" inherit_id="purchase_stock.report_purchasequotation_document">
         <xpath expr="//t[@t-call='web.external_layout']" position="replace">
-            <t t-call="web.external_layout">
-                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <t t-call="eor_purchase.purchase_external_layout">
+                <t t-set="doc" t-value="o.with_context(lang=o.partner_id.lang)"/>
                 <style>
                     .page {
                     font-family: Arial, Verdana, sans-serif !important;
@@ -14,7 +15,7 @@
 
                 </style>
                 <div class="page" style="font-family: Arial;">
-                    <h2>Solicitud de Presupuesto <span t-field="o.name"/></h2>
+                    <h2 style="color: #5d8eaa;">Solicitud de Presupuesto <span t-field="o.name"/></h2>
                     <table style="width: 100%; margin-bottom: 20px;">
                         <tbody>
                             <tr style="font-size: 14px;">
@@ -73,4 +74,9 @@
             </t>
         </xpath>
     </template>
+
+        <record id="purchase.report_purchase_quotation" model="ir.actions.report">
+            <field name="paperformat_id" ref="eor_purchase.eor_purchase_paperformat"/>
+        </record>
+    </data>
 </odoo>

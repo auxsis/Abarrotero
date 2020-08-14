@@ -56,8 +56,7 @@
             </style>
             <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
             <div class="page"
-                 style="padding-top: 10px; border-top: 1px solid black; font-size:14px;">
-                <div class="oe_structure"/>
+                 style="font-size:14px;">
                 <div class="row">
                     <h2>
                         <span>Orden de Compra #</span>
@@ -252,7 +251,7 @@
                                                     <strong>Total</strong>
                                                 </td>
                                                 <td class="text-right">
-                                                    <span t-field="doc.amount_total"/>
+                                                    <strong t-field="doc.amount_total"/>
                                                 </td>
                                             </tr>
                                         </table>
@@ -274,20 +273,25 @@
             </div>
         </t>
     </template>
+
+    <record id="purchase.action_report_purchase_order" model="ir.actions.report">
+        <field name="paperformat_id" ref="eor_purchase.eor_purchase_paperformat"/>
+    </record>
+
     <template id="purchase_external_layout">
-        <div class="header">
+        <div class="header" style="font-family: Arial, Verdana, sans-serif !important; font-size: 12px;">
             <!--EMPIEZA LOGO-->
-            <table width="100%">
+            <table width="100%" style="border-bottom: 1px solid #a8c3d2; padding-bottom: 8px;">
                 <tbody>
                     <tr>
-                        <td width="25%">
+                        <td width="15%" style="vertical-align: middle;">
                             <div>
                                 <img t-if="doc.company_id.logo"
                                      t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)"
-                                     style="max-height: 200px;max-width:200px;"/>
+                                     style="max-width:100%"/>
                             </div>
                         </td>
-                        <td>
+                        <td style="padding-left: 16px;">
                             <div>
                                 <div>
                                     <strong><span t-field="doc.company_id.name"/></strong>
@@ -305,7 +309,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td style="padding-left: 16px;" width="70%;">
                             <div>
                                 <div t-if="doc.partner_id">
                                     <strong>Proveedor:</strong>
@@ -324,10 +328,9 @@
             <t t-raw="0"/>
         </div>
 
-        <div class="footer">
-            <div class="text-center" style="border-top: 1px solid black;">
-                <div class="text-muted">
-                    Page:
+        <div class="footer" style="font-family: Arial, Verdana, sans-serif !important; font-size: 12px;">
+            <div class="text-center" >
+                <div class="text-muted" style="padding-top: 32px; border-top: 1px solid #a8c3d2; color: black;">
                     <span class="page"/>
                     /
                     <span class="topage"/>
@@ -675,4 +678,20 @@
             </div>
         </div>
     </template>
+
+    <record id="eor_purchase_paperformat" model="report.paperformat">
+        <field name="name">EOR Purchase Letter</field>
+        <field name="default" eval="True"/>
+        <field name="format">Letter</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">25</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
 </odoo>
