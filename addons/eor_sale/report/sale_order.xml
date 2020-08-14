@@ -445,18 +445,9 @@
                         </tr>
                     </tbody>
                 </table>
-<!--                <div class="row" style="width: 100%; margin-left: 2px; padding-top: 0 !important;">-->
-<!--                    <div style="width: 70%;">-->
-<!--                        <p><b>Observaciones:</b></p>-->
-<!--                    </div>-->
-<!--                    <div style="width: 30%;">-->
-<!--                       0 Aquí estaban los totales-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <span t-field="doc.note"/>-->
-                <div class="row" style="text-align:center; font-style: italic">
+                <span class="row" style="text-align:center; font-style: italic">
                     <t t-esc="doc.note"/>
-                </div>
+                </span>
                 <div class="separator-space-20">
                     <table id="devolution-table">
                         <thead>
@@ -508,7 +499,7 @@
                             <td class="group_col">REPARTIDOR ALMACÉN CENTRAL</td>
                         </tr>
                     </table>
-                    <table class="separator-space group_row">
+                    <table class="separator-space-20 group_row">
                         <tr>
                             <td class="group_col">
                                 ______________________________________________
@@ -531,7 +522,7 @@
                             recibido de conformidad el <b>______/_________/___________</b>.
                         </p>
                     </article>
-                    <div class="text-center separator-space">
+                    <div class="text-center separator-space-20">
                         <p>_______________________________________<br/>NOMBRE Y FIRMA ENCARGADO(A)
                         </p>
                     </div>
