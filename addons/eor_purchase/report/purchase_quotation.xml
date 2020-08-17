@@ -29,7 +29,7 @@
                     <table class="table table-sm" style="font-size: 14px; line-height: 10px;">
                         <thead>
                             <tr>
-                                <th style="line-height: 14px;"><strong>Descripción</strong></th>
+                                <th style="line-height: 14px;"><strong>[Clave]Descripción</strong></th>
                                 <th class="text-right"><strong>Cant.</strong></th>
                                 <th class="text-center"><strong>Unidad</strong></th>
                                 <th class="text-center"><strong>Lote</strong></th>
@@ -49,17 +49,13 @@
                                 <td class="text-center">
                                     <span t-field="order_line.product_uom" groups="uom.group_uom"/>
                                 </td>
-                                <td>
-
-                                </td>
+                                <td></td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Artículos: <b><t t-esc="len(o.order_line)"/></b></td>
-                                <td class="text-right">Total Unidades: <b><t t-esc="total_qty"/></b></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td colspan="4">Total Unidades: <b><t t-esc="total_qty"
+                                                                             t-options="{'widget': 'float', 'precision': 2}"/></b></td>
                             </tr>
                         </tbody>
                     </table>

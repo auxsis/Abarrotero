@@ -307,7 +307,7 @@
                                      style="max-width:100%"/>
                             </div>
                         </td>
-                        <td style="padding-left: 16px;">
+                        <td style="padding-left: 16px;" width="40%;">
                             <div>
                                 <div>
                                     <strong><span t-field="doc.company_id.name"/></strong>
@@ -325,7 +325,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td style="padding-left: 16px;" width="70%;">
+                        <td style="padding-left: 16px;">
                             <div>
                                 <div t-if="doc.partner_id">
                                     <strong>Proveedor:</strong>
