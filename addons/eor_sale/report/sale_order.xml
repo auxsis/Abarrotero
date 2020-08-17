@@ -45,25 +45,31 @@
                                 <span>RFC:</span>&#160;<span t-field="doc.company_id.rfc"/>
                             </div>
                             <div>
-                                <span>Teléfono:</span>&#160;<span t-field="doc.company_id.phone"/>
+                                <span>Tels:</span>&#160;<span t-field="doc.company_id.phone"/>
                             </div>
                         </div>
-
                         <div class="col-4">
                             <div t-if="doc.date_order">
-                                <strong t-if="doc.state not in ['draft','sent']">Fecha de pedido:</strong>
+                                <strong>Cotizado el:</strong>
                                 <p t-field="doc.date_order"/>
                             </div>
                             <div t-if="doc.user_id.name">
-                                <strong>Vendedor:</strong>
+                                <strong>Atendió:</strong>
                                 <p t-field="doc.user_id"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div t-if="doc.partner_id">
+                                <strong>Con atención a:</strong>
+                                <p><strong t-field="doc.partner_id.name"/></p>
+                                <p t-field="doc.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
                             </div>
                         </div>
                     </div>
                     <br/>
                     <table class="table table-sm">
                         <thead>
-                            <tr>
+                            <tr class="border-black">
                                 <th class="text-left">Clave</th>
                                 <th class="text-left">Descripción</th>
                                 <th class="text-right">Cantidad</th>
@@ -197,30 +203,33 @@
             <t t-set="company" t-value="res_company"></t>
         </t>
         <div class="header">
-            <div class="row">
-                <div class="col-2">
-                    <img t-if="doc.company_id.logo"
-                         t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)"
-                         style="max-height: 130px;max-width:130px;"/>
-                </div>
-                <div class="col-4">
-                    <h3 class="text-left" style="display:inline-block;">
-                            <span>Pedido #:</span>
-                            <span t-field="doc.name"/>
-                    </h3>
-                </div>
-                <div class="col-6 text-right mt8" style="font-size:14px;">
-                    <ul class="list-inline">
-                        <li class="list-inline-item">
-                            <span class="page"/>
-                        </li>
-                        <li class="list-inline-item">/</li>
-                        <li class="list-inline-item">
-                            <span class="topage"/>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <table width="100%">
+                <tr>
+                    <td>
+                        <img t-if="doc.company_id.logo"
+                             t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)"
+                             style="max-height:130px;max-width:130px;"/>
+                    </td>
+                    <td width="75%" style="vertical-align:bottom;line-height:80%;">
+                        <span style="font-size:30px;">
+                                <span t-if="doc.state in ['draft']">Cotización #:</span>
+                                <span t-if="doc.state in ['sent','sale']">Pedido #:</span>
+                                <span t-field="doc.name"/>
+                        </span>
+                    </td>
+                    <td class="text-right" style="font-size:14px;vertical-align:bottom;">
+                        <ul style="display:inline;">
+                            <li style="display:inline;">
+                                <span class="page"/>
+                            </li>
+                            <li style="display:inline;">/</li>
+                            <li style="display:inline;">
+                                <span class="topage"/>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="article o_report_layout_standard">
@@ -229,7 +238,7 @@
 
         <div class="footer text-center">
             <br/>
-            <span style="font-size:14px; font-style: italic;">¡ Gracias por su preferencia, vuelva pronto !</span>
+            <span style="font-size:14px; font-style: italic;"><b>¡ Gracias por su preferencia, vuelva pronto !</b></span>
         </div>
     </template>
     <template id="report_saleorder_itc_document">
