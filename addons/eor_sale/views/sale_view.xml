@@ -22,10 +22,54 @@
                 <field name="price_unit_tax" />
                 <field name="precio_x_pieza" />
             </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom']" position="after">
+                <field name="pricelist_id" string="LP"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_total']" position="attributes">
+                <attribute name="string">Importe</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field[@name='note']" position="replace">
+                <label for="x_obervaciones" string="Observaciones" class="d-block"/>
+                <field name="x_obervaciones" class="oe_inline"/>
+                <label for="note" class="d-block"/>
+                <field name="note" class="oe_inline"/>
+            </xpath>
             <xpath expr="//field[@name='amount_tax']" position="replace">
                 <field name="taxes_widget" widget="taxes" options="{'digits': 'Product Price'}"/>
                 <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}" string="Total impuestos"/>
             </xpath>
         </field>
     </record>
+
+    <record id="action_quotations_with_onboarding" model="ir.actions.act_window">
+        <field name="name">Cotizaciones</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="context">{'search_default_my_quotation': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Cree una cotización nueva, el primer paso para una nueva venta.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_sale_quotations"
+              action="action_quotations_with_onboarding"
+              parent="sale.sale_order_menu"
+              sequence="1" groups="sales_team.group_sale_salesman"/>
+
+    <record id="sale.menu_sale_quotations" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
 </odoo>
