@@ -40,6 +40,14 @@ class SaleOrder(models.Model):
         return taxes_vals
 
     taxes_widget = fields.Text(compute="_compute_taxes_widget", string="Impuestos")
+    state = fields.Selection([
+        ('draft', u'Cotización'),
+        ('sent', u'Cotización Enviada'),
+        ('sale', 'Sales Order'),
+        ('done', 'Locked'),
+        ('cancel', 'Cancelled'),
+        ], string='Status', readonly=True, copy=False, index=True, track_visibility='onchange', track_sequence=3, default='draft')
+    x_obervaciones = fields.Text('Observaciones')
 
 
 class SaleOrderLine(models.Model):
@@ -67,3 +75,5 @@ class SaleOrderLine(models.Model):
     stock_disponible = fields.Float(string="Stock disponible", compute="_compute_stock_available")
     precio_x_pieza = fields.Monetary(string='Precio por pieza', compute='_compute_price')
     price_unit_tax = fields.Float(compute='_compute_price', string="Precio Neto")
+    pricelist_id = fields.Many2one('product.pricelist', string='Lista de Precio')
+
