@@ -47,7 +47,7 @@
         <field name="inherit_id" ref="account.invoice_supplier_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='amount_tax_signed']" position="after">
-                <field name="total_extra_discount"/>
+                <field name="total_extra_discount" string="Descuentos Extra" sum="Total Descuento Extra"/>
             </xpath>
         </field>
     </record>

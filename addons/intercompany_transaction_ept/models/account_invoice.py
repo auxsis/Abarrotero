@@ -6,10 +6,11 @@ class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
     _description = 'Account Invoice'
 
-        
+
     intercompany_transfer_id = fields.Many2one('inter.company.transfer.ept', string="ICT", copy=False)
     transfer_fee_id = fields.Float("Costo de Transf. (%)", related="intercompany_transfer_id.transfer_fee")
     amount_transfer_fee = fields.Float("Monto Costo de Transf.", compute='_compute_amount')
+    amount_taxed = fields.Float(string="Subtotal", compute="_compute_amount")
 
     @api.model
     def create(self, vals):
@@ -30,9 +31,10 @@ class AccountInvoice(models.Model):
         sign = self.type in ['in_refund', 'out_refund'] and -1 or 1
         amount_tranfer = self.amount_total * (self.transfer_fee_id/100)
         self.update({
+            'amount_taxed': self.amount_untaxed_invoice_signed + self.amount_tax_signed,
             'amount_transfer_fee': amount_tranfer,
             'amount_total': self.amount_total + amount_tranfer,
-            'amount_total_signed': self.amount_total_signed + amount_tranfer * sign,
+            'amount_total_signed': (self.amount_total + amount_tranfer) * sign,
         })
 
     @api.multi
@@ -41,6 +43,7 @@ class AccountInvoice(models.Model):
         for invoice in invoices:
             invoice._compute_amount()
             print("Invoice id: %s updated" % [invoice.id])
+        # self._compute_amount()
 
     @api.multi
     def finalize_invoice_move_lines(self, move_lines):
