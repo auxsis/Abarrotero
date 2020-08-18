@@ -407,8 +407,7 @@
                                 </b>
                             </td>
                             <td></td>
-                            <td></td>
-                            <td colspan="3" rowspan="2">
+                            <td colspan="4" rowspan="2">
                                 <div name="total">
                                     <div>
                                         <table class="table table-sm">
@@ -453,9 +452,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5" style="border:none; line-height:100%">
+                            <td colspan="4" style="border:none; line-height:100%">
                                 <p>
                                     <b>Observaciones:</b>
+                                    <span t-field="doc.x_obervaciones"/>
                                 </p>
                             </td>
                         </tr>
