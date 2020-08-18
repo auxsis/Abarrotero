@@ -23,7 +23,7 @@
                 <field name="precio_x_pieza" />
             </xpath>
             <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom']" position="after">
-                <field name="pricelist_id" string="LP"/>
+                <field name="pricelist_id" string="LP" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='order_line']/tree/field[@name='price_total']" position="attributes">
                 <attribute name="string">Importe</attribute>
