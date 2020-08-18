@@ -73,17 +73,15 @@
             <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>
             <div class="page"
                  style="font-size:14px;">
-                <div class="row">
-                    <h2>
-                        <span>Orden de Compra #</span>
-                        <span t-field="doc.name"/>
-                    </h2>
-                </div>
+                <h2>
+                    <span>Orden de Compra #</span>
+                    <span t-field="doc.name"/>
+                </h2>
                 <table style="width: 100%;">
                     <tbody>
-                        <tr style="font-size: 14px;">
+                        <tr style="font-size:0.90em;">
                             <td>
-                                <b>Ref.de Presupuesto:</b>
+                                <b>Ref. de Presupuesto:</b>
                                 <br/>
                                 <span t-field="o.name"/>
                             </td>
@@ -107,7 +105,7 @@
                 </table>
                 <table class="table table-sm separator-space-20">
                     <thead>
-                        <tr style="line-height: 14px;">
+                        <tr style="line-height: 14px;font-size:0.90em;">
                             <th>
                                 <strong>Descripción</strong>
                             </th>
@@ -139,7 +137,7 @@
                     </thead>
                     <tbody>
                         <t t-set="total_discount" t-value="0.0"/>
-                        <tr t-foreach="o.order_line" t-as="line">
+                        <tr t-foreach="o.order_line" t-as="line" style="font-size:0.90em;">
                             <t t-if="line.desc1 > 0.0 and line.desc2 > 0.0">
                                 <t t-set="total_discount"
                                    t-value="total_discount + (line.line_sub_total - (line.line_sub_total * (1.0 - line.desc1 / 100.0) * (1.0 - line.desc2 / 100.0)))"/>
@@ -187,100 +185,96 @@
                                     <t t-esc="len(doc.order_line)"/>
                                 </b>
                             </td>
-                            <td>Unidades:
+                            <td colspan="3">Unidades:
                                 <b>
-                                    <t t-esc="sum(doc.mapped('order_line.product_uom_qty'))"/>
+                                    <t t-esc="sum(doc.mapped('order_line.product_uom_qty'))"
+                                       t-options="{'widget': 'float', 'precision': 2}"/>
                                 </b>
                             </td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td colspan="3" rowspan="2">
-                                <div name="total">
-                                    <div>
-                                        <table class="table table-sm">
-                                            <tr>
-                                                <td>
-                                                    <span>Total de Descuentos por Líneas</span>
-                                                </td>
-                                                <td class="text-right">
-                                                    <span t-field="doc.total_desc"
-                                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                                </td>
-                                            </tr>
-                                            <tr class="border-black" style="border-bottom:1px solid #dddddd;">
-                                                <td>
-                                                    <strong>Subtotal</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <span t-field="doc.amount_untaxed"/>
-                                                </td>
-                                            </tr>
-                                            <tr style="border-bottom:1px solid #dddddd;">
-                                                <td>
-                                                    <span>Impuestos</span>
-                                                </td>
-                                                <td class="text-right">
-                                                    <span t-field="doc.amount_tax"/>
-                                                </td>
-                                            </tr>
-                                            <tr style="border-bottom:1px solid #dddddd;"
-                                                t-if="o.monto_desc_maniobra > 0">
-                                                <td style="padding: 5px; border: none;">
-                                                    <span>Desc. Maniobra:</span>
-                                                </td>
-                                                <td style="padding: 5px; border: none;" class="text-right">
-                                                    <span t-field="o.monto_desc_maniobra"
-                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                                </td>
-                                            </tr>
-                                            <tr style="border-bottom:1px solid #dddddd;" t-if="o.monto_desc_flete > 0">
-                                                <td style="padding: 5px; border: none;">
-                                                    <span>Desc. Flete:</span>
-                                                </td>
-                                                <td style="padding: 5px; border: none;" class="text-right">
-                                                    <span t-field="o.monto_desc_flete"
-                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                                </td>
-                                            </tr>
-                                            <tr style="border-bottom:1px solid #dddddd;" t-if="o.monto_desc_planes > 0">
-                                                <td style="padding: 5px; border: none;">
-                                                    <span>Desc. Planes:</span>
-                                                </td>
-                                                <td style="padding: 5px; border: none;" class="text-right">
-                                                    <span t-field="o.monto_desc_planes"
-                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                                </td>
-                                            </tr>
-                                            <tr t-if="o.total_discount > 0.0" class="border-black">
-                                                <td style="padding: 5px; border: none;">
-                                                    <strong>Descuento Total:</strong>
-                                                </td>
-                                                <td style="padding: 5px; border: none;" class="text-right">
-                                                    <span t-field="o.total_discount"
-                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                                </td>
-                                            </tr>
-                                            <tr class="border-black">
-                                                <td>
-                                                    <strong>Total</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <strong t-field="doc.amount_total"/>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
+                            <td colspan="3" style="font-size:0.85em;">
+                                <i><span>Total de Descuentos por Líneas</span></i>
+                            </td>
+                            <td class="text-right" style="font-size:0.85em;">
+                                <i><span t-field="doc.total_desc"
+                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></i>
                             </td>
                         </tr>
                         <tr>
-                            <td style="border-top: none !important;" colspan="5">
-                                <p t-if="o.observations">
+                            <td style="border-top: none !important;" colspan="6">
+                                <p>
                                     <strong>Observaciones:</strong>
                                     <span t-field="doc.observations"/>
                                 </p>
+                                <p>
+                                    <strong>Términos y condiciones:</strong>
+                                    <span t-field="doc.notes"/>
+                                </p>
+                            </td>
+                            <td colspan="3" style="font-size:0.90em;">
+                                <table class="table table-sm">
+                                    <tr class="border-black" style="border-bottom:1px solid #dddddd;">
+                                        <td>
+                                            <strong>Subtotal</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="doc.amount_untaxed"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom:1px solid #dddddd;">
+                                        <td>
+                                            <span>Impuestos</span>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="doc.amount_tax"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom:1px solid #dddddd;"
+                                        t-if="o.monto_desc_maniobra > 0">
+                                        <td style="padding: 5px; border: none;">
+                                            <span>Desc. Maniobra:</span>
+                                        </td>
+                                        <td style="padding: 5px; border: none;" class="text-right">
+                                            <span t-field="o.monto_desc_maniobra"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom:1px solid #dddddd;" t-if="o.monto_desc_flete > 0">
+                                        <td style="padding: 5px; border: none;">
+                                            <span>Desc. Flete:</span>
+                                        </td>
+                                        <td style="padding: 5px; border: none;" class="text-right">
+                                            <span t-field="o.monto_desc_flete"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom:1px solid #dddddd;" t-if="o.monto_desc_planes > 0">
+                                        <td style="padding: 5px; border: none;">
+                                            <span>Desc. Planes:</span>
+                                        </td>
+                                        <td style="padding: 5px; border: none;" class="text-right">
+                                            <span t-field="o.monto_desc_planes"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="o.total_discount > 0.0" class="border-black">
+                                        <td style="padding: 5px; border: none;">
+                                            <strong>Descuento Total:</strong>
+                                        </td>
+                                        <td style="padding: 5px; border: none;" class="text-right">
+                                            <span t-field="o.total_discount"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-black">
+                                        <td>
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <strong t-field="doc.amount_total"/>
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
                     </tbody>
@@ -307,7 +301,7 @@
                                      style="max-width:100%"/>
                             </div>
                         </td>
-                        <td style="padding-left: 16px;">
+                        <td style="padding-left: 16px;" width="40%;">
                             <div>
                                 <div>
                                     <strong><span t-field="doc.company_id.name"/></strong>
@@ -325,7 +319,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td style="padding-left: 16px;" width="70%;">
+                        <td style="padding-left: 16px;">
                             <div>
                                 <div t-if="doc.partner_id">
                                     <strong>Proveedor:</strong>

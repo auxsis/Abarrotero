@@ -45,25 +45,31 @@
                                 <span>RFC:</span>&#160;<span t-field="doc.company_id.rfc"/>
                             </div>
                             <div>
-                                <span>Teléfono:</span>&#160;<span t-field="doc.company_id.phone"/>
+                                <span>Tels:</span>&#160;<span t-field="doc.company_id.phone"/>
                             </div>
                         </div>
-
                         <div class="col-4">
                             <div t-if="doc.date_order">
-                                <strong t-if="doc.state not in ['draft','sent']">Fecha de pedido:</strong>
+                                <strong>Cotizado el:</strong>
                                 <p t-field="doc.date_order"/>
                             </div>
                             <div t-if="doc.user_id.name">
-                                <strong>Vendedor:</strong>
+                                <strong>Atendió:</strong>
                                 <p t-field="doc.user_id"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div t-if="doc.partner_id">
+                                <strong>Con atención a:</strong>
+                                <p><strong t-field="doc.partner_id.name"/></p>
+                                <p t-field="doc.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
                             </div>
                         </div>
                     </div>
                     <br/>
                     <table class="table table-sm">
                         <thead>
-                            <tr>
+                            <tr class="border-black">
                                 <th class="text-left">Clave</th>
                                 <th class="text-left">Descripción</th>
                                 <th class="text-right">Cantidad</th>
@@ -197,30 +203,33 @@
             <t t-set="company" t-value="res_company"></t>
         </t>
         <div class="header">
-            <div class="row">
-                <div class="col-2">
-                    <img t-if="doc.company_id.logo"
-                         t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)"
-                         style="max-height: 130px;max-width:130px;"/>
-                </div>
-                <div class="col-4">
-                    <h3 class="text-left" style="display:inline-block;">
-                            <span>Pedido #:</span>
-                            <span t-field="doc.name"/>
-                    </h3>
-                </div>
-                <div class="col-6 text-right mt8" style="font-size:14px;">
-                    <ul class="list-inline">
-                        <li class="list-inline-item">
-                            <span class="page"/>
-                        </li>
-                        <li class="list-inline-item">/</li>
-                        <li class="list-inline-item">
-                            <span class="topage"/>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <table width="100%">
+                <tr>
+                    <td>
+                        <img t-if="doc.company_id.logo"
+                             t-att-src="'data:image/png;base64,%s' % to_text(doc.company_id.logo)"
+                             style="max-height:130px;max-width:130px;"/>
+                    </td>
+                    <td width="75%" style="vertical-align:bottom;line-height:80%;">
+                        <span style="font-size:30px;">
+                                <span t-if="doc.state in ['draft']">Cotización #:</span>
+                                <span t-if="doc.state in ['sent','sale']">Pedido #:</span>
+                                <span t-field="doc.name"/>
+                        </span>
+                    </td>
+                    <td class="text-right" style="font-size:14px;vertical-align:bottom;">
+                        <ul style="display:inline;">
+                            <li style="display:inline;">
+                                <span class="page"/>
+                            </li>
+                            <li style="display:inline;">/</li>
+                            <li style="display:inline;">
+                                <span class="topage"/>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="article o_report_layout_standard">
@@ -229,7 +238,7 @@
 
         <div class="footer text-center">
             <br/>
-            <span style="font-size:14px; font-style: italic;">¡ Gracias por su preferencia, vuelva pronto !</span>
+            <span style="font-size:14px; font-style: italic;"><b>¡ Gracias por su preferencia, vuelva pronto !</b></span>
         </div>
     </template>
     <template id="report_saleorder_itc_document">
@@ -263,6 +272,13 @@
                 width:50%;
                 text-align:center;
                 }
+                .line-spacing-80 td{
+                line-height:80%;
+                }
+                .border-head th{
+                border-bottom:1px solid black !important;
+                border-top:1px solid black !important;
+                }
                 .separator-space{
                 margin-top:50px;
                 }
@@ -287,24 +303,24 @@
                         <div>
                             <span t-field="doc.company_id.partner_id.name"/>
                         </div>
-                        <div>
-                            <span t-field="doc.company_id.partner_id.street"/>
-                            <span t-field="doc.company_id.partner_id.street2"/>
-                        </div>
-                        <div>
-                            <span t-field="doc.company_id.partner_id.city"/>,
-                            <span t-field="doc.company_id.partner_id.state_id"/>
-                        </div>
-                        <div>
-                            <span t-field="doc.company_id.partner_id.country_id"/>
-                            <span t-field="doc.company_id.partner_id.zip"/>
-                        </div>
-                        <div>
-                            RFC: <span t-field="doc.company_id.rfc"/>
-                        </div>
-                        <div>
-                            <span>Tels:</span>&#160;<span t-field="doc.company_id.phone"/>
-                        </div>
+<!--                        <div>-->
+<!--                            <span t-field="doc.company_id.partner_id.street"/>-->
+<!--                            <span t-field="doc.company_id.partner_id.street2"/>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <span t-field="doc.company_id.partner_id.city"/>,-->
+<!--                            <span t-field="doc.company_id.partner_id.state_id"/>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <span t-field="doc.company_id.partner_id.country_id"/>-->
+<!--                            <span t-field="doc.company_id.partner_id.zip"/>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            RFC: <span t-field="doc.company_id.rfc"/>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <span>Tels:</span>&#160;<span t-field="doc.company_id.phone"/>-->
+<!--                        </div>-->
                     </div>
                     <div class="col-3">
                         <div t-if="doc.date_order">
@@ -318,20 +334,19 @@
                     </div>
                     <!--ATENCIÓN Y DIRECCIÓN DE ENVIO-->
                     <div class="col-5">
-                        <strong>Cliente:</strong>
-                        <div t-field="doc.partner_id"
-                             t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True, "phone_icons": False}'/>
-                        <p t-if="doc.partner_id.rfc">
-                            <span t-field="doc.partner_id.rfc"/>
-                        </p>
+                        <strong>Cliente/Sucursal:</strong>
+                        <div><strong t-field="doc.partner_id"/></div>
+<!--                             t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True, "phone_icons": False}'/>-->
+<!--                        <p t-if="doc.partner_id.rfc">-->
+<!--                            <span t-field="doc.partner_id.rfc"/>-->
+<!--                        </p>-->
                     </div>
                 </div>
-                <br/>
-                <table class="table table-sm">
+                <table class="table table-sm line-spacing-80">
                     <thead>
-                        <tr>
+                        <tr class="border-head">
                             <t t-set="colspan" t-value="5"/>
-                            <th class="text-left">Clave/Descripción</th>
+                            <th class="text-left">[Clave]Descripción</th>
                             <th class="text-right">Cantidad</th>
                             <th class="text-right">Unidad</th>
                             <th class="text-right">Precio unitario</th>
@@ -381,15 +396,10 @@
                             </tr>
                         </t>
                         <tr>
-                            <td colspan="2">Artículos:
+                            <td>Artículos:
                                 <b>
                                     <t t-esc="len(doc.order_line)"/>
                                 </b>
-                                <br/>
-                                <br/>
-                                <p>
-                                    <b>Observaciones:</b>
-                                </p>
                             </td>
                             <td colspan="2">Unidades:
                                 <b>
@@ -398,8 +408,7 @@
                             </td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td>
+                            <td colspan="3" rowspan="2">
                                 <div name="total">
                                     <div>
                                         <table class="table table-sm">
@@ -444,7 +453,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="10" style="border: none;text-align:center;padding: 5px">
+                            <td colspan="5" style="border:none; line-height:100%">
+                                <p>
+                                    <b>Observaciones:</b>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="10" style="border:none;text-align:center;padding:5px;line-height:100%">
                                 <span class="" style="font-style: italic">
                                     <t t-esc="doc.note"/>
                                 </span>
@@ -452,7 +468,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="separator-space-20">
+                <div>
                     <table id="devolution-table">
                         <thead>
                             <tr>
@@ -483,44 +499,42 @@
                         <ftoot>
                             <tr class="footer_row">
                                 <td colspan="4" class="tag_total">
-                                    <span>TOTAL A DESCONTAR+CARGO POR TRASPASO(%):</span>
+                                    <span><i><b>TOTAL A DESCONTAR+CARGO POR TRASPASO(%):</b></i></span>
                                 </td>
                                 <td class="square_total"></td>
                                 <td></td>
                             </tr>
                             <tr class="footer_row">
                                 <td colspan="4" class="tag_total">
-                                    <span>NETO A PAGAR:</span>
+                                    <span><i><b>NETO A PAGAR:</b></i></span>
                                 </td>
                                 <td class="square_total"></td>
                                 <td></td>
                             </tr>
                         </ftoot>
                     </table>
-                    <table class="group_row">
-                        <tr>
-                            <td class="group_col">RECEPCIÓN / DEVOLUCIÓN SUCURSAL</td>
-                            <td class="group_col">REPARTIDOR ALMACÉN CENTRAL</td>
-                        </tr>
-                    </table>
-                    <table class="separator-space-20 group_row">
-                        <tr>
-                            <td class="group_col">
-                                ______________________________________________
-                                <br/>
-                                NOMBRE Y FIRMA
-                            </td>
-                            <td class="group_col">
-                                ______________________________________________
-                                <br/>
-                                NOMBRE Y FIRMA
-                            </td>
-                        </tr>
-                    </table>
-                    <t t-if="len(doc.order_line) > 6">
-                        <div style="page-break-after: always"></div>
-                        <div style="padding: 30px;"> </div>
-                        <article class="separator-space">
+                    <div style="page-break-before:auto">
+                        <table class="group_row">
+                            <tr>
+                                <td class="group_col">RECEPCIÓN / DEVOLUCIÓN SUCURSAL</td>
+                                <td class="group_col">REPARTIDOR ALMACÉN CENTRAL</td>
+                            </tr>
+                        </table>
+                        <table class="separator-space-20 group_row">
+                            <tr>
+                                <td class="group_col">
+                                    ______________________________________________
+                                    <br/>
+                                    NOMBRE Y FIRMA
+                                </td>
+                                <td class="group_col">
+                                    ______________________________________________
+                                    <br/>
+                                    NOMBRE Y FIRMA
+                                </td>
+                            </tr>
+                        </table>
+                        <article>
                             <h6 class="text-center">RECIBÍ DE CONFORMIDAD</h6>
                             <p>Debo(emos) y por este pagaré me(nos) obligo(amos) a pagar a la vista incondicionalmente a la
                                 orden de Grupo Abarrotero Guererrense, S.A. de
@@ -530,25 +544,10 @@
                             </p>
                         </article>
                         <div class="text-center separator-space-20">
-                            <p>_______________________________________<br/>NOMBRE Y FIRMA ENCARGADO(A)
+                            <p>______________________________________________<br/>NOMBRE Y FIRMA ENCARGADO(A)
                             </p>
                         </div>
-                    </t>
-                    <t t-else="">
-                        <article class="separator-space-20">
-                            <h6 class="text-center">RECIBÍ DE CONFORMIDAD</h6>
-                            <p>Debo(emos) y por este pagaré me(nos) obligo(amos) a pagar a la vista incondicionalmente a la
-                                orden de Grupo Abarrotero Guererrense, S.A. de
-                                C.V. la cantidad de: <b>$_________________ (_________________________________________/100
-                                    M.N.</b>) valor de la mercancía que he(mos)
-                                recibido de conformidad el <b>______/_________/___________</b>.
-                            </p>
-                        </article>
-                        <div class="text-center separator-space-20">
-                            <p>_______________________________________<br/>NOMBRE Y FIRMA ENCARGADO(A)
-                            </p>
-                        </div>
-                    </t>
+                    </div>
                 </div>
             </div>
         </t>
