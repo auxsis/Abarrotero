@@ -45,15 +45,15 @@ class AccountInvoice(models.Model):
 			totalAmount = amountUntaxed
 		else:
 			totalAmount = amountUntaxed + amountTax
-		if self.global_discount_type == 'percent':
-			beforeGlobal = totalAmount
-			totalAmount = totalAmount * (1 - (self.global_order_discount or 0.0)/100)
-			totalGlobalDiscount = beforeGlobal - totalAmount
-			totalDiscount += totalGlobalDiscount
-		else:
-			totalGlobalDiscount = self.global_order_discount or 0.0
-			totalAmount = totalAmount - totalGlobalDiscount
-			totalDiscount += totalGlobalDiscount
+		# if self.global_discount_type == 'percent':
+		# 	beforeGlobal = totalAmount
+		# 	totalAmount = totalAmount * (1 - (self.global_order_discount or 0.0)/100)
+		# 	totalGlobalDiscount = beforeGlobal - totalAmount
+		# 	totalDiscount += totalGlobalDiscount
+		# else:
+		# 	totalGlobalDiscount = self.global_order_discount or 0.0
+		# 	totalAmount = totalAmount - totalGlobalDiscount
+		# 	totalDiscount += totalGlobalDiscount
 		if discTax == 'untax':
 			totalAmount = totalAmount + amountTax
 		self.total_discount = totalDiscount

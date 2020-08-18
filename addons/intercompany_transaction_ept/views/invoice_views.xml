@@ -44,7 +44,8 @@
             <field name="inherit_id" ref="account.invoice_supplier_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='amount_tax_signed']" position="after">
-                    <field name="amount_transfer_fee"/>
+                    <field name="amount_taxed" sum="Total con impuestos"/>
+                    <field name="amount_transfer_fee" string="Costo de ITC" sum="Total Costo de Transferencia"/>
                 </xpath>
             </field>
         </record>
@@ -54,7 +55,8 @@
             <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='amount_tax_signed']" position="after">
-                    <field name="amount_transfer_fee"/>
+                    <field name="amount_taxed" sum="Total con impuestos"/>
+                    <field name="amount_transfer_fee" string="Costo de ITC" sum="Total Costo de Transferencia"/>
                 </xpath>
             </field>
         </record>
