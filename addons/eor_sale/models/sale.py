@@ -40,13 +40,6 @@ class SaleOrder(models.Model):
         return taxes_vals
 
     taxes_widget = fields.Text(compute="_compute_taxes_widget", string="Impuestos")
-    state = fields.Selection([
-        ('draft', u'Cotización'),
-        ('sent', u'Cotización Enviada'),
-        ('sale', 'Sales Order'),
-        ('done', 'Locked'),
-        ('cancel', 'Cancelled'),
-        ], string='Status', readonly=True, copy=False, index=True, track_visibility='onchange', track_sequence=3, default='draft')
     x_obervaciones = fields.Text('Observaciones')
 
 

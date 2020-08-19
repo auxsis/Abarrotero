@@ -47,29 +47,8 @@
         </field>
     </record>
 
-    <record id="action_quotations_with_onboarding" model="ir.actions.act_window">
-        <field name="name">Cotizaciones</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">sale.order</field>
-        <field name="view_type">form</field>
-        <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
-        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
-        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
-        <field name="context">{'search_default_my_quotation': 1}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Cree una cotización nueva, el primer paso para una nueva venta.
-            </p>
-        </field>
-    </record>
-
-    <menuitem id="menu_sale_quotations"
-              action="action_quotations_with_onboarding"
-              parent="sale.sale_order_menu"
-              sequence="1" groups="sales_team.group_sale_salesman"/>
-
     <record id="sale.menu_sale_quotations" model="ir.ui.menu">
-        <field name="active" eval="False"/>
+        <field name="active" eval="True"/>
     </record>
 
 </odoo>
