@@ -7,9 +7,9 @@
         <field name="type">form</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <field name="price_unit" position="before">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="before">
                 <field name="price_list_type"/>
-            </field>
+            </xpath>
         </field>
     </record>
 

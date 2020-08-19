@@ -52,7 +52,7 @@
         <record id="invoice_tree_with_onboarding" model="ir.ui.view">
             <field name="name">add field to the tree</field>
             <field name="model">account.invoice</field>
-            <field name="inherit_id" ref="account.invoice_tree_with_onboarding"/>
+            <field name="inherit_id" ref="account.invoice_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='amount_tax_signed']" position="after">
                     <field name="amount_taxed" sum="Total con impuestos"/>

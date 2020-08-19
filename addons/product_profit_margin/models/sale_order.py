@@ -4,7 +4,7 @@ from odoo import api, fields, models
 class SaleOrderLineInherit(models.Model):
     _inherit = "sale.order.line"
 
-    price_list_type = fields.Selection([('LP1', 'LP1'), ('LP2', 'LP2')], default='LP1')
+    price_list_type = fields.Selection([('LP1', 'LP1'), ('LP2', 'LP2')], default='LP1', string="LP")
 
     @api.multi
     @api.onchange('product_id')
