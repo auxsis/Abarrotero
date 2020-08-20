@@ -39,10 +39,10 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def recompute_totals(self):
-        invoices = self.env['account.invoice'].search([])
+        invoices = self.env['account.invoice'].search([('state', 'in', ['draft'])])
         for invoice in invoices:
             invoice._compute_amount()
-            print("Invoice id: %s updated" % [invoice.id])
+            print("Invoice id: %s updated. State: %s" % (str(invoice.id), str(invoice.state)))
         # self._compute_amount()
 
     @api.multi
