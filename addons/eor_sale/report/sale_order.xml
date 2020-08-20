@@ -50,17 +50,20 @@
                         </div>
                         <div class="col-4">
                             <div t-if="doc.date_order">
-                                <strong>Cotizado el:</strong>
+                                <strong t-if="doc.state in ['draft', 'sent']">Cotizado el:</strong>
+                                <strong t-if="doc.state in ['sale']">Fecha de Venta:</strong>
                                 <p t-field="doc.date_order"/>
                             </div>
                             <div t-if="doc.user_id.name">
-                                <strong>Atendió:</strong>
+                                <strong t-if="doc.state in ['draft', 'sent']">Atendió:</strong>
+                                <strong t-if="doc.state in ['sale']">Vendedor:</strong>
                                 <p t-field="doc.user_id"/>
                             </div>
                         </div>
                         <div class="col-6">
                             <div t-if="doc.partner_id">
-                                <strong>Con atención a:</strong>
+                                <strong t-if="doc.state in ['draft', 'sent']">Con atención a:</strong>
+                                <strong t-if="doc.state in ['sale']">Cliente:</strong>
                                 <p><strong t-field="doc.partner_id.name"/></p>
                                 <p t-field="doc.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
                             </div>
@@ -211,8 +214,8 @@
                     </td>
                     <td width="75%" style="vertical-align:bottom;line-height:80%;">
                         <span style="font-size:30px;">
-                                <span t-if="doc.state in ['draft']">Cotización #:</span>
-                                <span t-if="doc.state in ['sent','sale']">Pedido #:</span>
+                                <span t-if="doc.state in ['draft', 'sent']">Cotización #:</span>
+                                <span t-if="doc.state in ['sale']">Pedido #:</span>
                                 <span t-field="doc.name"/>
                         </span>
                     </td>
