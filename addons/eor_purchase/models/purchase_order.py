@@ -151,4 +151,4 @@ class PurchaseOrderLine(models.Model):
         if seller and self.product_uom and seller.product_uom != self.product_uom:
             price_unit = seller.product_uom._compute_price(price_unit, self.product_uom)
 
-        self.price_unit = price_unit
+        # self.price_unit = price_unit
