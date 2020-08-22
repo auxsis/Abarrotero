@@ -36,6 +36,7 @@ class InterCompanyTransferLine(models.Model):
     product_id = fields.Many2one('product.product', string='Product')
     inter_transfer_id = fields.Many2one('inter.company.transfer.ept')
     product_uom_id = fields.Many2one('uom.uom', string="Unidad de Medida", related='product_id.uom_id')
+    x_uom_id = fields.Many2one('uom.uom', string="Unidad de Medida")
 
 
     @api.depends('product_id', 'inter_transfer_id')
