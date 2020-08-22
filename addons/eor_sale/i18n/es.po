@@ -31,3 +31,13 @@ msgstr "Cotización"
 #: selection:sale.order,state:0 selection:sale.report,state:0
 msgid "Quotation Sent"
 msgstr "Cotización enviada"
+
+#. module: eor_sale
+#: selection:sale.order,state:0
+msgid "Ingressed"
+msgstr "Ingresado"
+
+#. module: eor_sale
+#: selection:sale.order,state:0
+msgid "Delivered"
+msgstr "Entregado"
