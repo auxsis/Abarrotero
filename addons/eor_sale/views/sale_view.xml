@@ -5,6 +5,41 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">draft,sent,sale,ingressed,delivered</attribute>
+            </xpath>
+            <xpath expr="//button[@name='269']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', ('invoice_count', '>', 0), ('state', 'not in', ['delivered'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='qty_delivered']" position="attributes">
+                <attribute name="attrs">
+                    {'column_invisible': [('parent.state', 'not in', ['done', 'delivered'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='print_quotation']" position="attributes">
+                <attribute name="states">draft,delivered</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_quotation_send']" position="attributes">
+                <attribute name="states">sent,delivered</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="states">draft,sent,sale,delivered</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_done']" position="attributes">
+                <attribute name="states">sale,delivered</attribute>
+            </xpath>
+            <xpath expr="//field[@name='validity_date']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'in', ['sale', 'done', 'delivered'])]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_order']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'in', ['sale', 'done', 'cancel', 'delivered'])]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_status']" position="attributes">
+                <attribute name="states">sale,done,delivered</attribute>
+            </xpath>
+
             <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
