@@ -195,7 +195,7 @@ class PurchaseOrder(models.Model):
                         result[name] = commands = [(5,)]
                         for line_snapshot in self[name]:
                             line = line_snapshot['<record>']
-                            line = line._origin or line
+                            # line = line._origin or line
                             if not line.id:
                                 # new line: send diff from scratch
                                 line_diff = line_snapshot.diff({})
