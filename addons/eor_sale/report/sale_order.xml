@@ -317,7 +317,7 @@
 
             </style>
             <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
-            <div class="page" style="padding-top: 22px;font-size:14px;">
+            <div class="page" style="padding-top:25px;font-size:14px;">
                 <div class="oe_structure"/>
                 <div class="row">
                     <!--INFORMACIÓN DE EMPRESA-->
@@ -371,14 +371,14 @@
                     <thead>
                         <tr class="border-head">
                             <t t-set="colspan" t-value="5"/>
-                            <th class="text-left">[Clave]Descripción</th>
-                            <th class="text-right">Cantidad</th>
-                            <th class="text-right">Unidad</th>
-                            <th class="text-right">Precio unitario</th>
-                            <th class="text-right">Impuesto</th>
-                            <th class="text-right">Precio Neto</th>
-                            <th class="text-right">Precio x pieza</th>
-                            <th class="text-right">Sub-Total</th>
+                            <th class="text-left" width="44%">[Clave]Descripción</th>
+                            <th class="text-right" width="8%">Cantidad</th>
+                            <th class="text-right" width="8%">Unidad</th>
+                            <th class="text-right" width="8%">Precio unitario</th>
+                            <th class="text-right" width="8%">Impuesto</th>
+                            <th class="text-right" width="8%">Precio Neto</th>
+                            <th class="text-right" width="8%">Precio x pieza</th>
+                            <th class="text-right" width="8%">Sub-Total</th>
                         </tr>
                     </thead>
                     <tbody class="sale_tbody">

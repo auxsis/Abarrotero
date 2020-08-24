@@ -68,6 +68,44 @@ class PurchaseOrder(models.Model):
             })
         return res
 
+    def _update_cache(self, values, validate=True):
+        """ Update the cache of ``self`` with ``values``.
+
+            :param values: dict of field values, in any format.
+            :param validate: whether values must be checked
+        """
+        def is_monetary(pair):
+            return pair[0].type == 'monetary'
+
+        self.ensure_one()
+        cache = self.env.cache
+        fields = self._fields
+        try:
+            field_values = [(fields[name], value) for name, value in values.items()]
+        except KeyError as e:
+            raise ValueError("Invalid field %r on model %r" % (e.args[0], self._name))
+
+        # convert monetary fields last in order to ensure proper rounding
+        for field, value in sorted(field_values, key=is_monetary):
+            cache.set(self, field, field.convert_to_cache(value, self, validate))
+
+            # set inverse fields on new records in the comodel
+            if field.relational:
+                inv_recs = self[field.name].filtered(lambda r: not r.id)
+                if not inv_recs:
+                    continue
+                for invf in self._field_inverses[field]:
+                    # DLE P98: `test_40_new_fields`
+                    # /home/dle/src/odoo/master-nochange-fp/odoo/addons/test_new_api/tests/test_new_fields.py
+                    # Be careful to not break `test_onchange_taxes_1`, `test_onchange_taxes_2`, `test_onchange_taxes_3`
+                    # If you attempt to find a better solution
+                    for inv_rec in inv_recs:
+                        if not cache.contains(inv_rec, invf):
+                            val = invf.convert_to_cache(self, inv_rec, validate=False)
+                            cache.set(inv_rec, invf, val)
+                        else:
+                            invf._update(inv_rec, self)
+
     @api.multi
     def onchange(self, values, field_name, field_onchange):
         env = self.env
@@ -108,25 +146,37 @@ class PurchaseOrder(models.Model):
             def __init__(self, record, tree):
                 # put record in dict to include it when comparing snapshots
                 super(Snapshot, self).__init__({'<record>': record, '<tree>': tree})
-                for name, subnames in tree.items():
+                for name in tree:
+                    self.fetch(name)
+
+            def fetch(self, name):
+                """ Set the value of field ``name`` from the record's value. """
+                record = self['<record>']
+                tree = self['<tree>']
+                if record._fields[name].type in ('one2many', 'many2many'):
                     # x2many fields are serialized as a list of line snapshots
-                    self[name] = (
-                        [Snapshot(line, subnames) for line in record[name]]
-                        if subnames else record[name]
-                    )
+                    self[name] = [Snapshot(line, tree[name]) for line in record[name]]
+                else:
+                    self[name] = record[name]
 
             def has_changed(self, name):
                 """ Return whether a field on record has changed. """
                 record = self['<record>']
                 subnames = self['<tree>'][name]
-                if not subnames:
+                if record._fields[name].type not in ('one2many', 'many2many'):
                     return self[name] != record[name]
-                else:
-                    return len(self[name]) != len(record[name]) or any(
+                return (
+                    len(self[name]) != len(record[name])
+                    or (
+                        set(line_snapshot["<record>"].id for line_snapshot in self[name])
+                        != set(record[name]._ids)
+                    )
+                    or any(
                         line_snapshot.has_changed(subname)
                         for line_snapshot in self[name]
                         for subname in subnames
                     )
+                )
 
             def diff(self, other):
                 """ Return the values in ``self`` that differ from ``other``.
@@ -137,14 +187,15 @@ class PurchaseOrder(models.Model):
                 for name, subnames in self['<tree>'].items():
                     if (name == 'id') or (other.get(name) == self[name]):
                         continue
-                    if not subnames:
-                        field = record._fields[name]
+                    field = record._fields[name]
+                    if field.type not in ('one2many', 'many2many'):
                         result[name] = field.convert_to_onchange(self[name], record, {})
                     else:
                         # x2many fields: serialize value as commands
                         result[name] = commands = [(5,)]
                         for line_snapshot in self[name]:
                             line = line_snapshot['<record>']
+                            line = line._origin or line
                             if not line.id:
                                 # new line: send diff from scratch
                                 line_diff = line_snapshot.diff({})
@@ -177,15 +228,48 @@ class PurchaseOrder(models.Model):
                 lines = self.browse()[name].browse(line_ids)
                 lines.read(list(subnames), load='_classic_write')
 
+        # Isolate changed values, to handle inconsistent data sent from the
+        # client side: when a form view contains two one2many fields that
+        # overlap, the lines that appear in both fields may be sent with
+        # different data. Consider, for instance:
+        #
+        #   foo_ids: [line with value=1, ...]
+        #   bar_ids: [line with value=1, ...]
+        #
+        # If value=2 is set on 'line' in 'bar_ids', the client sends
+        #
+        #   foo_ids: [line with value=1, ...]
+        #   bar_ids: [line with value=2, ...]
+        #
+        # The idea is to put 'foo_ids' in cache first, so that the snapshot
+        # contains value=1 for line in 'foo_ids'. The snapshot is then updated
+        # with the value of `bar_ids`, which will contain value=2 on line.
+        #
+        # The issue also occurs with other fields. For instance, an onchange on
+        # a move line has a value for the field 'move_id' that contains the
+        # values of the move, among which the one2many that contains the line
+        # itself, with old values!
+        #
+        changed_values = {name: values[name] for name in names}
+        # set changed values to null in initial_values; not setting them
+        # triggers default_get() on the new record when creating snapshot0
+        initial_values = dict(values, **dict.fromkeys(names, False))
+
         # create a new record with values, and attach ``self`` to it
         with env.do_in_onchange():
-            record = self.new(values)
+            record = self.new(initial_values)
             # attach ``self`` with a different context (for cache consistency)
             record._origin = self.with_context(__onchange=True)
 
         # make a snapshot based on the initial values of record
         with env.do_in_onchange():
             snapshot0 = snapshot1 = Snapshot(record, nametree)
+
+        # store changed values in cache, and update snapshot0
+        with env.do_in_onchange():
+            record._update_cache(changed_values, validate=False)
+            for name in names:
+                snapshot0.fetch(name)
 
         # determine which field(s) should be triggered an onchange
         todo = list(names or nametree)
@@ -239,30 +323,8 @@ class PurchaseOrder(models.Model):
             message = "\n\n".join(itertools.chain(*warnings))
             result['warning'] = dict(title=title, message=message)
 
-        flag = False
-        if isinstance(field_name, list):
-            flag = 'order_line' in field_name
-        elif field_name == 'order_line':
-            flag = True
-
-        if flag:
-            vals = {
-                'amount_untaxed': snapshot0['amount_untaxed'],
-                'amount_tax': snapshot0['amount_tax'],
-                'amount_total': snapshot0['amount_total'],
-                'monto_desc_maniobra': snapshot0['monto_desc_maniobra'],
-                'monto_desc_flete': snapshot0['monto_desc_flete'],
-                'monto_desc_planes': snapshot0['monto_desc_planes'],
-                'total_discount': snapshot0['total_discount'],
-                'amount_transfer_fee': snapshot0['amount_transfer_fee'],
-                'taxes_widget': snapshot0['taxes_widget'],
-            }
-            if 'value' in result:
-                result['value'].update(vals)
-            else:
-                result['value'] = vals
-
         return result
+
 
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
