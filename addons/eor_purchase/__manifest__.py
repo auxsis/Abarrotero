@@ -21,6 +21,7 @@
         'views/res_company.xml',
         'report/purchase_order.xml',
         'report/purchase_quotation.xml',
+        'data/mail_data.xml',
     ],
     'qweb': [
         'static/src/xml/*.xml',
