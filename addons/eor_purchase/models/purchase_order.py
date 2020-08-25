@@ -29,6 +29,12 @@ class PurchaseOrder(models.Model):
             else:
                 order.taxes_widget = json.dumps(False)
 
+    @api.multi
+    def action_rfq_send(self):
+        res = super(PurchaseOrder, self).action_rfq_send()
+        res['context']['custom_layout'] = 'eor_purchase.mail_notification_paynow'
+        return res
+
     def _get_taxes_JSON_values(self):
         taxes_vals = []
         # order_line = self.order_line.filtered(lambda line: line.taxes_id != False)
