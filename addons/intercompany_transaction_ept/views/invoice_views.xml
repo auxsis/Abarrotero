@@ -45,7 +45,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='amount_tax_signed']" position="after">
                     <field name="amount_taxed" sum="Total con impuestos"/>
-                    <field name="amount_transfer_fee" string="Costo de ITC" sum="Total Costo de Transferencia"/>
+                    <field name="amount_transfer_fee" string="Costo de ICT" sum="Total Costo de Transferencia"/>
                 </xpath>
             </field>
         </record>
@@ -56,7 +56,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='amount_tax_signed']" position="after">
                     <field name="amount_taxed" sum="Total con impuestos"/>
-                    <field name="amount_transfer_fee" string="Costo de ITC" sum="Total Costo de Transferencia"/>
+                    <field name="amount_transfer_fee" string="Costo de ICT" sum="Total Costo de Transferencia"/>
                 </xpath>
             </field>
         </record>
