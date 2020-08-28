@@ -81,9 +81,9 @@
                     <tbody>
                         <tr style="font-size:0.90em;">
                             <td>
-                                <b>Ref. de Presupuesto:</b>
+                                <b>Ref. de Proveedor:</b>
                                 <br/>
-                                <span t-field="o.name"/>
+                                <span t-field="o.partner_ref"/>
                             </td>
                             <td>
                                 <b>Fecha de Pedido:</b>
