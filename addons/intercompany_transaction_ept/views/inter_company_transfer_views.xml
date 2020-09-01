@@ -24,10 +24,10 @@
 			<field name="arch" type="xml">
 				<form string="Inter Company transfer">
 						<header>
-							<button string="Process" type="object" name="action_process"
+							<button string="Procesar" type="object" name="action_process"
 								class="oe_highlight"
 								attrs="{'invisible':['|',('state','!=','draft'),('type','=','ict_reverse')]}" />
-							<button string="Process" type="object" name="action_reverse_process"
+							<button string="Procesar" type="object" name="action_reverse_process"
 								class="oe_highlight"
 								attrs="{'invisible':['|',('state','!=','draft'),('type','!=','ict_reverse')]}" />
 							<button string="Reverse" type="object" name="action_create_reverse_process"
@@ -37,7 +37,7 @@
 								attrs="{'invisible':[('state','in',['cancel'])]}" />
 							<button string="Reset to Draft" type="object" name="reset_to_draft"
 								class="oe_highlight" attrs="{'invisible':[('state','not in',['cancel'])]}" />
-							<button name="import_export_product_list_view" string="Import/Export Product List" type="object" class="oe_highlight" attrs="{'invisible':['|',('type','=','ict_reverse'),('state','in',['cancel','processed'])]}" />
+							<button name="import_export_product_list_view" string="Importar/Exportar Lista de Producto" type="object" class="oe_highlight" attrs="{'invisible':['|',('type','=','ict_reverse'),('state','in',['cancel','processed'])]}" />
 							<field name="state" widget="statusbar" />
 						</header>
 						<sheet>
