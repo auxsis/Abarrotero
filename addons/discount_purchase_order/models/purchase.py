@@ -9,6 +9,7 @@
 
 from odoo import api, fields, models, _
 import odoo.addons.decimal_precision as dp
+from odoo.tools.float_utils import float_round as round
 
 
 class PurchaseOrder(models.Model):
@@ -233,4 +234,8 @@ class PurchaseOrderLine(models.Model):
             line.price_tax = taxes['total_included'] - taxes['total_excluded']
             line.price_total = taxes['total_included']
             line.price_subtotal = taxes['total_excluded']
-            line.subtotal_desc = (line.price_unit * quantity) - taxes['total_excluded']
+            round_tax = False if line.company_id.tax_calculation_rounding_method == 'round_globally' else True
+            if round_tax:
+                line.subtotal_desc = line.order_id.currency_id.round(round(line.price_unit * quantity, line.order_id.currency_id.decimal_places) - taxes['total_excluded'])
+            else:
+                line.subtotal_desc = (line.price_unit * quantity) - taxes['total_excluded']
