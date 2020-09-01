@@ -14,7 +14,7 @@
     'website': 'www.itadmin.com.mx',
     'depends': [
         'base',
-        'sale','account','purchase'
+        'sale','account','eor_purchase'
     ],
     'data': [
         'views/res_partner_view.xml',

@@ -17,7 +17,7 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form" />
             <field name="arch" type="xml">
-                <xpath expr="//notebook" position="inside">
+                <xpath expr="//notebook/page[1]" position="before">
                     <page name="info_cdfi" string="CFDI 3.3">
                             <group cols="4">
                                 <group string="Detalles de Pago">
@@ -64,6 +64,24 @@
                             groups="base.group_user"
                             confirm="La factura va pasar a estado correcto y puede intentar cancelar nuevamente."/>
                 </button>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="before">
+                    <field name="clave_producto"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='uom_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='uom_id']" position="before">
+                    <field name="clave_unidad"></field>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <field name="amount_tax" position="before">
+                    <field name="taxes_widget" widget="taxes" options="{'digits': 'Product Price'}"/>
+                </field>
             </field>
         </record>
 </odoo>
