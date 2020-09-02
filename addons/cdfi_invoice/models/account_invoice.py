@@ -6,6 +6,7 @@ import requests
 import datetime
 from lxml import etree
 
+from odoo.tools import date_utils
 from odoo import fields, models, api,_ 
 import odoo.addons.decimal_precision as dp
 from odoo.exceptions import UserError, Warning
@@ -154,6 +155,33 @@ class AccountInvoice(models.Model):
     desc = fields.Float(string='descuento', digits=dp.get_precision('Product Price'))
     subtotal = fields.Float(string='subtotal', digits=dp.get_precision('Product Price'))
     total = fields.Float(string='total', digits=dp.get_precision('Product Price'))
+
+    @api.depends('invoice_line_ids.invoice_line_tax_ids', 'amount_tax')
+    def _compute_taxes_widget(self):
+        for invoice in self:
+            taxes_vals = invoice._get_taxes_JSON_values()
+            if taxes_vals:
+                inf = {
+                    'title': _('Hola Mundo'),
+                    'content': taxes_vals
+                }
+                invoice.taxes_widget = json.dumps(inf, default=date_utils.json_default)
+            else:
+                invoice.taxes_widget = json.dumps(False)
+
+    def _get_taxes_JSON_values(self):
+        taxes_vals = []
+        for tax_id in self.mapped('invoice_line_ids.invoice_line_tax_ids'):
+            taxes_vals.append({
+                'name': tax_id.name,
+                'currency': self.currency_id.symbol,
+                'digits': [69, self.currency_id.decimal_places],
+                'amount_tax': sum([self.currency_id.round(l.price_tax) for l in self.invoice_line_ids.filtered(lambda t: tax_id.id in t.invoice_line_tax_ids.mapped('id'))])
+            })
+
+        return taxes_vals
+
+    taxes_widget = fields.Text(compute="_compute_taxes_widget", string="Impuestos")
 
     @api.model
     def _prepare_refund(self, invoice, date_invoice=None, date=None, description=None, journal_id=None):
@@ -800,7 +828,15 @@ class AccountInvoice(models.Model):
                 if invoice.estado_factura == 'solicitud_rechazada':
                     invoice.estado_factura = 'factura_correcta'
                     # raise UserError(_('La factura ya fue cancelada, no puede volver a cancelarse.'))
- 
+
+
+class AccountInvoiceLine(models.Model):
+    _inherit = 'account.invoice.line'
+
+    clave_producto = fields.Char('Clave Producto', related='product_id.clave_producto', readonly=True)
+    clave_unidad = fields.Char('Clave Unidad', related='product_id.clave_unidad', readonly=True)
+
+
 class MailTemplate(models.Model):
     "Templates for sending email"
     _inherit = 'mail.template'

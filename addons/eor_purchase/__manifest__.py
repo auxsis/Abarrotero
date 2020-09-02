@@ -11,6 +11,7 @@
         'account',
         'purchase',
         'discount_purchase_order',
+        'product_profit_margin',
     ],
     'data': [
         'views/purchase_view.xml',

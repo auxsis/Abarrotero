@@ -146,9 +146,11 @@ class SaleOrderLine(models.Model):
     def _compute_price(self):
         for line in self:
             price_unit = line.price_unit
-            price_tax = 0.00
+            # Taxes without discount
+            taxes = line.tax_id.compute_all(price_unit, line.order_id.currency_id, line.product_uom_qty, product=line.product_id, partner=line.order_id.partner_shipping_id)
+            price_tax = sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
             if line.product_uom_qty > 0:
-                price_tax = line.price_tax / line.product_uom_qty
+                price_tax = price_tax / line.product_uom_qty
 
             if line.price_unit_tax <= 0:
                 line.price_unit_tax = price_unit + price_tax
