@@ -9,4 +9,23 @@
             </xpath>
         </field>
     </record>
+
+    <record id="product_template_tree_view" model="ir.ui.view">
+        <field name="name">product.template.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"></field>
+        <field name="arch" type="xml">
+            <field name="list_price" position="attributes">
+                <attribute name="string">LP1</attribute>
+            </field>
+            <field name="list_price" position="after">
+                <field name="list_price2" string="LP2"/>
+            </field>
+            <field name="standard_price" position="after">
+                <field name="base_imponible_costo" string="P.U."/>
+                <field name="taxes_id" string="Impuestos" widget="many2many_tags"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>
