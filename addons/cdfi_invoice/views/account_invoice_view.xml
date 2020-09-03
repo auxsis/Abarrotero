@@ -69,12 +69,14 @@
                 </xpath>
                 <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="before">
                     <field name="clave_producto"/>
+                    <field name="description_cve_prod"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='uom_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='uom_id']" position="before">
-                    <field name="clave_unidad"></field>
+                    <field name="clave_unidad"/>
+                    <field name="unidad_medida"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='discount']" position="attributes">
                     <attribute name="invisible">1</attribute>

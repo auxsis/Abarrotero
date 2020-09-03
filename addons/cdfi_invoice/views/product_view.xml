@@ -14,6 +14,7 @@
 		                    <field name="unidad_medida" />
 		                    <field name="clave_unidad" />
 		                    <field name="clave_producto" />
+                            <field name="description_cve_prod"/>
 		                </group>
                     </page>
 				</xpath>
