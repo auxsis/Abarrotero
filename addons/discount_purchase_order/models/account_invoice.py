@@ -33,7 +33,7 @@ class AccountInvoice(models.Model):
 		orderObj = False
 		discTax = 'untax'
 		moduleObj = self.env['ir.module.module'].sudo().search(
-			[("name","=","discount_sale_order"),("state","=","installed")])
+			[("name", "=", "discount_sale_order"), ("state", "=", "installed")])
 		if self.type and self.type == 'in_invoice':
 			orderObj = self.env['purchase.order'].sudo().search([('name', '=', self.origin)])
 			discTax = IrConfigPrmtrSudo.get_param('purchase.global_discount_tax_po')
@@ -45,15 +45,15 @@ class AccountInvoice(models.Model):
 			totalAmount = amountUntaxed
 		else:
 			totalAmount = amountUntaxed + amountTax
-		# if self.global_discount_type == 'percent':
-		# 	beforeGlobal = totalAmount
-		# 	totalAmount = totalAmount * (1 - (self.global_order_discount or 0.0)/100)
-		# 	totalGlobalDiscount = beforeGlobal - totalAmount
-		# 	totalDiscount += totalGlobalDiscount
-		# else:
-		# 	totalGlobalDiscount = self.global_order_discount or 0.0
-		# 	totalAmount = totalAmount - totalGlobalDiscount
-		# 	totalDiscount += totalGlobalDiscount
+		if self.global_discount_type == 'percent':
+			beforeGlobal = totalAmount
+			totalAmount = totalAmount * (1 - (self.global_order_discount or 0.0)/100)
+			totalGlobalDiscount = beforeGlobal - totalAmount
+			totalDiscount += totalGlobalDiscount
+		else:
+			totalGlobalDiscount = self.global_order_discount or 0.0
+			totalAmount = totalAmount - totalGlobalDiscount
+			totalDiscount += totalGlobalDiscount
 		if discTax == 'untax':
 			totalAmount = totalAmount + amountTax
 		self.total_discount = totalDiscount
@@ -71,6 +71,10 @@ class AccountInvoice(models.Model):
 		self.amount_total_company_signed = amount_total_company_signed * sign
 		self.amount_total_signed = self.amount_total * sign
 		self.amount_untaxed_signed = amount_untaxed_signed * sign
+
+	@api.one
+	def force_amount_total(self):
+		self._compute_amount()
 
 	@api.multi
 	def get_taxes_values(self):
@@ -94,12 +98,12 @@ class AccountInvoice(models.Model):
 		return tax_grouped
 
 	total_discount = fields.Monetary(string='Discount', store=True, readonly=True, compute='_compute_amount', track_visibility='always')
-	total_global_discount = fields.Monetary(string='Total Global Discount', store=True, readonly=True, compute='_compute_amount')
-	global_discount_type = fields.Selection([
-		('fixed', 'Fixed'),
-		('percent', 'Percent')
-		], string="Discount Type")
-	global_order_discount = fields.Float(string='Global Discount', store=True, track_visibility='always')
+	total_global_discount = fields.Monetary(string='Total Global Discount', store=True, compute='_compute_amount', readonly=True, states={'draft': [('readonly', False)]})
+	discount_concept = fields.Selection([('financial', 'Financial'), ('pay_soon', 'Pay Soon')], string='Discount Concept',
+										store=True, readonly=True, states={'draft': [('readonly', False)]})
+	global_discount_type = fields.Selection([('fixed', 'Fixed'), ('percent', 'Percent')],
+											string="Discount Type", store=True, readonly=True, states={'draft': [('readonly', False)]})
+	global_order_discount = fields.Float(string='Global Discount', store=True, readonly=True, states={'draft': [('readonly', False)]})
 
 	def _prepare_invoice_line_from_po_line(self, line):
 		res = super(AccountInvoice, self)._prepare_invoice_line_from_po_line(line)

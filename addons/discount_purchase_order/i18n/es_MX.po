@@ -1,0 +1,367 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* discount_purchase_order
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-03 18:23+0000\n"
+"PO-Revision-Date: 2020-09-03 14:26-0400\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_MX\n"
+"X-Generator: Poedit 2.3.1\n"
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.report_po_inherit
+msgid "<strong>Total Discount</strong>"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:res.groups,name:discount_purchase_order.group_order_global_discount_po
+msgid "A Global Discount on Purchase Order"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_res_config_settings__group_order_global_discount_po
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.res_config_settings_view_form_purchase_discount
+msgid "A global discount on purchase order"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model,name:discount_purchase_order.model_account_invoice
+msgid "Account Invoice"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.res_config_settings_view_form_purchase_discount
+msgid "Account for Global discount on purchase order"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,help:discount_purchase_order.field_res_config_settings__discount_account_po
+msgid "Account for Global discount on purchase order."
+msgstr ""
+
+#. module: discount_purchase_order
+#: selection:purchase.order,global_discount_type:0
+#: selection:purchase.order,tipo_calculo_desc_extra:0
+#: selection:purchase.order,tipo_calculo_desc_flete:0
+#: selection:purchase.order,tipo_calculo_desc_maniobra:0
+#: selection:purchase.order,tipo_calculo_desc_planes:0
+#: selection:purchase.order.line,discount_type:0
+msgid "Ajuste"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.res_config_settings_view_form_purchase_discount
+msgid "Allow discount on purchase order line"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,help:discount_purchase_order.field_res_config_settings__group_order_global_discount_po
+msgid "Allows to give a global discount on purchase order. "
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,help:discount_purchase_order.field_res_config_settings__group_discount_purchase_line
+msgid "Allows to give discount on purchase order line. "
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_res_config_settings__group_discount_purchase_line
+msgid "Apply discount on purchase order line"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__cant_desc_extra_flete
+msgid "Cantidad Descuento (Flete)"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__cant_desc_extra_maniobra
+msgid "Cantidad Descuento (Maniobra)"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__cant_desc_extra
+msgid "Cantidad Descuento (Maniobra, Flete, Planes)"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__cant_desc_extra_planes
+msgid "Cantidad Descuento (Planes)"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model,name:discount_purchase_order.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de Configuración"
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_res_config_settings__discount_account_po
+msgid "Cuenta de Descuento"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order_line__desc1
+msgid "Desc1(%)"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order_line__desc2
+msgid "Desc2(%)"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order_line__discount
+msgid "Descuento"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__tipo_desc_extra
+msgid "Descuento (Maniobra, Flete, Planes)"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.inherit_account_invoice_supplier_form_view
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.report_po_inherit
+msgid "Disc."
+msgstr "Desc."
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.report_po_inherit
+msgid "Disc. Type"
+msgstr "Tipo Desc."
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_account_invoice__total_discount
+#: model:ir.model.fields,field_description:discount_purchase_order.field_account_invoice_line__discount
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.res_config_settings_view_form_purchase_discount
+msgid "Discount"
+msgstr "Descuento"
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_account_invoice__discount_concept
+msgid "Discount Concept"
+msgstr "Concepto Descuento"
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_account_invoice__global_discount_type
+#: model:ir.model.fields,field_description:discount_purchase_order.field_account_invoice_line__discount_type
+msgid "Discount Type"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.res_config_settings_view_form_purchase_discount
+#: model:res.groups,name:discount_purchase_order.group_discount_purchase_line
+msgid "Discount on Purchase Order Line"
+msgstr ""
+
+#. module: discount_purchase_order
+#: selection:account.invoice,discount_concept:0
+msgid "Financial"
+msgstr "Financiero"
+
+#. module: discount_purchase_order
+#: selection:account.invoice,global_discount_type:0
+#: selection:account.invoice.line,discount_type:0
+msgid "Fixed"
+msgstr "Fijo"
+
+#. module: discount_purchase_order
+#: selection:purchase.order,tipo_desc_extra:0
+msgid "Flete"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_account_invoice__global_order_discount
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__global_order_discount
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.res_config_settings_view_form_purchase_discount
+msgid "Global Discount"
+msgstr "Descuento Global"
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_res_config_settings__global_discount_tax_po
+msgid "Global Discount Calculation"
+msgstr ""
+
+#. module: discount_purchase_order
+#: code:addons/discount_purchase_order/models/account_invoice.py:131
+#, python-format
+msgid ""
+"Global Discount!\n"
+"Please first set account for global discount in purchase setting"
+msgstr ""
+"¡Descuento Total!\n"
+"Por favor establezca la cuenta para los descuentos globales en ajustes de compras"
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.res_config_settings_view_form_purchase_discount
+msgid "Global discount will be calculated on"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,help:discount_purchase_order.field_res_config_settings__global_discount_tax_po
+msgid "Global disount calculation will be (             'untax' : Global discount will be applied before applying tax,             'taxed' : Global disount will be applied after applying tax)"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model,name:discount_purchase_order.model_account_invoice_line
+msgid "Invoice Line"
+msgstr "Linea de factura"
+
+#. module: discount_purchase_order
+#: selection:purchase.order,tipo_desc_extra:0
+msgid "Maniobra"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__monto_desc_flete
+msgid "Monto Descuento por Flete"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__monto_desc_maniobra
+msgid "Monto Descuento por Maniobra"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__monto_desc_planes
+msgid "Monto Descuento por Planes"
+msgstr ""
+
+#. module: discount_purchase_order
+#: selection:account.invoice,discount_concept:0
+msgid "Pay Soon"
+msgstr "Pronto Pago"
+
+#. module: discount_purchase_order
+#: selection:account.invoice,global_discount_type:0
+#: selection:account.invoice.line,discount_type:0
+msgid "Percent"
+msgstr "Porcentaje"
+
+#. module: discount_purchase_order
+#: selection:purchase.order,tipo_desc_extra:0
+msgid "Planes"
+msgstr ""
+
+#. module: discount_purchase_order
+#: selection:purchase.order,global_discount_type:0
+#: selection:purchase.order,tipo_calculo_desc_extra:0
+#: selection:purchase.order,tipo_calculo_desc_flete:0
+#: selection:purchase.order,tipo_calculo_desc_maniobra:0
+#: selection:purchase.order,tipo_calculo_desc_planes:0
+#: selection:purchase.order.line,discount_type:0
+msgid "Porcentaje"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.res_config_settings_view_form_purchase_discount
+msgid "Purchase Discount Account"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model,name:discount_purchase_order.model_purchase_order
+msgid "Purchase Order"
+msgstr "Pedido de compra"
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.res_config_settings_view_form_purchase_discount
+msgid "Purchase Order Discount Settings"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model,name:discount_purchase_order.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Línea de pedido de compra"
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order_line__price_reduce
+msgid "Reduccion de Precio"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order_line__subtotal_desc
+msgid "Sub-Total Descuentos"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.inherit_purchase_order_form_view
+msgid "Subtotal"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order_line__line_sub_total
+msgid "Subtotal de Linea"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.inherit_purchase_order_form_view
+msgid "Subtotal menos descuentos"
+msgstr ""
+
+#. module: discount_purchase_order
+#: selection:res.config.settings,global_discount_tax_po:0
+msgid "Tax added amount"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__has_desc_extra_flete
+msgid "Tiene impuesto extra flete"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__has_desc_extra_maniobra
+msgid "Tiene impuesto extra maniobra"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__has_desc_extra_planes
+msgid "Tiene impuesto extra planes"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__tipo_calculo_desc_extra
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__tipo_calculo_desc_flete
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__tipo_calculo_desc_maniobra
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__tipo_calculo_desc_planes
+msgid "Tipo de Calculo de Descuento (Maniobra, Flete, Planes)"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__global_discount_type
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order_line__discount_type
+msgid "Tipo de Descuento"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__total_desc
+msgid "Total Descuento por líneas de productos"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_purchase_order__total_discount
+msgid "Total Discount"
+msgstr "Descuento total"
+
+#. module: discount_purchase_order
+#: model:ir.model.fields,field_description:discount_purchase_order.field_account_invoice__total_global_discount
+msgid "Total Global Discount"
+msgstr "Total Descuento Global"
+
+#. module: discount_purchase_order
+#: selection:res.config.settings,global_discount_tax_po:0
+msgid "Untaxed amount"
+msgstr ""
+
+#. module: discount_purchase_order
+#: model_terms:ir.ui.view,arch_db:discount_purchase_order.inherit_purchase_order_form_view
+msgid "line subtotal"
+msgstr ""
