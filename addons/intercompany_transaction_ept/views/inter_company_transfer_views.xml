@@ -97,12 +97,12 @@
 								<field name="name" readonly="1" />
 							</h1>
 						</div>
-						<group string="Transaction Info">
+						<group string="Datos de Solicitud de Traspaso">
 							<group>
 								<field name="source_warehouse_id" required="True"
 									attrs="{'readonly':[('state','!=','draft')]}" />
-								<field name="price_list_id" />
-								<field name="crm_team_id" />
+<!--								<field name="price_list_id" />-->
+<!--								<field name="crm_team_id" />-->
 								<field name="transfer_fee" readonly="1"/>
 							</group>
 							<group>
