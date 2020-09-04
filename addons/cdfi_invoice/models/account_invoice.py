@@ -833,8 +833,10 @@ class AccountInvoice(models.Model):
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
-    clave_producto = fields.Char('Clave Producto', related='product_id.clave_producto', readonly=True)
-    clave_unidad = fields.Char('Clave Unidad', related='product_id.clave_unidad', readonly=True)
+    clave_producto = fields.Char('CveProd', related='product_id.clave_producto', readonly=True)
+    description_cve_prod = fields.Char('Descripción CveProd', related='product_id.description_cve_prod', readonly=True)
+    clave_unidad = fields.Char('Clave', related='product_id.clave_unidad', readonly=True)
+    unidad_medida = fields.Selection('Unidad', related='product_id.unidad_medida', readonly=True)
 
 
 class MailTemplate(models.Model):

@@ -17,17 +17,31 @@
 <!--                <field  name="discount"-->
 <!--                        groups="discount_purchase_order.group_discount_purchase_line"/>-->
 <!--          </xpath>-->
-          <field name="tax_line_ids" position="before">
+            <field name="tax_line_ids" position="before">
                 <group>
+                    <field name="discount_concept"
+                           groups="discount_purchase_order.group_order_global_discount_po"
+                           attrs="{'required' :[('global_order_discount', '>', 0.0)]}"/>
                     <field  name="global_discount_type"
                             groups="discount_purchase_order.group_order_global_discount_po"
-                            attrs="{'required' :[('global_order_discount', '>', 0.0)],
-                                    'readonly' :[('state', 'not in', ['draft'])]}"/>
+                            attrs="{'required' :[('global_order_discount', '>', 0.0)]}"/>
                     <field  name="global_order_discount"
-                            groups="discount_purchase_order.group_order_global_discount_po"
-                            attrs="{'readonly' :[('state', 'not in', ['draft'])]}"/>
+                            groups="discount_purchase_order.group_order_global_discount_po"/>
+                    <field name="total_global_discount" invisible="True"/>
+<!--                    <button name="force_amount_total" type="object" string="Apply" class="oe_link" icon="fa-arrow-circle-right"/>-->
                 </group>
-          </field>
+            </field>
+            <field name="amount_tax" position="after">
+                <label for="" class="o_form_label" attrs="{'invisible': [('total_global_discount', '=', 0)]}">
+                    <label for="discount_concept" string="Desc. "/>
+                    <span><field name="discount_concept" nolabel="1" readonly="1" force_save='1' class="oe_inline"/>
+                        <span attrs="{'invisible': [('global_discount_type', 'not in', ['percent'])]}">
+                            (<field name="global_order_discount" nolabel="1" class="oe_inline" readonly="1" force_save='1'/> %)</span>
+                    </span>
+                </label>
+                <field name="total_global_discount" nolabel="1" readonly="1" force_save="1"
+                       attrs="{'invisible': [('total_global_discount', '=', 0)]}"/>
+            </field>
 <!--          <xpath expr="//group[hasclass('oe_subtotal_footer')]//field[@name='amount_total']" position="before">-->
 <!--                <field  name="total_discount"-->
 <!--                        groups="discount_purchase_order.group_discount_purchase_line,discount_purchase_order.group_order_global_discount_po"-->

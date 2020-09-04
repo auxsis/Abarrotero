@@ -104,6 +104,7 @@ class ProductTemplate(models.Model):
 
     unidad_medida = fields.Selection(selection=UNIDAD_MEDIDA_LIST, string='Unidad SAT')
     clave_producto = fields.Char(string='Clave producto')
+    description_cve_prod = fields.Char(string='Descripción CveProd')
     clave_unidad = fields.Char(string='Clave unidad', compute='_compute_clave_unidad')
     
     @api.depends('unidad_medida')

@@ -1018,7 +1018,7 @@ msgstr ""
 #. module: intercompany_transaction_ept
 #: model:ir.model.fields,field_description:intercompany_transaction_ept.field_inter_company_transfer_line_ept__subtotal_with_taxes
 msgid "Sub-Total (w/taxes)"
-msgstr "Sub-Total (c/impuestos)"
+msgstr "Sub-Total (c/imps)"
 
 #. module: intercompany_transaction_ept
 #: model:ir.model.fields,field_description:intercompany_transaction_ept.field_account_invoice__amount_taxed
