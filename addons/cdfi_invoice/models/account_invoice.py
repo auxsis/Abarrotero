@@ -835,7 +835,7 @@ class AccountInvoiceLine(models.Model):
 
     clave_producto = fields.Char('CveProd', related='product_id.clave_producto', readonly=True)
     description_cve_prod = fields.Char('Descripción CveProd', related='product_id.description_cve_prod', readonly=True)
-    clave_unidad = fields.Char('Clave', related='product_id.clave_unidad', readonly=True)
+    clave_unidad = fields.Char('CveU', related='product_id.clave_unidad', readonly=True)
     unidad_medida = fields.Selection('Unidad', related='product_id.unidad_medida', readonly=True)
 
 
