@@ -59,8 +59,8 @@ class InterCompanyTransfer(models.Model):
     destination_warehouse_id = fields.Many2one('stock.warehouse', string='To Warehouse')
     destination_company_id = fields.Many2one(related='destination_warehouse_id.company_id', string="Destination Company")
     
-    crm_team_id = fields.Many2one('crm.team', string="Sales Team", default=_get_default_team)
-    price_list_id = fields.Many2one('product.pricelist', string="Price List")
+    crm_team_id = fields.Many2one('crm.team', string="Sales Team", related="destination_warehouse_id.company_id.partner_id.team_id", default=_get_default_team)
+    price_list_id = fields.Many2one('product.pricelist', related="destination_warehouse_id.company_id.partner_id.property_product_pricelist", string="Price List")
     currency_id = fields.Many2one('res.currency', related="price_list_id.currency_id", string="Currency")
     incoming_shipment_id = fields.Many2one('stock.picking', string="Incoming Shipment", copy=False)
     group_id = fields.Many2one('procurement.group', string="Procurement Group", copy=False)
@@ -362,6 +362,7 @@ class InterCompanyTransfer(models.Model):
                 line_vals.sudo(intercompany_user).product_id_change()
                 line_vals.sudo(intercompany_user).product_uom_qty = line.quantity
                 line_vals.sudo(intercompany_user).price_unit = line.price
+                line_vals.sudo(intercompany_user).tax_id = line.sudo().product_id.taxes_id.filtered(lambda tax: tax.company_id.id == source_company.id)
                 line_vals = line_vals.sudo(intercompany_user)._convert_to_write(line_vals._cache)
                 so_lines_list.append((0, 0, line_vals))
             sale_order.sudo(intercompany_user).write({'order_line':so_lines_list, 'intercompany_transfer_id':record.id})
@@ -389,7 +390,7 @@ class InterCompanyTransfer(models.Model):
                 line_vals.sudo(intercompany_user).onchange_product_id()
                 line_vals.sudo(intercompany_user).product_qty = line.quantity
                 line_vals.sudo(intercompany_user).price_unit = line.price
-                line_vals.sudo(intercompany_user).taxes_id = line.product_id.taxes_id.filtered(lambda tax: tax.company_id.id == destination_company.id)
+                line_vals.sudo(intercompany_user).taxes_id = line.sudo().product_id.supplier_taxes_id.filtered(lambda tax: tax.company_id.id == destination_company.id)
                 line_vals.sudo(intercompany_user).product_uom = line.product_id.uom_id
                 line_vals = line_vals.sudo(intercompany_user)._convert_to_write(line_vals._cache)
                 po_lines_list.append((0, 0, line_vals))

@@ -45,7 +45,7 @@ class InterCompanyTransferLine(models.Model):
         Get the Product Price
         """
         for record in self:
-            if record.product_id:
+            if record.product_id and record.inter_transfer_id.state:
                 # Always get the product data (price) from root company (Grupo Abarrotero Guerrerense)
                 if record.inter_transfer_id.state in 'draft':
                     product_id = record.with_context(force_company=1).product_id
