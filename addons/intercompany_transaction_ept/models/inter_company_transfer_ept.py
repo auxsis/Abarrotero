@@ -41,9 +41,15 @@ class InterCompanyTransfer(models.Model):
         for ict in self:
             ict.log_count = len(ict.log_ids)
 
-    def _get_default_transfer_fee(self):
+    @api.depends('source_company_id')
+    def _compute_transfer_fee(self):
         ict_config = 'intercompany_transaction_ept.intercompany_transaction_config_record'
-        return self.env.ref(ict_config).transfer_fee
+        for ict in self:
+            if ict.source_company_id:
+                tf = ict.env.ref(ict_config).with_context(force_company=ict.source_company_id.id).transfer_fee
+            else:
+                tf = 0
+            self.update({'transfer_fee': tf})
     
     name = fields.Char('Name')
     message = fields.Char("Message", copy=False)
@@ -76,7 +82,7 @@ class InterCompanyTransfer(models.Model):
     picking_ids = fields.One2many('stock.picking', 'intercompany_transfer_id', string="Pickings", copy=False)
     intercompany_transferline_ids = fields.One2many('inter.company.transfer.line.ept', 'inter_transfer_id', string="Transfer Lines", copy=True)
 
-    transfer_fee = fields.Float("Costo de Transferencia (%)", default=_get_default_transfer_fee,
+    transfer_fee = fields.Float("Costo de Transferencia (%)", compute=_compute_transfer_fee, store=True,
                                 help="Costo de transferencia definido en la Configuracion de ICT", copy=False)
     transfer_fee_char = fields.Char(compute='compute_format_transfer')
     amount_transfer_fee = fields.Float("Monto Costo de Transf.", compute='_compute_total', store=True)
@@ -365,7 +371,8 @@ class InterCompanyTransfer(models.Model):
                 line_vals.sudo(intercompany_user).tax_id = line.sudo().product_id.taxes_id.filtered(lambda tax: tax.company_id.id == source_company.id)
                 line_vals = line_vals.sudo(intercompany_user)._convert_to_write(line_vals._cache)
                 so_lines_list.append((0, 0, line_vals))
-            sale_order.sudo(intercompany_user).write({'order_line':so_lines_list, 'intercompany_transfer_id':record.id})
+            sale_order.sudo(intercompany_user).write({'order_line': so_lines_list, 'intercompany_transfer_id':record.id})
+            sale_order.sudo().order_line._compute_amount()
             so_list.append(sale_order)
         
         return so_list
@@ -395,6 +402,7 @@ class InterCompanyTransfer(models.Model):
                 line_vals = line_vals.sudo(intercompany_user)._convert_to_write(line_vals._cache)
                 po_lines_list.append((0, 0, line_vals))
             purchase_order_id.sudo(intercompany_user).write({'order_line':po_lines_list, 'intercompany_transfer_id':record.id})
+            purchase_order_id.sudo().order_line._compute_amount()
             po_list.append(purchase_order_id)
         
         return po_list

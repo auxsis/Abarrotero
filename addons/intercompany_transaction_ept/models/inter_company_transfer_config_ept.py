@@ -17,7 +17,7 @@ class InterCompanyTransferConfig(models.Model):
     auto_confirm_orders = fields.Boolean('Auto Confirm Orders')
     auto_create_invoices = fields.Boolean('Auto Create Invoices')
     auto_validate_invoices = fields.Boolean('Auto Validate Invoices')
-    transfer_fee = fields.Float("Costo de Transferencia (%)")
+    transfer_fee = fields.Float("Costo de Transferencia (%)", company_dependent=True)
     
     sequence_id = fields.Many2one('ir.sequence', 'Sequence')
     company_id = fields.Many2one('res.company', string='Company', readonly=True, compute=_default_company, store=True)
