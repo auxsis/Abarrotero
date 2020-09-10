@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//header/button[last()]" position="after">
-                <button name="insert_product_taxes" type="object" string="Insert Product Taxes" groups="base.group_no_one"/>
+                <button name="update_product_taxes" type="object" string="Update Product Taxes" groups="base.group_no_one"/>
             </xpath>
         </field>
     </record>

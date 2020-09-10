@@ -18,24 +18,41 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     @api.multi
-    def insert_product_taxes(self):
+    def update_product_taxes(self):
+
         products = self.env['product.template']
-        products_exent = products.search([('taxes_id.name', 'ilike', 'EXENTO')])
-        # products_exent.write({'taxes_id': [(6, 0, [1, 13, 26])]})
-        products_exent.write({'taxes_id': [(4, 26, 0)]})
+        taxes = self.env['account.tax']
 
-        products_exent_supplier = products.search([('supplier_taxes_id.name', 'ilike', 'EXENTO')])
-        products_exent_supplier.write({'supplier_taxes_id': [(4, 34, 0)]})
+        # ------------------------------EXENTOS-------------------------------
+        # ------Sale---------
+        customer_tax_ids = taxes.sudo().search([('type_tax_use', '=', 'sale'), ('name', 'ilike', 'EXENTO')])
+        products_exent = products.sudo().search([('taxes_id.name', 'ilike', 'EXENTO')])
+        products_exent.sudo().write({'taxes_id': [(6, 0, customer_tax_ids.mapped('id'))]})
 
-        products_iva = products.search([('taxes_id.name', 'ilike', 'IVA(16%)')])
-        # products_iva.write({'taxes_id': [(6, 0, [2, 14, 27])]})
-        products_iva.write({'taxes_id': [(4, 27, 0)]})
-        products_iva_supplier = products.search([('supplier_taxes_id.name', 'ilike', 'IVA(16%)')])
-        products_iva_supplier.write({'supplier_taxes_id': [(4, 35, 0)]})
+        # -----Purchase------
+        supplier_tax_ids = taxes.sudo().search([('type_tax_use', '=', 'purchase'), ('name', 'ilike', 'EXENTO')])
+        products_exent_supplier = products.sudo().search([('supplier_taxes_id.name', 'ilike', 'EXENTO')])
+        products_exent_supplier.sudo().write({'supplier_taxes_id': [(6, 0, supplier_tax_ids.mapped('id'))]})
 
-        products_ieps = products.search([('taxes_id.name', 'ilike', 'IEPS')])
-        # products_ieps.write({'taxes_id': [(6, 0, [24, 25, 40])]})
-        products_ieps.write({'taxes_id': [(4, 40, 0)]})
-        products_ieps_supplier = products.search([('supplier_taxes_id.name', 'ilike', 'IEPS')])
-        products_ieps_supplier.write({'supplier_taxes_id': [(4, 39, 0)]})
+        # --------------------------------IVA---------------------------------
+        # ------Sale---------
+        customer_tax_ids = taxes.sudo().search([('type_tax_use', '=', 'sale'), ('name', 'ilike', 'IVA(16%)')])
+        products_iva = products.sudo().search([('taxes_id.name', 'ilike', 'IVA(16%)')])
+        products_iva.sudo().write({'taxes_id': [(6, 0, customer_tax_ids.mapped('id'))]})
+
+        # -----Purchase------
+        supplier_tax_ids = taxes.sudo().search([('type_tax_use', '=', 'purchase'), ('name', 'ilike', 'IVA(16%)')])
+        products_iva_supplier = products.sudo().search([('supplier_taxes_id.name', 'ilike', 'IVA(16%)')])
+        products_iva_supplier.sudo().write({'supplier_taxes_id': [(6, 0, supplier_tax_ids.mapped('id'))]})
+
+        # -------------------------------IEPS----------------------------------
+        # ------Sale---------
+        customer_tax_ids = taxes.sudo().search([('type_tax_use', '=', 'sale'), ('name', 'ilike', 'IEPS')])
+        products_ieps = products.sudo().search([('taxes_id.name', 'ilike', 'IEPS')])
+        products_ieps.sudo().write({'taxes_id': [(6, 0, customer_tax_ids.mapped('id'))]})
+
+        # -----Purchase------
+        supplier_tax_ids = taxes.sudo().search([('type_tax_use', '=', 'purchase'), ('name', 'ilike', 'IEPS')])
+        products_ieps_supplier = products.sudo().search([('supplier_taxes_id.name', 'ilike', 'IEPS')])
+        products_ieps_supplier.sudo().write({'supplier_taxes_id': [(6, 0, supplier_tax_ids.mapped('id'))]})
 
