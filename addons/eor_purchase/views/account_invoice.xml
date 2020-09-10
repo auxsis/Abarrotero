@@ -49,6 +49,9 @@
             <xpath expr="//field[@name='amount_tax_signed']" position="after">
                 <field name="total_extra_discount" string="Descuentos Extra" sum="Total Descuento Extra"/>
             </xpath>
+            <field name="state" position="after">
+                <field name="x_document_type"/>
+            </field>
         </field>
     </record>
 </odoo>

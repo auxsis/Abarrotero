@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="group_view_remission" model="res.groups">
+            <field name="name">Visualizar Remisiones</field>
+            <field name="category_id" ref="base.module_category_accounting_and_finance"/>
+        </record>
+
+        <record id="no_view_remission_rule" model="ir.rule">
+            <field name="name">No View Remission Rule</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="domain_force">[('x_document_type', 'not in', ['remision'])]</field>
+            <field name="groups" eval="[(4, ref('account.group_account_manager')),(4, ref('account.group_account_invoice'))]"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="perm_read" eval="1"/>
+        </record>
+
+        <record id="view_remission_rule" model="ir.rule">
+            <field name="name">View Remission Rule</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('cdfi_invoice.group_view_remission'))]"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="perm_read" eval="1"/>
+        </record>
+
+        <record id="base.user_admin" model="res.users">
+            <field name="groups_id" eval="[(4, ref('cdfi_invoice.group_view_remission'))]"/>
+        </record>
+    </data>
+</odoo>
