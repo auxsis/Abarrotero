@@ -365,7 +365,8 @@ class InterCompanyTransfer(models.Model):
                 line_vals.sudo(intercompany_user).tax_id = line.sudo().product_id.taxes_id.filtered(lambda tax: tax.company_id.id == source_company.id)
                 line_vals = line_vals.sudo(intercompany_user)._convert_to_write(line_vals._cache)
                 so_lines_list.append((0, 0, line_vals))
-            sale_order.sudo(intercompany_user).write({'order_line':so_lines_list, 'intercompany_transfer_id':record.id})
+            sale_order.sudo(intercompany_user).write({'order_line': so_lines_list, 'intercompany_transfer_id':record.id})
+            sale_order.sudo().order_line._compute_amount()
             so_list.append(sale_order)
         
         return so_list
@@ -395,6 +396,7 @@ class InterCompanyTransfer(models.Model):
                 line_vals = line_vals.sudo(intercompany_user)._convert_to_write(line_vals._cache)
                 po_lines_list.append((0, 0, line_vals))
             purchase_order_id.sudo(intercompany_user).write({'order_line':po_lines_list, 'intercompany_transfer_id':record.id})
+            purchase_order_id.sudo().order_line._compute_amount()
             po_list.append(purchase_order_id)
         
         return po_list
