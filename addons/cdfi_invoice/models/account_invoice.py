@@ -20,6 +20,8 @@ _logger = logging.getLogger(__name__)
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
+    x_document_type = fields.Selection([('cdfi', 'CDFI'), ('remision', 'Remision')], string='Tipo documento',
+                                       readonly=True, compute='compute_x_document_type', store=True)
     factura_cfdi = fields.Boolean('Factura CFDI')
     tipo_comprobante = fields.Selection(
         selection=[('I', 'Ingreso'), 
@@ -155,6 +157,14 @@ class AccountInvoice(models.Model):
     desc = fields.Float(string='descuento', digits=dp.get_precision('Product Price'))
     subtotal = fields.Float(string='subtotal', digits=dp.get_precision('Product Price'))
     total = fields.Float(string='total', digits=dp.get_precision('Product Price'))
+
+    @api.depends('origin')
+    def compute_x_document_type(self):
+        for record in self:
+            purchase_order = self.env['purchase.order'].search([('name', '=', record.origin)], limit=1)
+            if purchase_order:
+                document_type = purchase_order.x_document_type
+                record['x_document_type'] = document_type
 
     @api.depends('invoice_line_ids.invoice_line_tax_ids', 'amount_tax')
     def _compute_taxes_widget(self):

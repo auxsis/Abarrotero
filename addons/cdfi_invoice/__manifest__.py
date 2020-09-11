@@ -17,6 +17,7 @@
         'sale','account','eor_purchase'
     ],
     'data': [
+        'security/group_access_rule.xml',
         'views/res_partner_view.xml',
         'views/res_company_view.xml',
         'views/product_view.xml',
