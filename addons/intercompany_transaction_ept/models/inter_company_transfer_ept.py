@@ -64,9 +64,9 @@ class InterCompanyTransfer(models.Model):
     source_company_id = fields.Many2one(related='source_warehouse_id.company_id', string="Source Company")
     destination_warehouse_id = fields.Many2one('stock.warehouse', string='To Warehouse')
     destination_company_id = fields.Many2one(related='destination_warehouse_id.company_id', string="Destination Company")
-    
-    crm_team_id = fields.Many2one('crm.team', string="Sales Team", related="destination_warehouse_id.company_id.partner_id.team_id", default=_get_default_team)
-    price_list_id = fields.Many2one('product.pricelist', related="destination_warehouse_id.company_id.partner_id.property_product_pricelist", string="Price List")
+
+    crm_team_id = fields.Many2one('crm.team', string="Sales Team", default=_get_default_team)
+    price_list_id = fields.Many2one('product.pricelist', string="Price List")
     currency_id = fields.Many2one('res.currency', related="price_list_id.currency_id", string="Currency")
     incoming_shipment_id = fields.Many2one('stock.picking', string="Incoming Shipment", copy=False)
     group_id = fields.Many2one('procurement.group', string="Procurement Group", copy=False)
