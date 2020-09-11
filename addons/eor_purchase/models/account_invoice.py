@@ -11,6 +11,16 @@ class EorAccountInvoice(models.Model):
     flete_discount = fields.Float(string="Desc. Flete",  readonly=True)
     plans_discount = fields.Float(string="Desc. Planes",  readonly=True)
     total_extra_discount = fields.Float(string="Total Descuentos Extra", compute="compute_total_discount")
+    x_document_type = fields.Selection([('cdfi', 'CDFI'), ('remision', 'Remision')], string='Tipo documento',
+                                       readonly=True, compute='compute_x_document_type', store=True)
+
+    @api.depends('origin')
+    def compute_x_document_type(self):
+        for record in self:
+            purchase_order = self.env['purchase.order'].search([('name', '=', record.origin)], limit=1)
+            if purchase_order:
+                document_type = purchase_order.x_document_type
+                record['x_document_type'] = document_type
 
     @api.depends("maniobra_discount", "flete_discount", "plans_discount")
     def compute_total_discount(self):
