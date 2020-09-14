@@ -27,16 +27,25 @@
                     <label for="monto_desc_maniobra" string="Desc. Maniobra" />
                     <div>
                         <button name="reset_descuento_maniobra" type="object" class="oe_link oe_inline p-0" icon="fa-trash-o" attrs="{'invisible': [('monto_desc_maniobra', '=', 0.0)]}"/>
+                        <field name="has_desc_extra_maniobra" invisible="1"/>
+                        <field name="tipo_calculo_desc_maniobra" invisible="1"/>
+                        <field name="cant_desc_extra_maniobra" invisible="1"/>
                         <field name="monto_desc_maniobra" class="oe_right"/>
                     </div>
                     <label for="monto_desc_flete" string="Desc. Flete"/>
                     <div>
                         <button name="reset_descuento_flete" type="object" class="oe_link oe_inline p-0" icon="fa-trash-o" attrs="{'invisible': [('monto_desc_flete', '=', 0.0)]}"/>
+                        <field name="has_desc_extra_flete" invisible="1"/>
+                        <field name="tipo_calculo_desc_flete" invisible="1"/>
+                        <field name="cant_desc_extra_flete" invisible="1"/>
                         <field name="monto_desc_flete" class="oe_right"/>
                     </div>
                     <label for="monto_desc_planes" string="Desc. Planes"/>
                     <div>
                         <button name="reset_descuento_planes" type="object" class="oe_link oe_inline p-0" icon="fa-trash-o" attrs="{'invisible': [('monto_desc_planes', '=', 0.0)]}"/>
+                        <field name="has_desc_extra_planes" invisible="1"/>
+                        <field name="tipo_calculo_desc_planes" invisible="1"/>
+                        <field name="cant_desc_extra_planes" invisible="1"/>
                         <field name="monto_desc_planes" class="oe_right"/>
                     </div>
                 </field>
