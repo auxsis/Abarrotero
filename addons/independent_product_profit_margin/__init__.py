@@ -34,4 +34,3 @@ def post_init_hook(cr, registry):
         })
 
     del prod_templ_dct
-    prod_templ_dct = dict()
