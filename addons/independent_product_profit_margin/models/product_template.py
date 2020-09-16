@@ -8,11 +8,11 @@ class ProductTemplate(models.Model):
 
     profit_margin = fields.Float(
         "Margen LP1 (%/$)",
-        compute='_compute_profit_margin', inverse='_set_profit_margin', search='_search_profit_margin', store=True
+        compute='_compute_profit_margin', inverse='_set_profit_margin', search='_search_profit_margin'
     )
     profit_margin2 = fields.Float(
         "Margen LP2 (%/$)",
-        compute='_compute_profit_margin2', inverse='_set_profit_margin2', search='_search_profit_margin2', store=True
+        compute='_compute_profit_margin2', inverse='_set_profit_margin2', search='_search_profit_margin2'
     )
 
     @api.depends('product_variant_ids', 'product_variant_ids.profit_margin')
