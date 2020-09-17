@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "independent_product_profit_margin",
+    'name': "ict_change_price_unit",
 
     'summary': """
         Para ICT jalar precios de Almacén Origen en los ICT
