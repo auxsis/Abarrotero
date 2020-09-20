@@ -1,0 +1,37 @@
+<odoo>
+  <data>
+    <!-- Form View Inheritance -->
+    <record id="force_invoice_tab_invoice_form" model="ir.ui.view">
+      <field name="name">account.invoice.inherit.form.force.tab</field>
+      <field name="model">account.invoice</field>
+      <field name="inherit_id" ref="cdfi_invoice.view_invoice_inherit_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//notebook/page[@name='info_cdfi']" position="attributes">
+          <attribute name="attrs">{'invisible': [('estado_factura', '!=', 'factura_no_generada')]}</attribute>
+        </xpath>
+        <xpath expr="//notebook/page[2]" position="after">
+          <page name="info_cdfi" string="CFDI 3.3" attrs="{'invisible': [('estado_factura', '=', 'factura_no_generada')]}">
+            <group cols="4">
+              <group string="Detalles de Pago">
+                <field name="forma_pago"/>
+                <field name="methodo_pago"/>
+                <field name="uso_cfdi"/>
+              </group>
+              <group  string="Detalles de Factura">
+                <field name="tipo_comprobante"/>
+                <field name="folio_fiscal"/>
+                <field name="confirmacion"/>
+                <field name="estado_factura"/>
+                <field name="fecha_factura"/>
+              </group>
+              <group  string="CFDI Relacionados">
+                <field name="tipo_relacion"/>
+                <field name="uuid_relacionado"/>
+              </group>
+            </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

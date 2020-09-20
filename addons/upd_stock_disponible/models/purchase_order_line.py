@@ -18,6 +18,13 @@ class PurchaseOrderLine(models.Model):
             prod_line.stock_disponible = (
                 prod_line.product_id.qty_available + prod_line.product_qty
                 if prod_line.product_qty > 0 else
-                0.0
+                prod_line.product_id.qty_available
+            )
+
+    @api.constrains('product_qty')
+    def _check_product_qty(self):
+        if self.product_qty <= 0:
+            raise models.ValidationError(
+                'El valor del campo cantidad en las lineas de productos debe de ser mayor que cero'
             )
 
