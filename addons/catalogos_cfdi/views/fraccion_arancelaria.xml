@@ -29,12 +29,12 @@
     </record>
       
       <record id="action_catalogos_fraccionarancelaria" model="ir.actions.act_window">
-        <field name="name">Catálogo de fraccion_arancelaria</field>
+        <field name="name">Catálogo de fracción arancelaria</field>
         <field name="res_model">catalogos.fraccionarancelaria</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
       </record>
 
-      <menuitem id="catalogos_menu_fraccionarancelaria" name="Fraccion Arancelaria" parent="catalogos_menu_principal" action="action_catalogos_fraccionarancelaria"/>
+      <menuitem id="catalogos_menu_fraccionarancelaria" name="Fracción Arancelaria" parent="catalogos_menu_principal" action="action_catalogos_fraccionarancelaria"/>
 	</data>
 </odoo>
