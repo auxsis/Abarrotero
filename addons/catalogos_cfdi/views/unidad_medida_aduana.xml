@@ -29,7 +29,7 @@
     </record>
       
       <record id="action_catalogos_unidadmedidaaduana" model="ir.actions.act_window">
-        <field name="name">Catálogo de unidadmedidaaduana</field>
+        <field name="name">Catálogo de unidad de medida de la aduana</field>
         <field name="res_model">catalogos.unidadmedidaaduana</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>

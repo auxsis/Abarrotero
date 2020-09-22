@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields
 
-class Claveprodserv(models.Model):
+
+class ClaveProdServ(models.Model):
     _name = 'catalogos.claveprodserv'
     _rec_name = "descripcion"
 

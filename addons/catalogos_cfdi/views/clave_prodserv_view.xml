@@ -29,7 +29,7 @@
     </record>
       
       <record id="action_catalogos_claveprodserv" model="ir.actions.act_window">
-        <field name="name">Catálogo de claveprodserv</field>
+        <field name="name">Catálogo de claves de productos o servicios</field>
         <field name="res_model">catalogos.claveprodserv</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
