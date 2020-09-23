@@ -43,6 +43,7 @@
     'uninstall_hook': 'uninstall_hook_update_rule',
     'live_test_url': 'https://www.emiprotechnologies.com/free-trial?app=intercompany-transaction-ept&version=12&edition=enterprise',
     'active': True,
+    'external_dependencies': {'python': ['lxml', 'simplejson']},
     'installable': True,
     'currency': 'EUR',
     'price': 149.00,
