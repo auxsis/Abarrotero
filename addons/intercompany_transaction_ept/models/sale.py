@@ -1,5 +1,9 @@
 from odoo import api, fields, models, _
 
+from lxml import etree
+import simplejson
+
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     _description = 'Sale Order'
@@ -42,3 +46,22 @@ class SaleOrder(models.Model):
                 'amount_total': amount_untaxed + amount_tax + amount_transfer_fee,
                 'amount_transfer_fee': amount_transfer_fee,
             })
+
+    @api.model
+    def fields_view_get(self, view_id=None, view_type=False, toolbar=False, submenu=False):
+        res = super(SaleOrder, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar,
+                                                     submenu=submenu)
+        if self.env.context.get('readonly_sale'):  # Check for context value
+            doc = etree.XML(res['arch'])  # Get the view architecture of record
+            if view_type == 'form':  # Applies only if it is form view
+                for node in doc.xpath("//field"):  # Get all the fields navigating through xpath
+                    modifiers = simplejson.loads(node.get("modifiers"))  # Get all the existing modifiers of each field
+                    modifiers['readonly'] = True  # Add readonly=True attribute in modifier for each field
+                    node.set('modifiers',
+                             simplejson.dumps(modifiers))  # Now, set the newly added modifiers to the field
+                for node in doc.xpath("//header/button"):
+                    # modifiers = simplejson.loads(node.get("modifiers"))
+                    modifiers = {'invisible': True}
+                    node.set('modifiers', simplejson.dumps(modifiers))
+                res['arch'] = etree.tostring(doc)  # Update the view architecture of record with new architecture
+        return res

@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields, api, models , _
+from odoo import fields, api, models, _
 from odoo.exceptions import ValidationError
+
+from lxml import etree
+import simplejson
+
 
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
@@ -42,3 +46,21 @@ class PurchaseOrder(models.Model):
         if self.company_id != self.env.user.company_id:
             raise ValidationError("Lo sentimos, no puede confirmar la orden, la compañía actual no se corresponde con la compañía de la orden.")
         return super(PurchaseOrder, self).button_confirm()
+
+    @api.model
+    def fields_view_get(self, view_id=None, view_type=False, toolbar=False, submenu=False):
+        res = super(PurchaseOrder, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar,
+                                                     submenu=submenu)
+        if self.env.context.get('readonly_purchase'):  # Check for context value
+            doc = etree.XML(res['arch'])  # Get the view architecture of record
+            if view_type == 'form':  # Applies only if it is form view
+                for node in doc.xpath("//field"):  # Get all the fields navigating through xpath
+                    modifiers = simplejson.loads(node.get("modifiers"))  # Get all the existing modifiers of each field
+                    modifiers['readonly'] = True  # Add readonly=True attribute in modifier for each field
+                    node.set('modifiers',
+                             simplejson.dumps(modifiers))  # Now, set the newly added modifiers to the field
+                for node in doc.xpath("//header/button"):
+                    modifiers = {'invisible': True}
+                    node.set('modifiers', simplejson.dumps(modifiers))
+                res['arch'] = etree.tostring(doc)  # Update the view architecture of record with new architecture
+        return res

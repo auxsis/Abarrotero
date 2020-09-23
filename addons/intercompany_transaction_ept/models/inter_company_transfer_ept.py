@@ -645,16 +645,17 @@ class InterCompanyTransfer(models.Model):
         resource_ids = self.saleorder_ids and self.saleorder_ids.ids or []
         if not self.source_company_id in self.env.user.company_ids:
             raise Warning(_("Sorry, You dont have access to the required record"))
-        new_env = self.env
-        if self.source_company_id.id != self.env.user.company_id.id:
-            new_env.user.company_id = self.source_company_id
         action = {
             'name': 'Sale Order',
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'res_model': 'sale.order',
-            'domain':[('id', 'in', resource_ids)]
+            'domain': [('id', 'in', resource_ids)]
         }
+        new_env = self.env
+        if self.source_company_id.id != self.env.user.company_id.id:
+            new_env.user.company_id = self.source_company_id
+            action['context'] = {'readonly_sale': True}
         return self.with_env(new_env)._open_form_tree_view(action, form_id, tree_id, resource_ids)
     
     @api.multi
@@ -679,9 +680,6 @@ class InterCompanyTransfer(models.Model):
         resource_ids = self.purchaseorder_ids and self.purchaseorder_ids.ids or []
         if not self.destination_company_id in self.env.user.company_ids:
             raise Warning(_("Sorry, You dont have access to the required record"))
-        new_env = self.env
-        if self.destination_company_id.id != self.env.user.company_id.id:
-            new_env.user.company_id = self.destination_company_id
         action = {
             'name': 'Purchase Order',
             'type': 'ir.actions.act_window',
@@ -690,6 +688,10 @@ class InterCompanyTransfer(models.Model):
             'res_model': 'purchase.order',
             'domain':[('id', 'in', resource_ids)]
         }
+        new_env = self.env
+        if self.destination_company_id.id != self.env.user.company_id.id:
+            new_env.user.company_id = self.destination_company_id
+            action['context'] = {'readonly_purchase': True}
         return self.with_env(new_env)._open_form_tree_view(action, form_id, tree_id, resource_ids)
         
     @api.multi
