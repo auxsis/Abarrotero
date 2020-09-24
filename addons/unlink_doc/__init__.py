@@ -16,7 +16,7 @@ def post_init_hook(cr, registry):
 
     # Get group named "Suprimir/Eliminar Documentos"
     unlink_res_group = env['res.groups'].search([
-        ('name', '=', 'Suprimir/Eliminar Documentos'),
+        ('name', '=', 'Suprimir / Eliminar Documentos'),
     ]).ensure_one()
 
     # Add unlink permissions on all models for security group "Suprimir/Eliminar Documentos"
