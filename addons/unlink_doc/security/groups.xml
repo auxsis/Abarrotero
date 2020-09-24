@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="group_unlink_docs" model="res.groups">
-        <field name="name">Suprimir/Eliminar Documentos</field>
+        <field name="name">Suprimir / Eliminar Documentos</field>
         <field name="category_id" ref="base.module_category_hidden"/>
     </record>
 </odoo>
