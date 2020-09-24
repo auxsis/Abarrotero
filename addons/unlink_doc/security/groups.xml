@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="group_library_user" model="res.groups">
+    <record id="group_unlink_docs" model="res.groups">
         <field name="name">Suprimir/Eliminar Documentos</field>
         <field name="category_id" ref="base.module_category_hidden"/>
     </record>

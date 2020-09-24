@@ -4,7 +4,7 @@
 
     'summary': """
         Actualiza el Stock Disponible
-        Usa como fórmula: "Stock Disponible" = "Prod Cant A Mano" + Cantidad
+        Usa como fórmula: "Stock Disponible" = "Prod Cant A Mano".
     """,
 
     'author': "Odoo Experts MX",
