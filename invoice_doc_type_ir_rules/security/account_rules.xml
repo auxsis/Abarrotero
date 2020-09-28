@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record model="ir.rule" id="doc_type_invoice_remisiones_rule">
+        <field name="name">Factura: Ver Remisiones</field>
+        <field name="model_id" ref="eor_purchase.model_account_invoice"/>
+        <field name="groups" eval="[(4, ref('invoice_doc_type_ir_rules.group_remisiones'))]"/>
+        <field name="domain_force">
+            [('x_document_type', '=', 'remision'), ('type', '=', 'in_invoice')]
+        </field>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+        <field name="perm_read" eval="1"/>
+    </record>
+
+    <record model="ir.rule" id="doc_type_invoice_cfdi_rule">
+        <field name="name">Factura: Ver CFDI</field>
+        <field name="model_id" ref="eor_purchase.model_account_invoice"/>
+        <field name="groups" eval="[(4, ref('invoice_doc_type_ir_rules.group_cfdi'))]"/>
+        <field name="domain_force">
+            [('x_document_type', '=', 'cfdi'), ('type', '=', 'in_invoice')]
+        </field>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+        <field name="perm_read" eval="1"/>
+    </record>
+
+    <record model="ir.rule" id="doc_type_invoice_vacios_rule">
+        <field name="name">Factura: Ver Vacíos</field>
+        <field name="model_id" ref="eor_purchase.model_account_invoice"/>
+        <field name="groups" eval="[(4, ref('invoice_doc_type_ir_rules.group_vacios'))]"/>
+        <field name="domain_force">
+            [('x_document_type', '=?', False), ('type', '=', 'in_invoice')]
+        </field>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+        <field name="perm_read" eval="1"/>
+    </record>
+
+</odoo>
