@@ -14,7 +14,7 @@
     'website': 'www.itadmin.com.mx',
     'depends': [
         'base',
-        'sale','account','eor_purchase'
+        'sale','account','eor_purchase', 'catalogos_cfdi'
     ],
     'data': [
         'security/group_access_rule.xml',
