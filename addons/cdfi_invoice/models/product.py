@@ -104,7 +104,7 @@ class ProductTemplate(models.Model):
 
     unidad_medida = fields.Selection(selection=UNIDAD_MEDIDA_LIST, string='Unidad SAT')
     clave_producto = fields.Char(string='Clave producto')
-    description_cve_prod = fields.Char(string='Descripción CveProd')
+    description_cve_prod = fields.Char(string='Descripción CveProd', compute='_compute_description_cve_prod')
     clave_unidad = fields.Char(string='Clave unidad', compute='_compute_clave_unidad')
     
     @api.depends('unidad_medida')
@@ -113,4 +113,12 @@ class ProductTemplate(models.Model):
         if self.unidad_medida:
             self.clave_unidad = UM_CLAVO_MAP[self.unidad_medida]
             
-    
+    @api.depends('clave_producto')
+    def _compute_description_cve_prod(self):
+        for prod in self:
+            catalogue = prod.env['catalogos.claveprodserv'].search([('c_claveprodserv', 'like', prod.clave_producto)],
+                                                                   limit=1)
+            if catalogue:
+                prod.description_cve_prod = catalogue.descripcion
+            else:
+                prod.description_cve_prod = _("- key not found -")
