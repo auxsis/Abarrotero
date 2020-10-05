@@ -223,7 +223,8 @@ class AccountInvoice(models.Model):
     @api.one
     def _get_number_folio(self):
         if self.number:
-            self.number_folio = self.number.replace('INV','').replace('/','')
+            # self.number_folio = self.number.replace('INV','').replace('/','')
+            self.number_folio = self.number.split('/')[-1]
             
     @api.depends('amount_total', 'currency_id')
     @api.one
