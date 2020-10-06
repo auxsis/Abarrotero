@@ -17,6 +17,9 @@ from . import amount_to_text_es_MX
 import logging
 _logger = logging.getLogger(__name__)
 
+from .product import UM_CLAVO_MAP
+from .product import ProductTemplate as pt
+
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
@@ -223,7 +226,8 @@ class AccountInvoice(models.Model):
     @api.one
     def _get_number_folio(self):
         if self.number:
-            self.number_folio = self.number.replace('INV','').replace('/','')
+            # self.number_folio = self.number.replace('INV','').replace('/','')
+            self.number_folio = self.number.split('/')[-1]
             
     @api.depends('amount_total', 'currency_id')
     @api.one
@@ -843,11 +847,27 @@ class AccountInvoice(models.Model):
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
-    clave_producto = fields.Char('CveProd', related='product_id.clave_producto', readonly=True)
-    description_cve_prod = fields.Char('Descripción CveProd', related='product_id.description_cve_prod', readonly=True)
-    clave_unidad = fields.Char('CveU', related='product_id.clave_unidad', readonly=True)
-    unidad_medida = fields.Selection('Unidad', related='product_id.unidad_medida', readonly=True)
+    description_cve_prod = fields.Many2one('catalogos.claveprodserv', string='Descripción CveProd')
+    clave_producto = fields.Char('CveProd', related='description_cve_prod.c_claveprodserv')
+    unidad_medida = fields.Selection(selection=pt.UNIDAD_MEDIDA_LIST, string='Unidad')
+    clave_unidad = fields.Char('CveU', compute='_compute_clave_unidad')
 
+    @api.depends('unidad_medida')
+    @api.one
+    def _compute_clave_unidad(self):
+        if self.unidad_medida:
+            self.clave_unidad = UM_CLAVO_MAP[self.unidad_medida]
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        key = self.product_id.clave_producto
+        catalogue = self.env['catalogos.claveprodserv'].search([('c_claveprodserv', 'like', key)], limit=1)
+        if catalogue:
+            self.description_cve_prod = catalogue
+        else:
+            self.description_cve_prod = False
+        self.unidad_medida = self.product_id.unidad_medida
+        return super(AccountInvoiceLine, self)._onchange_product_id()
 
 class MailTemplate(models.Model):
     "Templates for sending email"
