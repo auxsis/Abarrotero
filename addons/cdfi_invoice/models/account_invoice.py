@@ -844,10 +844,10 @@ class AccountInvoice(models.Model):
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
-    clave_producto = fields.Char('CveProd', related='product_id.clave_producto', readonly=True)
-    description_cve_prod = fields.Char('Descripción CveProd', related='product_id.description_cve_prod', readonly=True)
-    clave_unidad = fields.Char('CveU', related='product_id.clave_unidad', readonly=True)
-    unidad_medida = fields.Selection('Unidad', related='product_id.unidad_medida', readonly=True)
+    clave_producto = fields.Char('CveProd', related='product_id.clave_producto')
+    description_cve_prod = fields.Many2one(related='product_id.description_cve_prod', string='Descripción CveProd')
+    clave_unidad = fields.Char('CveU', related='product_id.clave_unidad')
+    unidad_medida = fields.Selection('Unidad', related='product_id.unidad_medida')
 
 
 class MailTemplate(models.Model):
