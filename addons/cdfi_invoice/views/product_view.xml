@@ -13,7 +13,7 @@
 						<group col="4">
 		                    <field name="unidad_medida" />
 		                    <field name="clave_unidad" />
-                            <field name="description_cve_prod" widget="selection"/>
+                            <field name="description_cve_prod"/>
 		                    <field name="clave_producto" />
 		                </group>
                     </page>
