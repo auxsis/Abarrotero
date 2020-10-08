@@ -3,13 +3,21 @@
     'name': "unlink_doc",
 
     'summary': """
-    Agregar un permiso con la etiqueta "Suprimir documentos" en la pestaña de Permisos de acceso por usuario.
+    Agregar tres permisos:
+        "Suprimir/Eliminar Facturas"
+        "Suprimir/Eliminar Compras"
+        "Suprimir/Eliminar Ventas"
+     
+    Estos desactivan/activan la posibilidad de eliminar/suprimir los documentos respectivos.
     """,
 
     'description': """
-    Agregar un permiso con la etiqueta "Suprimir documentos" en la pestaña de Permisos de acceso por usuario.
-    Al estar activado se puede suprimir o eliminar un documento.
-    Al desactivar no puedan ver el botón de "Suprimir" y por lo tanto no podrán eliminar.
+    Agregar tres permisos:
+        "Suprimir/Eliminar Facturas"
+        "Suprimir/Eliminar Compras"
+        "Suprimir/Eliminar Ventas"
+     
+    Estos desactivan/activan la posibilidad de eliminar/suprimir los documentos respectivos.
     """,
 
     'author': "Odoo Experts MX",
