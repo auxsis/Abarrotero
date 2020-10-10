@@ -20,4 +20,9 @@
 
     # any module necessary for this one to work correctly
     'depends': ['account', 'product_profit_margin'],
+
+    # always loaded
+    'data': [
+        'views/account_invoice_view.xml',
+    ],
 }
