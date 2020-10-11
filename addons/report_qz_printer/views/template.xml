@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/report_qz_printer/static/src/lib/qz-tray.js"></script>
+            <script type="text/javascript" src="/report_qz_printer/static/src/lib/jsrsasign-all-min.js"></script>
+            <script type="text/javascript" src="/report_qz_printer/static/src/lib/pdf-to-base64.js"></script>
+            <script type="text/javascript" src="/report_qz_printer/static/src/js/qweb_action_manager.js"></script>
+        </xpath>
+    </template>
+</odoo>

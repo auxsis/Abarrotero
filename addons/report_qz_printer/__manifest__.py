@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "manual_account_invoice_base_imponible1",
+    'name': "report_qz_printer",
 
     'summary': """
-        Actualiza el campo "Precio" en las líneas de productos cuando se crea una factura de forma manual.
+        Imprime documentos sin tener que descargar el PDF, usando QZ.
     """,
 
     'description': """
-        Actualiza el campo "Precio" en las líneas de productos cuando se crea una factura de forma manual.
+        Imprime documentos sin tener que descargar el PDF, usando QZ.
     """,
 
     'author': "Odoo Experts MX",
@@ -15,14 +15,15 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Invoicing Management',
+    'category': 'Printer',
     'version': '12.0.1.0.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['account', 'product_profit_margin'],
+    'depends': ['sale', 'purchase'],
 
     # always loaded
     'data': [
-        'views/account_invoice_view.xml',
+        'views/res_company_view.xml',
+        'views/template.xml',
     ],
 }
