@@ -12,9 +12,9 @@ def __unset_model_unlink_perm(env, model: str):
             model_access.perm_unlink = False
 
 
-def __add_model_unlink_perm(env, doc, model: str):
-    # Get group named "Suprimir/Eliminar [Facturas, Compras, Ventas]"
-    unlink_res_group = __get_group_by_name(env, doc)
+def __add_model_unlink_perm(env, group, model: str):
+    # Get group named ...
+    unlink_res_group = __get_group_by_name(env, group)
 
     # Add unlink permissions on model for security group "Suprimir/Eliminar Documentos"
     env['ir.model.access'].create([
@@ -29,9 +29,9 @@ def __add_model_unlink_perm(env, doc, model: str):
 
 
 def __get_group_by_name(env, name: str):
-    # Get group named "Suprimir/Eliminar Documentos"
+    # Get group named ...
     return env['res.groups'].search([
-        ('name', '=', f'Suprimir / Eliminar {name}'),
+        ('name', '=', name),
     ]).ensure_one()
 
 
@@ -41,15 +41,17 @@ def post_init_hook(cr, registry):
 
     # Documents and models
     doc_dict = {
-        'Facturas': ('account.invoice', 'account.invoice.line'),
-        'Compras': ('purchase.order', 'purchase.order.line'),
-        'Ventas': ('sale.order', 'sale.order.line'),
+        'Eliminar Líneas de Facturas': 'account.invoice.line',
+        'Eliminar Líneas de Compras': 'purchase.order.line',
+        'Eliminar Líneas de Ventas': 'sale.order.line',
+        'Suprimir Facturas': 'account.invoice',
+        'Suprimir Compras': 'purchase.order',
+        'Suprimir Ventas': 'sale.order',
     }
 
-    for doc, models in doc_dict.items():
-        for model in models:
-            # Unset unlink permissions for ...
-            __unset_model_unlink_perm(env, model)
+    for group, model in doc_dict.items():
+        # Unset unlink permissions for ...
+        __unset_model_unlink_perm(env, model)
 
-            # Add unlink permissions on all models for security group "Suprimir/Eliminar Documentos"
-            __add_model_unlink_perm(env, doc, model)
+        # Add unlink permissions on all models for security group ...
+        __add_model_unlink_perm(env, group, model)
