@@ -20,8 +20,10 @@ class product_template(models.Model):
     
 
 
-    @api.depends('units_pack', 'taxed_lst_price')
+    @api.depends('units_pack', 'list_price')
     def get_price_unit(self):
-
         for record in self:
-            record.price_unit = record.taxed_lst_price / record.units_pack
+            if record.units_pack > 0:
+                record.price_unit = record.list_price / record.units_pack
+            else:
+                record.price_unit = 0
