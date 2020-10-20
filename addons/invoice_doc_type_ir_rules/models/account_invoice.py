@@ -21,6 +21,7 @@ class AccountInvoice(models.Model):
                 'invoice_doc_type_ir_rules.group_remisiones',
                 'invoice_doc_type_ir_rules.group_cfdi',
                 'invoice_doc_type_ir_rules.group_vacios',
+                'invoice_doc_type_ir_rules.group_vacios',
             )
         ):
             doc = etree.XML(res['arch'])
