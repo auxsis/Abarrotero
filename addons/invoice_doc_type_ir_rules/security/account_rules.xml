@@ -8,9 +8,9 @@
         <field name="domain_force">
             [('x_document_type', '=', 'remision'), ('type', '=', 'in_invoice')]
         </field>
-        <field name="perm_create" eval="0"/>
-        <field name="perm_write" eval="0"/>
-        <field name="perm_unlink" eval="0"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
         <field name="perm_read" eval="1"/>
     </record>
 
@@ -21,9 +21,9 @@
         <field name="domain_force">
             [('x_document_type', '=', 'cfdi'), ('type', '=', 'in_invoice')]
         </field>
-        <field name="perm_create" eval="0"/>
-        <field name="perm_write" eval="0"/>
-        <field name="perm_unlink" eval="0"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
         <field name="perm_read" eval="1"/>
     </record>
 
@@ -34,9 +34,9 @@
         <field name="domain_force">
             [('x_document_type', '=?', False), ('type', '=', 'in_invoice')]
         </field>
-        <field name="perm_create" eval="0"/>
-        <field name="perm_write" eval="0"/>
-        <field name="perm_unlink" eval="0"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
         <field name="perm_read" eval="1"/>
     </record>
 
@@ -47,9 +47,9 @@
         <field name="domain_force">
             [('x_document_type', 'in', ['remision','cfdi',False]), ('type', '=', 'in_invoice')]
         </field>
-        <field name="perm_create" eval="0"/>
-        <field name="perm_write" eval="0"/>
-        <field name="perm_unlink" eval="0"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
         <field name="perm_read" eval="1"/>
     </record>
 
