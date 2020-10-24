@@ -15,6 +15,7 @@
     'data': [
         'views/sale_view.xml',
         'report/sale_order.xml',
+        'security/groups.xml',
     ],
     'auto_install': False,
     'installable': True,
