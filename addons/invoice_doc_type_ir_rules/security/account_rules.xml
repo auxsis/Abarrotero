@@ -7,7 +7,7 @@
         <field name="groups" eval="[(4, ref('invoice_doc_type_ir_rules.group_remisiones'))]"/>
         <field name="domain_force">
             [('x_document_type', '=', 'remision'), ('type', '=', 'in_invoice')]
-        </field>       
+        </field>
     </record>
 
     <record model="ir.rule" id="doc_type_invoice_cfdi_rule">
@@ -16,7 +16,7 @@
         <field name="groups" eval="[(4, ref('invoice_doc_type_ir_rules.group_cfdi'))]"/>
         <field name="domain_force">
             [('x_document_type', '=', 'cfdi'), ('type', '=', 'in_invoice')]
-        </field>       
+        </field>
     </record>
 
     <record model="ir.rule" id="doc_type_invoice_vacios_rule">
@@ -25,7 +25,7 @@
         <field name="groups" eval="[(4, ref('invoice_doc_type_ir_rules.group_vacios'))]"/>
         <field name="domain_force">
             [('x_document_type', '=?', False), ('type', '=', 'in_invoice')]
-        </field>        
+        </field>
     </record>
 
     <record model="ir.rule" id="doc_type_invoice_vacios_todos">
@@ -34,7 +34,7 @@
         <field name="groups" eval="[(4, ref('invoice_doc_type_ir_rules.group_todos'))]"/>
         <field name="domain_force">
             [('x_document_type', 'in', ['remision','cfdi',False]), ('type', '=', 'in_invoice')]
-        </field>       
+        </field>
     </record>
 
 </odoo>
