@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_precio_neto_ventas_manual" model="res.groups">
+        <field name="name">Editar Precios Netos en Ventas</field>
+        <field name="comment">Permiso para modificar precio neto en ventas de forma manual para los usuarios</field>
+        <field name="category_id" ref="base.module_category_accounting_and_finance"/>
+    </record>
+</odoo>

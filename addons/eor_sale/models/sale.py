@@ -74,7 +74,7 @@ class SaleOrder(models.Model):
             elif line_invoice_status and all(invoice_status == 'invoiced' for invoice_status in line_invoice_status):
                 invoice_status = 'invoiced'
             elif line_invoice_status and all(
-                    invoice_status in ['invoiced', 'upselling'] for invoice_status in line_invoice_status):
+                            invoice_status in ['invoiced', 'upselling'] for invoice_status in line_invoice_status):
                 invoice_status = 'upselling'
             else:
                 invoice_status = 'no'
@@ -141,13 +141,13 @@ class SaleOrderLine(models.Model):
             else:
                 line.qty_to_invoice = 0
 
-
     @api.depends('price_unit', 'price_tax')
     def _compute_price(self):
         for line in self:
             price_unit = line.price_unit
             # Taxes without discount
-            taxes = line.tax_id.compute_all(price_unit, line.order_id.currency_id, line.product_uom_qty, product=line.product_id, partner=line.order_id.partner_shipping_id)
+            taxes = line.tax_id.compute_all(price_unit, line.order_id.currency_id, line.product_uom_qty,
+                                            product=line.product_id, partner=line.order_id.partner_shipping_id)
             price_tax = sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
             if line.product_uom_qty > 0:
                 price_tax = price_tax / line.product_uom_qty
@@ -156,8 +156,7 @@ class SaleOrderLine(models.Model):
                 line.price_unit_tax = price_unit + price_tax
             if line.product_id.units_pack > 0:
                 line.precio_x_pieza = line.price_unit_tax / line.product_id.units_pack
-            
-    
+
     @api.depends('product_id')
     def _compute_stock_available(self):
         for line in self:
@@ -165,8 +164,31 @@ class SaleOrderLine(models.Model):
 
     stock_disponible = fields.Float(string="Stock disponible", compute="_compute_stock_available")
     precio_x_pieza = fields.Monetary(string='Precio por pieza', compute='_compute_price')
-    price_unit_tax = fields.Float(compute='_compute_price', string="Precio Neto")
+    price_unit_tax = fields.Float(default=_compute_price, string="Precio Neto")#change to default 1.0
     pricelist_id = fields.Many2one('product.pricelist', string='Lista de Precio')
+
+    # override 1.1
+    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id','price_unit_tax')
+    def _compute_amount(self):
+        """
+        Compute the amounts of the SO line.
+        """
+        for line in self:
+            price = line.price_unit_tax * (1 - (line.discount or 0.0) / 100.0)#change to price_unit_tax
+            taxes = line.tax_id.compute_all(price, line.order_id.currency_id, line.product_uom_qty,
+                                            product=line.product_id, partner=line.order_id.partner_shipping_id)
+            line.update({
+                'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
+                'price_total': taxes['total_included'],
+                'price_subtotal': taxes['total_excluded'],
+            })
+
+    def _compute_editar(self):
+        for record in self:
+            record['x_studio_authorization1'] = False
+            if self.env.user.has_group('<UserAccessGroup>'):
+                record['x_studio_authorization1'] = True
+
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
