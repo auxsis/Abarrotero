@@ -13,9 +13,9 @@
         'intercompany_transaction_ept',
     ],
     'data': [
-        'views/sale_view.xml',
-        'report/sale_order.xml',
         'security/groups.xml',
+        'views/sale_view.xml',
+        'report/sale_order.xml',        
     ],
     'auto_install': False,
     'installable': True,
