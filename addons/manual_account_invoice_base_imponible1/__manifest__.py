@@ -23,6 +23,7 @@
 
     # always loaded
     'data': [
+        'security/groups.xml',
         'views/account_invoice_view.xml',
     ],
 }

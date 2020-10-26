@@ -1,29 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
+    <data>
 
-    <record id="manual_account_invoice_base_imponible1_view_form" model="ir.ui.view">
-      <field name="name">manual.account.invoice.base_imponible1</field>
-      <field name="model">account.invoice</field>
-      <field name="inherit_id" ref="account.invoice_form"/>
-      <field name="arch" type="xml">
-        <xpath expr="//notebook/page/field[@name='invoice_line_ids']/tree/field[@name='price_unit']"
-               position="attributes">
-          <attribute name="force_save">1</attribute>
-        </xpath>
-      </field>
-    </record>
+        <record id="manual_account_invoice_base_imponible1_view_form" model="ir.ui.view">
+            <field name="name">manual.account.invoice.base_imponible1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page/field[@name='invoice_line_ids']/tree/field[@name='price_unit']"
+                       position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+            </field>
+        </record>
 
-    <record id="manual_account_supplier_base_imponible1_view_form" model="ir.ui.view">
-      <field name="name">manual.account.invoice.base_imponible1</field>
-      <field name="model">account.invoice</field>
-      <field name="inherit_id" ref="account.invoice_supplier_form"/>
-      <field name="arch" type="xml">
-        <xpath expr="//notebook/page/field[@name='invoice_line_ids']/tree/field[@name='price_unit']"
-               position="attributes">
-          <attribute name="force_save">1</attribute>
-        </xpath>
-      </field>
-    </record>
-  </data>
+        <record id="sec_manual_account_invoice_base_imponible1_view_form" model="ir.ui.view">
+            <field name="name">sec.manual.account.invoice.base_imponible1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="groups_id" eval="[(6,0,[ref('manual_account_invoice_base_imponible1.group_precio_facturas_manual')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page/field[@name='invoice_line_ids']/tree/field[@name='price_unit']"
+                       position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="manual_account_supplier_base_imponible1_view_form" model="ir.ui.view">
+            <field name="name">manual.account.supplier.base_imponible1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page/field[@name='invoice_line_ids']/tree/field[@name='price_unit']"
+                       position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sec_manual_account_supplier_base_imponible1_view_form" model="ir.ui.view">
+            <field name="name">sec.manual.account.supplier.base_imponible1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="groups_id" eval="[(6,0,[ref('manual_account_invoice_base_imponible1.group_precio_facturas_manual')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page/field[@name='invoice_line_ids']/tree/field[@name='price_unit']"
+                       position="attributes">
+                    <attribute name="force_save">1</attribute>
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
 </odoo>
