@@ -164,7 +164,7 @@ class SaleOrderLine(models.Model):
 
     stock_disponible = fields.Float(string="Stock disponible", compute="_compute_stock_available")
     precio_x_pieza = fields.Monetary(string='Precio por pieza', compute='_compute_price')
-    price_unit_tax = fields.Float(default=_compute_price, string="Precio Neto")#change to default 1.0
+    price_unit_tax = fields.Float(default=_compute_price, string="Precio Neto",store=True)#change to default 1.0
     pricelist_id = fields.Many2one('product.pricelist', string='Lista de Precio')
 
     # override 1.1
